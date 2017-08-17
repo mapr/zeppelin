@@ -74,7 +74,7 @@ public class Authentication implements Runnable {
     this.token = token;
 
     authEnabled = !conf.getBoolean("ZEPPELIN_ALLOW_ANONYMOUS",
-        ZEPPELIN_CONF_ANONYMOUS_ALLOWED, true);
+        ZEPPELIN_CONF_ANONYMOUS_ALLOWED, false);
 
     userKey = conf.getString("ZEPPELINHUB_USER_KEY",
         ZEPPELINHUB_USER_KEY, "");

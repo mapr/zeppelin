@@ -46,8 +46,8 @@ user3 = password4, role2
 #ldapRealm.contextFactory.authenticationMechanism = simple
 
 ### A sample PAM configuration
-#pamRealm=org.apache.zeppelin.realm.PamRealm
-#pamRealm.service=sshd
+pamRealm=org.apache.zeppelin.realm.PamRealm
+pamRealm.service=sshd
 
 ### A sample for configuring ZeppelinHub Realm
 #zeppelinHubRealm = org.apache.zeppelin.realm.ZeppelinHubRealm
