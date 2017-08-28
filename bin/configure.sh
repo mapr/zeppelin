@@ -22,14 +22,22 @@ RETURN_ERR_OTHER=4
 
 MAPR_HOME=${MAPR_HOME:-/opt/mapr}
 
-. ${MAPR_HOME}/server/common-ecosystem.sh
-
+. ${MAPR_HOME}/server/common-ecosystem.sh 2> /dev/null # prevent verbose output, set by 'set -x'
 if [ $? -ne 0 ] ; then
   echo '[ERROR] MAPR_HOME seems to not be set correctly or mapr-core not installed.'
   exit $RETURN_ERR_MAPR_HOME
-fi
+fi 2> /dev/null
 
-initEnv
+{ set +x; } 2>/dev/null
+
+initCfgEnv
+
+# isSecure is set in server/configure.sh
+if [ -n "$isSecure" ]; then
+    if [ "$isSecure" == "true" ]; then
+        isSecure=1
+    fi
+fi
 
 # Get MAPR_USER and MAPR_GROUP
 DAEMON_CONF="${MAPR_HOME}/conf/daemon.conf"
@@ -50,9 +58,9 @@ if [ -z "$MAPR_GROUP" ] ; then
 fi
 
 # Initialize ZEPPELIN_HOME
-ZEPPELIN_HOME=${ZEPPELIN_HOME:-__INSTALL__}
-ZEPPELIN_NAME=${ZEPPELIN_NAME:-zeppelin}
 ZEPPELIN_VERSION=$(cat "${MAPR_HOME}/zeppelin/zeppelinversion")
+ZEPPELIN_HOME=${ZEPPELIN_HOME:-"${MAPR_HOME}/zeppelin/zeppelin-${ZEPPELIN_VERSION}"}
+ZEPPELIN_NAME=${ZEPPELIN_NAME:-zeppelin}
 MAPR_CONF_DIR=${MAPR_CONF_DIR:-"$MAPR_HOME/conf"}
 
 # Initialize arguments
@@ -76,15 +84,10 @@ USAGE="usage: $0 [-h] [-R] [-secure] [-unsecure]"
 
 OPTS=`getopt -n "$0" -a -o h -l R -l EC: -l secure -l unsecure -- "$@"`
 
-if [ $? != 0 ] || [ ${#} -lt 1 ] ; then
-  echo "${USAGE}"
-  exit $RETURN_ERR_ARGS
-fi
-
 eval set -- "$OPTS"
 
-for i ; do
-  case "$i" in
+while [ $# -gt 0 ]; do
+  case "$1" in
     --secure)
       isSecure=1;
       logWarn "Zeppelin configure.sh ignores -secure option"
@@ -149,9 +152,7 @@ if [ "$isOnlyRoles" == 1 ] ; then
   else
     logErr 'Zeppelin cannot start because its ports already has been taken.'
     exit $RETURN_ERR_MAPRCLUSTER
-  fi
+  fi 2> /dev/null
 fi
-
-
 
 exit $RETURN_SUCCESS
