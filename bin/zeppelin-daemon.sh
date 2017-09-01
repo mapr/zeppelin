@@ -48,9 +48,11 @@ BIN=$(cd "${BIN}">/dev/null; pwd)
 
 HOSTNAME=$(hostname)
 ZEPPELIN_NAME="Zeppelin"
+MAPR_HOME=${MAPR_HOME:-/opt/mapr}
 ZEPPELIN_LOGFILE="${ZEPPELIN_LOG_DIR}/zeppelin-${ZEPPELIN_IDENT_STRING}-${HOSTNAME}.log"
 ZEPPELIN_OUTFILE="${ZEPPELIN_LOG_DIR}/zeppelin-${ZEPPELIN_IDENT_STRING}-${HOSTNAME}.out"
 ZEPPELIN_PID="${ZEPPELIN_PID_DIR}/zeppelin-${ZEPPELIN_IDENT_STRING}-${HOSTNAME}.pid"
+ZEPPELIN_PID_LINK="${MAPR_HOME}/pid/zeppelin.pid"
 ZEPPELIN_MAIN=org.apache.zeppelin.server.ZeppelinServer
 JAVA_OPTS+=" -Dzeppelin.log.file=${ZEPPELIN_LOGFILE}"
 
@@ -190,6 +192,7 @@ function start() {
   else
     action_msg "${ZEPPELIN_NAME} start" "${SET_OK}"
     echo ${pid} > ${ZEPPELIN_PID}
+    ln -sf ${ZEPPELIN_PID} ${ZEPPELIN_PID_LINK}
   fi
 
   wait_zeppelin_is_up_for_ci
@@ -210,6 +213,7 @@ function stop() {
     else
       wait_for_zeppelin_to_die $pid 40
       $(rm -f ${ZEPPELIN_PID})
+      $(rm -f ${ZEPPELIN_PID_LINK})
       action_msg "${ZEPPELIN_NAME} stop" "${SET_OK}"
     fi
   fi
