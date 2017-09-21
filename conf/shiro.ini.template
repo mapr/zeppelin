@@ -47,7 +47,7 @@ user3 = password4, role2
 
 ### A sample PAM configuration
 pamRealm=org.apache.zeppelin.realm.PamRealm
-pamRealm.service=sshd
+pamRealm.service=login
 
 ### A sample for configuring ZeppelinHub Realm
 #zeppelinHubRealm = org.apache.zeppelin.realm.ZeppelinHubRealm
