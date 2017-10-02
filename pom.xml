@@ -726,6 +726,16 @@
       </repositories>
     </profile>
 
+    <profile>
+      <id>mapr-mep-4.0.0</id>
+      <properties>
+        <hadoop.version>2.7.0-mapr-1707</hadoop.version>
+        <hadoop-common.version>2.7.0-mapr-1707</hadoop-common.version>
+        <tez.version>0.8.4-mapr-1707</tez.version>
+        <pig.version>0.16.0-mapr-1703</pig.version>
+      </properties>
+    </profile>
+
     <!-- Geode can be enabled by -Pgeode. see https://issues.apache.org/jira/browse/ZEPPELIN-375 -->
     <profile>
       <id>geode</id>
