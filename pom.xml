@@ -727,7 +727,7 @@
     </profile>
 
     <profile>
-      <id>mapr-mep-4.0.0</id>
+      <id>mapr-mep-4</id>
       <properties>
         <hadoop.version>2.7.0-mapr-1707</hadoop.version>
         <hadoop-common.version>2.7.0-mapr-1707</hadoop-common.version>
