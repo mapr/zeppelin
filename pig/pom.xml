@@ -186,4 +186,15 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>mapr-mep-4</id>
+            <properties>
+              <hadoop.version>2.7.0-mapr-1707</hadoop.version>
+              <tez.version>0.8.4-mapr-1707</tez.version>
+              <pig.version>0.16.0-mapr-1703</pig.version>
+            </properties>
+        </profile>
+    </profiles>
 </project>
