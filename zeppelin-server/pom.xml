@@ -523,6 +523,13 @@
         </zeppelin.daemon.package.base>
       </properties>
     </profile>
+
+    <profile>
+      <id>mapr-mep-4</id>
+      <properties>
+        <hadoop-common.version>2.7.0-mapr-1707</hadoop-common.version>
+      </properties>
+    </profile>
   </profiles>
 
 </project>
