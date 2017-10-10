@@ -264,7 +264,7 @@
       <id>mapr-mep-4</id>
       <properties>
         <hive.version>2.1.1-mapr-1707</hive.version>
-        <drill.version>1.10.0-mapr</drill.version>
+        <drill.version>1.10.0</drill.version>
         <hadoop.common.version>2.7.0-mapr-1707</hadoop.common.version>
       </properties>
     </profile>
