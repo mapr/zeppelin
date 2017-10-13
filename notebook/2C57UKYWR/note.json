@@ -77,7 +77,7 @@
       "progressUpdateIntervalMs": 500
     },
     {
-      "text": "%sh\n\nwget https://s3.amazonaws.com/apache-zeppelin/tutorial/bank/bank.csv\nhadoop fs -put bank.csv .\n",
+      "text": "%sh\n\ncd $(mktemp -d)\nwget https://s3.amazonaws.com/apache-zeppelin/tutorial/bank/bank.csv\nhadoop fs -put bank.csv .\n",
       "user": "anonymous",
       "dateUpdated": "Jan 22, 2017 12:51:48 PM",
       "config": {
