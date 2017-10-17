@@ -167,7 +167,7 @@
       "default.driver": {
         "envName": null,
         "propertyName": "default.driver",
-        "defaultValue": "org.apache.drill.jdbc.Driver",
+        "defaultValue": "com.mapr.drill.jdbc41.Driver",
         "description": "Drill JDBC Driver Name"
       },
       "common.max_count": {
