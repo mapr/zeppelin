@@ -1,0 +1,2 @@
+#!/bin/sh
+exec sudo -E -u $MAPR_CONTAINER_USER /opt/mapr/zeppelin/zeppelin-$(cat /opt/mapr/zeppelin/zeppelinversion)/bin/start-in-container.sh

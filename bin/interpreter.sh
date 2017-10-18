@@ -180,6 +180,8 @@ elif [[ "${INTERPRETER_ID}" == "pig" ]]; then
   else
     echo "TEZ_CONF_DIR is not set, configuration might not be loaded"
   fi
+elif [[ "${INTERPRETER_ID}" == "jdbc" ]] && [[ -n "${ZEPPELIN_DRILL_CLASSPATH}" ]]; then
+  ZEPPELIN_INTP_CLASSPATH="${ZEPPELIN_DRILL_CLASSPATH}:${ZEPPELIN_INTP_CLASSPATH}"
 fi
 
 addJarInDirForIntp "${LOCAL_INTERPRETER_REPO}"
