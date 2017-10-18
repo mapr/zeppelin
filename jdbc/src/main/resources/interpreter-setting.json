@@ -205,6 +205,12 @@
         "propertyName": "zeppelin.jdbc.principal",
         "defaultValue": "",
         "description": "Kerberos principal"
+      },
+      "ZEPPELIN_DRILL_CLASSPATH": {
+        "envName": null,
+        "propertyName": "ZEPPELIN_DRILL_CLASSPATH",
+        "defaultValue": "/opt/mapr/zeppelin/thirdparty/jdbc-mapr-drill/*",
+        "description": "CLASSPATH of MapR Drill JDBC Driver"
       }
     },
     "editor": {
