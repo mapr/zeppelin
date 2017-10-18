@@ -93,3 +93,4 @@
 
 export ZEPPELIN_IMPERSONATE_CMD='sudo -H -u ${ZEPPELIN_IMPERSONATE_USER} bash -c '
 export ZEPPELIN_INTP_CLASSPATH_APPENDS="$(mapr classpath)"
+export ZEPPELIN_DRILL_CLASSPATH="/opt/mapr/zeppelin/thirdparty/jdbc-mapr-drill/*"
