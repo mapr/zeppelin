@@ -28,9 +28,13 @@ rm /tmp/DrillJDBC41.zip
 
 SPARK_HOME=$(get_spark_home)
 if [ -e "${SPARK_HOME}" ]; then
+    HBASE_VERSION=$(cat "${MAPR_HOME}/hbase/hbaseversion")
+    HBASE_HOME="${MAPR_HOME}/hbase/hbase-${HBASE_VERSION}"
     # Copy MapR-DB and Streaming jars into Spark
     JAR_WHILDCARDS="
         ${MAPR_HOME}/lib/kafka-clients-*-mapr-*.jar
+        ${MAPR_HOME}/lib/mapr-hbase-*-mapr-*.jar
+        ${HBASE_HOME}/lib/hbase-*-mapr-*.jar
     "
     for jar_path in $JAR_WHILDCARDS; do
         jar_name=$(basename "${jar_path}")
