@@ -2,7 +2,7 @@
   "paragraphs": [
     {
       "title": "Hello R",
-      "text": "%r\nfoo \u003c- TRUE\nprint(foo)\nbare \u003c- c(1, 2.5, 4)\nprint(bare)\ndouble \u003c- 15.0\nprint(double)",
+      "text": "%sparkr\nfoo \u003c- TRUE\nprint(foo)\nbare \u003c- c(1, 2.5, 4)\nprint(bare)\ndouble \u003c- 15.0\nprint(double)",
       "user": "anonymous",
       "dateUpdated": "Jan 29, 2017 2:45:40 AM",
       "config": {
@@ -52,7 +52,7 @@
     },
     {
       "title": "Load R Librairies",
-      "text": "%r\nlibrary(data.table)\ndt \u003c- data.table(1:3)\nprint(dt)\nfor (i in 1:5) {\n  print(i*2)\n}\nprint(1:50)",
+      "text": "%sparkr\nlibrary(data.table)\ndt \u003c- data.table(1:3)\nprint(dt)\nfor (i in 1:5) {\n  print(i*2)\n}\nprint(1:50)",
       "user": "anonymous",
       "dateUpdated": "Jan 29, 2017 2:45:44 AM",
       "config": {
@@ -140,7 +140,7 @@
     },
     {
       "title": "Load Iris Dataset",
-      "text": "%r\ncolnames(iris)\niris$Petal.Length\niris$Sepal.Length",
+      "text": "%sparkr\ncolnames(iris)\niris$Petal.Length\niris$Sepal.Length",
       "user": "anonymous",
       "dateUpdated": "Jan 29, 2017 2:45:47 AM",
       "config": {
@@ -190,7 +190,7 @@
     },
     {
       "title": "TABLE Display",
-      "text": "%r print(\"%table name\\tsize\\nsmall\\t100\\nlarge\\t1000\")",
+      "text": "%sparkr print(\"%table name\\tsize\\nsmall\\t100\\nlarge\\t1000\")",
       "user": "anonymous",
       "dateUpdated": "Jan 29, 2017 3:20:33 AM",
       "config": {
@@ -264,7 +264,7 @@
     },
     {
       "title": "HTML Display",
-      "text": "%r \n\nprint(\"%html \u003ch3\u003eHello HTML\u003c/h3\u003e\")\nprint(\"\u003cfont color\u003d\u0027blue\u0027\u003e\u003cspan class\u003d\u0027fa fa-bars\u0027\u003e Easy...\u003c/font\u003e\u003c/span\u003e\")\nfor (i in 1:10) {\n  print(paste0(\"\u003ch4\u003e\", i, \" * 2 \u003d \", i*2, \"\u003c/h4\u003e\"))\n}",
+      "text": "%sparkr \n\nprint(\"%html \u003ch3\u003eHello HTML\u003c/h3\u003e\")\nprint(\"\u003cfont color\u003d\u0027blue\u0027\u003e\u003cspan class\u003d\u0027fa fa-bars\u0027\u003e Easy...\u003c/font\u003e\u003c/span\u003e\")\nfor (i in 1:10) {\n  print(paste0(\"\u003ch4\u003e\", i, \" * 2 \u003d \", i*2, \"\u003c/h4\u003e\"))\n}",
       "user": "anonymous",
       "dateUpdated": "Jan 29, 2017 2:52:20 AM",
       "config": {
@@ -314,7 +314,7 @@
     },
     {
       "title": "Write Scala To R",
-      "text": "%spark\nval s \u003d \"Hello R from Scala\"\nz.put(\"s\", s)\nval b \u003d new Integer(42)\nz.put(\"b\", b)\nval a: Array[Double] \u003d Array[Double](30.1, 20.0)\nz.put(\"a\", a)\nval m \u003d Array(Array(1, 4), Array(8, 16))\nz.put(\"m\", m)\nval v \u003d Vector(1, 2, 3, 4)\nz.put(\"v\", v)",
+      "text": "%livy\nval s \u003d \"Hello R from Scala\"\nz.put(\"s\", s)\nval b \u003d new Integer(42)\nz.put(\"b\", b)\nval a: Array[Double] \u003d Array[Double](30.1, 20.0)\nz.put(\"a\", a)\nval m \u003d Array(Array(1, 4), Array(8, 16))\nz.put(\"m\", m)\nval v \u003d Vector(1, 2, 3, 4)\nz.put(\"v\", v)",
       "user": "anonymous",
       "dateUpdated": "Jan 29, 2017 2:52:50 AM",
       "config": {
@@ -366,7 +366,7 @@
     },
     {
       "title": "Read from R the Scala Variables",
-      "text": "%r\nz.get(\"s\")\nz.get(\"b\")\nprint(unlist(z.get(\"a\")))\nprint(unlist(z.get(\"m\")))\nz.get(\"v\")",
+      "text": "%sparkr\nz.get(\"s\")\nz.get(\"b\")\nprint(unlist(z.get(\"a\")))\nprint(unlist(z.get(\"m\")))\nz.get(\"v\")",
       "user": "anonymous",
       "dateUpdated": "Jan 29, 2017 2:52:53 AM",
       "config": {
@@ -417,7 +417,7 @@
     },
     {
       "title": "Write R to Scala",
-      "text": "%r\ns \u003c- \"Hello Scala from R\"\nprint(s)\nz.put(\"rs\", s)\nb \u003c- TRUE\nprint(b)\nz.put(\"rb\", b)\nd \u003c- 15.0\nprint(d)\nz.put(\"rd\", d)\nm \u003c- c(2.4, 2.5, 4)\nprint(m)\nz.put(\"rm\", m)",
+      "text": "%sparkr\ns \u003c- \"Hello Scala from R\"\nprint(s)\nz.put(\"rs\", s)\nb \u003c- TRUE\nprint(b)\nz.put(\"rb\", b)\nd \u003c- 15.0\nprint(d)\nz.put(\"rd\", d)\nm \u003c- c(2.4, 2.5, 4)\nprint(m)\nz.put(\"rm\", m)",
       "user": "anonymous",
       "dateUpdated": "Jan 29, 2017 2:52:55 AM",
       "config": {
@@ -468,7 +468,7 @@
     },
     {
       "title": "Read from Scala the R Variables",
-      "text": "%spark\nprintln(\"rs \u003d \"+ z.get(\"rs\"))\nprintln(\"rb \u003d \"+ z.get(\"rb\"))\nprintln(\"rd \u003d \"+ z.get(\"rd\"))\nprintln(\"rm \u003d \"+ z.get(\"rm\"))\n// println(z.get(\"rm\").getClass)\n// println(\"rm \u003d \"+ z.get(\"rm\").asInstanceOf[Array[Double]].toSeq)",
+      "text": "%livy\nprintln(\"rs \u003d \"+ z.get(\"rs\"))\nprintln(\"rb \u003d \"+ z.get(\"rb\"))\nprintln(\"rd \u003d \"+ z.get(\"rd\"))\nprintln(\"rm \u003d \"+ z.get(\"rm\"))\n// println(z.get(\"rm\").getClass)\n// println(\"rm \u003d \"+ z.get(\"rm\").asInstanceOf[Array[Double]].toSeq)",
       "user": "anonymous",
       "dateUpdated": "Jan 29, 2017 2:52:58 AM",
       "config": {
@@ -520,7 +520,7 @@
     },
     {
       "title": "Create a Spark Dataframe",
-      "text": "%spark\nimport org.apache.commons.io.IOUtils\nimport java.net.URL\nimport java.nio.charset.Charset\n\nval bankText \u003d sc.parallelize(\n    IOUtils.toString(\n        new URL(\"https://s3.amazonaws.com/apache-zeppelin/tutorial/bank/bank.csv\"),\n        Charset.forName(\"utf8\")).split(\"\\n\"))\n\ncase class Bank(age: Integer, job: String, marital: String, education: String, balance: Integer)\n\nval bank \u003d bankText.map(s \u003d\u003e s.split(\";\")).filter(s \u003d\u003e s(0) !\u003d \"\\\"age\\\"\").map(\n    s \u003d\u003e Bank(s(0).toInt, \n            s(1).replaceAll(\"\\\"\", \"\"),\n            s(2).replaceAll(\"\\\"\", \"\"),\n            s(3).replaceAll(\"\\\"\", \"\"),\n            s(5).replaceAll(\"\\\"\", \"\").toInt\n        )\n).toDF()\nbank.registerTempTable(\"bank\")",
+      "text": "%livy\nimport org.apache.commons.io.IOUtils\nimport java.net.URL\nimport java.nio.charset.Charset\n\nval bankText \u003d sc.parallelize(\n    IOUtils.toString(\n        new URL(\"http://s3.amazonaws.com/apache-zeppelin/tutorial/bank/bank.csv\"),\n        Charset.forName(\"utf8\")).split(\"\\n\"))\n\ncase class Bank(age: Integer, job: String, marital: String, education: String, balance: Integer)\n\nval bank \u003d bankText.map(s \u003d\u003e s.split(\";\")).filter(s \u003d\u003e s(0) !\u003d \"\\\"age\\\"\").map(\n    s \u003d\u003e Bank(s(0).toInt, \n            s(1).replaceAll(\"\\\"\", \"\"),\n            s(2).replaceAll(\"\\\"\", \"\"),\n            s(3).replaceAll(\"\\\"\", \"\"),\n            s(5).replaceAll(\"\\\"\", \"\").toInt\n        )\n).toDF()\nbank.createOrReplaceTempView(\"bank\")",
       "user": "anonymous",
       "dateUpdated": "Jan 29, 2017 2:46:25 AM",
       "config": {
@@ -573,7 +573,7 @@
     },
     {
       "title": "Read the Spark Dataframe from R",
-      "text": "%r\n\ndf \u003c- sql(sqlContext, \"select count(*) from bank\")\nprintSchema(df)\nSparkR::head(df)",
+      "text": "%sparkr\n\ndf \u003c- sql(\"select count(*) from bank\")\nprintSchema(df)\nSparkR::head(df)",
       "user": "anonymous",
       "dateUpdated": "Jan 29, 2017 2:43:46 AM",
       "config": {
@@ -675,7 +675,7 @@
     },
     {
       "title": "Create a R Dataframe",
-      "text": "%r \n\nlocalNames \u003c- data.frame(name\u003dc(\"John\", \"Smith\", \"Sarah\"), budget\u003dc(19, 53, 18))\nnames \u003c- createDataFrame(sqlContext, localNames)\nprintSchema(names)\nregisterTempTable(names, \"names\")\n\n# SparkR::head(names)",
+      "text": "%sparkr \n\nlocalNames \u003c- data.frame(name\u003dc(\"John\", \"Smith\", \"Sarah\"), budget\u003dc(19, 53, 18))\nnames \u003c- createDataFrame(localNames)\nprintSchema(names)\ncreateOrReplaceTempView(names, \"names\")\n\n# SparkR::head(names)",
       "user": "anonymous",
       "dateUpdated": "Jan 29, 2017 3:19:59 AM",
       "config": {
@@ -726,7 +726,7 @@
     },
     {
       "title": "Read the R Dataframe from Spark",
-      "text": "sqlc.sql(\"select * from names\").head",
+      "text": "sql(\"select * from names\").head",
       "user": "anonymous",
       "dateUpdated": "Jan 29, 2017 2:47:18 AM",
       "config": {
@@ -851,7 +851,7 @@
     },
     {
       "title": "GoogleVis: Bar Chart",
-      "text": "%r\nlibrary(googleVis)\ndf\u003ddata.frame(country\u003dc(\"US\", \"GB\", \"BR\"), \n              val1\u003dc(10,13,14), \n              val2\u003dc(23,12,32))\nBar \u003c- gvisBarChart(df)\nprint(Bar, tag \u003d \u0027chart\u0027)\n",
+      "text": "%sparkr\nlibrary(googleVis)\ndf\u003ddata.frame(country\u003dc(\"US\", \"GB\", \"BR\"), \n              val1\u003dc(10,13,14), \n              val2\u003dc(23,12,32))\nBar \u003c- gvisBarChart(df)\nprint(Bar, tag \u003d \u0027chart\u0027)\n",
       "user": "anonymous",
       "dateUpdated": "Jan 29, 2017 3:16:38 AM",
       "config": {
@@ -899,7 +899,7 @@
     },
     {
       "title": "GoogleVis: Candlestick Chart",
-      "text": "%r\nlibrary(googleVis)\n\nCandle \u003c- gvisCandlestickChart(OpenClose, \n                               options\u003dlist(legend\u003d\u0027none\u0027))\n\nprint(Candle, tag \u003d \u0027chart\u0027)",
+      "text": "%sparkr\nlibrary(googleVis)\n\nCandle \u003c- gvisCandlestickChart(OpenClose, \n                               options\u003dlist(legend\u003d\u0027none\u0027))\n\nprint(Candle, tag \u003d \u0027chart\u0027)",
       "user": "anonymous",
       "dateUpdated": "Jan 29, 2017 3:16:35 AM",
       "config": {
@@ -947,7 +947,7 @@
     },
     {
       "title": "GoogleVis: Line chart",
-      "text": "%r\nlibrary(googleVis)\ndf\u003ddata.frame(country\u003dc(\"US\", \"GB\", \"BR\"), \n              val1\u003dc(10,13,14), \n              val2\u003dc(23,12,32))\n\nLine \u003c- gvisLineChart(df)\n\nprint(Line, tag \u003d \u0027chart\u0027)\n",
+      "text": "%sparkr\nlibrary(googleVis)\ndf\u003ddata.frame(country\u003dc(\"US\", \"GB\", \"BR\"), \n              val1\u003dc(10,13,14), \n              val2\u003dc(23,12,32))\n\nLine \u003c- gvisLineChart(df)\n\nprint(Line, tag \u003d \u0027chart\u0027)\n",
       "user": "anonymous",
       "dateUpdated": "Jan 29, 2017 3:17:31 AM",
       "config": {
@@ -994,7 +994,7 @@
       "progressUpdateIntervalMs": 500
     },
     {
-      "text": "%r pairs(iris)",
+      "text": "%sparkr pairs(iris)",
       "user": "anonymous",
       "dateUpdated": "Jan 29, 2017 2:58:27 AM",
       "config": {
@@ -1042,7 +1042,7 @@
       "progressUpdateIntervalMs": 500
     },
     {
-      "text": "%r \nplot(iris, col \u003d heat.colors(3))",
+      "text": "%sparkr \nplot(iris, col \u003d heat.colors(3))",
       "user": "anonymous",
       "dateUpdated": "Jan 29, 2017 2:58:24 AM",
       "config": {
@@ -1090,7 +1090,7 @@
       "progressUpdateIntervalMs": 500
     },
     {
-      "text": "%r\nlibrary(ggplot2)\npres_rating \u003c- data.frame(\n  rating \u003d as.numeric(presidents),\n  year \u003d as.numeric(floor(time(presidents))),\n  quarter \u003d as.numeric(cycle(presidents))\n)\np \u003c- ggplot(pres_rating, aes(x\u003dyear, y\u003dquarter, fill\u003drating))\np + geom_raster()",
+      "text": "%sparkr\nlibrary(ggplot2)\npres_rating \u003c- data.frame(\n  rating \u003d as.numeric(presidents),\n  year \u003d as.numeric(floor(time(presidents))),\n  quarter \u003d as.numeric(cycle(presidents))\n)\np \u003c- ggplot(pres_rating, aes(x\u003dyear, y\u003dquarter, fill\u003drating))\np + geom_raster()",
       "user": "anonymous",
       "dateUpdated": "Jan 29, 2017 3:04:03 AM",
       "config": {
@@ -1140,7 +1140,7 @@
     },
     {
       "title": "GoogleViz: Bubble Chart",
-      "text": "%r\nlibrary(googleVis)\nbubble \u003c- gvisBubbleChart(Fruits, idvar\u003d\"Fruit\", \n                          xvar\u003d\"Sales\", yvar\u003d\"Expenses\",\n                          colorvar\u003d\"Year\", sizevar\u003d\"Profit\",\n                          options\u003dlist(\n                            hAxis\u003d\u0027{minValue:75, maxValue:125}\u0027))\nprint(bubble, tag \u003d \u0027chart\u0027)",
+      "text": "%sparkr\nlibrary(googleVis)\nbubble \u003c- gvisBubbleChart(Fruits, idvar\u003d\"Fruit\", \n                          xvar\u003d\"Sales\", yvar\u003d\"Expenses\",\n                          colorvar\u003d\"Year\", sizevar\u003d\"Profit\",\n                          options\u003dlist(\n                            hAxis\u003d\u0027{minValue:75, maxValue:125}\u0027))\nprint(bubble, tag \u003d \u0027chart\u0027)",
       "user": "anonymous",
       "dateUpdated": "Jan 29, 2017 3:14:35 AM",
       "config": {
@@ -1191,7 +1191,7 @@
     },
     {
       "title": "GoogleViz: Geo Chart",
-      "text": "%r\nlibrary(googleVis)\ngeo \u003d gvisGeoChart(Exports, locationvar \u003d \"Country\", colorvar\u003d\"Profit\", options\u003dlist(Projection \u003d \"kavrayskiy-vii\"))\nprint(geo, tag \u003d \u0027chart\u0027)",
+      "text": "%sparkr\nlibrary(googleVis)\ngeo \u003d gvisGeoChart(Exports, locationvar \u003d \"Country\", colorvar\u003d\"Profit\", options\u003dlist(Projection \u003d \"kavrayskiy-vii\"))\nprint(geo, tag \u003d \u0027chart\u0027)",
       "user": "anonymous",
       "dateUpdated": "Jan 29, 2017 3:14:38 AM",
       "config": {
