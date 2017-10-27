@@ -14,6 +14,8 @@ EXPOSE  9995
 
 RUN /opt/mapr/installer/docker/mapr-setup.sh container client 6.0.0 4.0.0 mapr-client mapr-posix-client-container mapr-hbase mapr-pig mapr-spark mapr-kafka mapr-zeppelin mapr-livy
 
+RUN yum install -y gcc python-devel python-pip && pip install matplotlib numpy pandas
+
 COPY preconfigure.sh /tmp
 RUN chmod +x /tmp/preconfigure.sh ; /tmp/preconfigure.sh
 
