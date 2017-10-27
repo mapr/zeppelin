@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 MAPR_HOME=${MAPR_HOME:-/opt/mapr}
 MAPR_CLUSTER=${MAPR_CLUSTER:-my.cluster.com}
