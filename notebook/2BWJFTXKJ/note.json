@@ -190,7 +190,7 @@
     },
     {
       "title": "TABLE Display",
-      "text": "%sparkr print(\"%table name\\tsize\\nsmall\\t100\\nlarge\\t1000\")",
+      "text": "%sparkr cat(\"%table name\\tsize\\nsmall\\t100\\nlarge\\t1000\")",
       "user": "anonymous",
       "dateUpdated": "Jan 29, 2017 3:20:33 AM",
       "config": {
@@ -264,7 +264,7 @@
     },
     {
       "title": "HTML Display",
-      "text": "%sparkr \n\nprint(\"%html \u003ch3\u003eHello HTML\u003c/h3\u003e\")\nprint(\"\u003cfont color\u003d\u0027blue\u0027\u003e\u003cspan class\u003d\u0027fa fa-bars\u0027\u003e Easy...\u003c/font\u003e\u003c/span\u003e\")\nfor (i in 1:10) {\n  print(paste0(\"\u003ch4\u003e\", i, \" * 2 \u003d \", i*2, \"\u003c/h4\u003e\"))\n}",
+      "text": "%sparkr \n\ncat(\"%html \u003ch3\u003eHello HTML\u003c/h3\u003e\")\ncat(\"\u003cfont color\u003d\u0027blue\u0027\u003e\u003cspan class\u003d\u0027fa fa-bars\u0027\u003e Easy...\u003c/font\u003e\u003c/span\u003e\")\nfor (i in 1:10) {\n  cat(paste0(\"\u003ch4\u003e\", i, \" * 2 \u003d \", i*2, \"\u003c/h4\u003e\"))\n}",
       "user": "anonymous",
       "dateUpdated": "Jan 29, 2017 2:52:20 AM",
       "config": {
@@ -313,545 +313,8 @@
       "progressUpdateIntervalMs": 500
     },
     {
-      "title": "Write Scala To R",
-      "text": "%livy\nval s \u003d \"Hello R from Scala\"\nz.put(\"s\", s)\nval b \u003d new Integer(42)\nz.put(\"b\", b)\nval a: Array[Double] \u003d Array[Double](30.1, 20.0)\nz.put(\"a\", a)\nval m \u003d Array(Array(1, 4), Array(8, 16))\nz.put(\"m\", m)\nval v \u003d Vector(1, 2, 3, 4)\nz.put(\"v\", v)",
-      "user": "anonymous",
-      "dateUpdated": "Jan 29, 2017 2:52:50 AM",
-      "config": {
-        "colWidth": 3.0,
-        "editorMode": "ace/mode/scala",
-        "enabled": true,
-        "title": true,
-        "results": [
-          {
-            "graph": {
-              "mode": "table",
-              "height": 91.3125,
-              "optionOpen": false,
-              "keys": [],
-              "values": [],
-              "groups": [],
-              "scatter": {}
-            }
-          }
-        ],
-        "editorSetting": {
-          "language": "scala",
-          "editOnDblClick": false
-        },
-        "editorHide": false,
-        "tableHide": false
-      },
-      "settings": {
-        "params": {},
-        "forms": {}
-      },
-      "results": {
-        "code": "SUCCESS",
-        "msg": [
-          {
-            "type": "TEXT",
-            "data": "\ns: String \u003d Hello R from Scala\n\nb: Integer \u003d 42\n\na: Array[Double] \u003d Array(30.1, 20.0)\n\nm: Array[Array[Int]] \u003d Array(Array(1, 4), Array(8, 16))\n\nv: scala.collection.immutable.Vector[Int] \u003d Vector(1, 2, 3, 4)\n"
-          }
-        ]
-      },
-      "apps": [],
-      "jobName": "paragraph_1429862281402_-79250404",
-      "id": "20150424-095801_125725189",
-      "dateCreated": "Apr 24, 2015 9:58:01 AM",
-      "dateStarted": "Jan 29, 2017 2:43:19 AM",
-      "dateFinished": "Jan 29, 2017 2:43:21 AM",
-      "status": "FINISHED",
-      "progressUpdateIntervalMs": 500
-    },
-    {
-      "title": "Read from R the Scala Variables",
-      "text": "%sparkr\nz.get(\"s\")\nz.get(\"b\")\nprint(unlist(z.get(\"a\")))\nprint(unlist(z.get(\"m\")))\nz.get(\"v\")",
-      "user": "anonymous",
-      "dateUpdated": "Jan 29, 2017 2:52:53 AM",
-      "config": {
-        "colWidth": 3.0,
-        "editorMode": "ace/mode/r",
-        "enabled": true,
-        "title": true,
-        "results": [
-          {
-            "graph": {
-              "mode": "table",
-              "height": 86.64583587646484,
-              "optionOpen": false,
-              "keys": [],
-              "values": [],
-              "groups": [],
-              "scatter": {}
-            }
-          }
-        ],
-        "editorSetting": {
-          "language": "r",
-          "editOnDblClick": false
-        },
-        "editorHide": false
-      },
-      "settings": {
-        "params": {},
-        "forms": {}
-      },
-      "results": {
-        "code": "SUCCESS",
-        "msg": [
-          {
-            "type": "TEXT",
-            "data": "\n[1] “Hello R from Scala”\n[1] 42\n[1] 30.1 20.0\n[1]  1  4  8 16\nJava ref type scala.collection.immutable.Vector id 97 \n\n\n\n"
-          }
-        ]
-      },
-      "apps": [],
-      "jobName": "paragraph_1438930802740_-1781296534",
-      "id": "20150807-090002_1514685133",
-      "dateCreated": "Aug 7, 2015 9:00:02 AM",
-      "dateStarted": "Jan 29, 2017 2:51:36 AM",
-      "dateFinished": "Jan 29, 2017 2:51:36 AM",
-      "status": "FINISHED",
-      "progressUpdateIntervalMs": 500
-    },
-    {
-      "title": "Write R to Scala",
-      "text": "%sparkr\ns \u003c- \"Hello Scala from R\"\nprint(s)\nz.put(\"rs\", s)\nb \u003c- TRUE\nprint(b)\nz.put(\"rb\", b)\nd \u003c- 15.0\nprint(d)\nz.put(\"rd\", d)\nm \u003c- c(2.4, 2.5, 4)\nprint(m)\nz.put(\"rm\", m)",
-      "user": "anonymous",
-      "dateUpdated": "Jan 29, 2017 2:52:55 AM",
-      "config": {
-        "colWidth": 3.0,
-        "enabled": true,
-        "editorMode": "ace/mode/r",
-        "title": true,
-        "results": [
-          {
-            "graph": {
-              "mode": "table",
-              "height": 92.58333587646484,
-              "optionOpen": false,
-              "keys": [],
-              "values": [],
-              "groups": [],
-              "scatter": {}
-            }
-          }
-        ],
-        "editorSetting": {
-          "language": "r",
-          "editOnDblClick": false
-        },
-        "editorHide": false
-      },
-      "settings": {
-        "params": {},
-        "forms": {}
-      },
-      "results": {
-        "code": "SUCCESS",
-        "msg": [
-          {
-            "type": "TEXT",
-            "data": "\n[1] “Hello Scala from R”\nNULL\n[1] TRUE\nNULL\n[1] 15\nNULL\n[1] 2.4 2.5 4.0\nNULL\n\n\n\n"
-          }
-        ]
-      },
-      "apps": [],
-      "jobName": "paragraph_1455137934157_-1786381957",
-      "id": "20160210-215854_620520530",
-      "dateCreated": "Feb 10, 2016 9:58:54 AM",
-      "dateStarted": "Jan 29, 2017 2:43:28 AM",
-      "dateFinished": "Jan 29, 2017 2:43:28 AM",
-      "status": "FINISHED",
-      "progressUpdateIntervalMs": 500
-    },
-    {
-      "title": "Read from Scala the R Variables",
-      "text": "%livy\nprintln(\"rs \u003d \"+ z.get(\"rs\"))\nprintln(\"rb \u003d \"+ z.get(\"rb\"))\nprintln(\"rd \u003d \"+ z.get(\"rd\"))\nprintln(\"rm \u003d \"+ z.get(\"rm\"))\n// println(z.get(\"rm\").getClass)\n// println(\"rm \u003d \"+ z.get(\"rm\").asInstanceOf[Array[Double]].toSeq)",
-      "user": "anonymous",
-      "dateUpdated": "Jan 29, 2017 2:52:58 AM",
-      "config": {
-        "colWidth": 3.0,
-        "enabled": true,
-        "editorMode": "ace/mode/scala",
-        "title": true,
-        "results": [
-          {
-            "graph": {
-              "mode": "table",
-              "height": 90.64583587646484,
-              "optionOpen": false,
-              "keys": [],
-              "values": [],
-              "groups": [],
-              "scatter": {}
-            }
-          }
-        ],
-        "editorSetting": {
-          "language": "scala",
-          "editOnDblClick": false
-        },
-        "editorHide": false,
-        "tableHide": false
-      },
-      "settings": {
-        "params": {},
-        "forms": {}
-      },
-      "results": {
-        "code": "SUCCESS",
-        "msg": [
-          {
-            "type": "TEXT",
-            "data": "rs \u003d Hello Scala from R\nrb \u003d true\nrd \u003d 15.0\nrm \u003d 2.4\n"
-          }
-        ]
-      },
-      "apps": [],
-      "jobName": "paragraph_1455138066039_1048230112",
-      "id": "20160210-220106_141884849",
-      "dateCreated": "Feb 10, 2016 10:01:06 AM",
-      "dateStarted": "Jan 29, 2017 2:43:35 AM",
-      "dateFinished": "Jan 29, 2017 2:43:35 AM",
-      "status": "FINISHED",
-      "progressUpdateIntervalMs": 500
-    },
-    {
-      "title": "Create a Spark Dataframe",
-      "text": "%livy\nimport org.apache.commons.io.IOUtils\nimport java.net.URL\nimport java.nio.charset.Charset\n\nval bankText \u003d sc.parallelize(\n    IOUtils.toString(\n        new URL(\"http://s3.amazonaws.com/apache-zeppelin/tutorial/bank/bank.csv\"),\n        Charset.forName(\"utf8\")).split(\"\\n\"))\n\ncase class Bank(age: Integer, job: String, marital: String, education: String, balance: Integer)\n\nval bank \u003d bankText.map(s \u003d\u003e s.split(\";\")).filter(s \u003d\u003e s(0) !\u003d \"\\\"age\\\"\").map(\n    s \u003d\u003e Bank(s(0).toInt, \n            s(1).replaceAll(\"\\\"\", \"\"),\n            s(2).replaceAll(\"\\\"\", \"\"),\n            s(3).replaceAll(\"\\\"\", \"\"),\n            s(5).replaceAll(\"\\\"\", \"\").toInt\n        )\n).toDF()\nbank.createOrReplaceTempView(\"bank\")",
-      "user": "anonymous",
-      "dateUpdated": "Jan 29, 2017 2:46:25 AM",
-      "config": {
-        "colWidth": 6.0,
-        "enabled": true,
-        "lineNumbers": false,
-        "title": true,
-        "results": [
-          {
-            "graph": {
-              "mode": "table",
-              "height": 91.27083587646484,
-              "optionOpen": false,
-              "keys": [],
-              "values": [],
-              "groups": [],
-              "scatter": {}
-            }
-          }
-        ],
-        "editorSetting": {
-          "language": "scala",
-          "editOnDblClick": false
-        },
-        "editorMode": "ace/mode/scala",
-        "editorHide": false,
-        "tableHide": false
-      },
-      "settings": {
-        "params": {},
-        "forms": {}
-      },
-      "results": {
-        "code": "SUCCESS",
-        "msg": [
-          {
-            "type": "TEXT",
-            "data": "\nimport org.apache.commons.io.IOUtils\n\nimport java.net.URL\n\nimport java.nio.charset.Charset\n\nbankText: org.apache.spark.rdd.RDD[String] \u003d ParallelCollectionRDD[0] at parallelize at \u003cconsole\u003e:32\n\ndefined class Bank\n\nbank: org.apache.spark.sql.DataFrame \u003d [age: int, job: string, marital: string, education: string, balance: int]\n"
-          }
-        ]
-      },
-      "apps": [],
-      "jobName": "paragraph_1455142039343_-233762796",
-      "id": "20160210-230719_2111095838",
-      "dateCreated": "Feb 10, 2016 11:07:19 AM",
-      "dateStarted": "Jan 29, 2017 2:43:40 AM",
-      "dateFinished": "Jan 29, 2017 2:43:45 AM",
-      "status": "FINISHED",
-      "progressUpdateIntervalMs": 500
-    },
-    {
-      "title": "Read the Spark Dataframe from R",
-      "text": "%sparkr\n\ndf \u003c- sql(\"select count(*) from bank\")\nprintSchema(df)\nSparkR::head(df)",
-      "user": "anonymous",
-      "dateUpdated": "Jan 29, 2017 2:43:46 AM",
-      "config": {
-        "colWidth": 6.0,
-        "enabled": true,
-        "editorMode": "ace/mode/r",
-        "tableHide": false,
-        "title": true,
-        "results": [
-          {
-            "graph": {
-              "mode": "table",
-              "height": 110.64583587646484,
-              "optionOpen": false,
-              "keys": [],
-              "values": [],
-              "groups": [],
-              "scatter": {}
-            }
-          }
-        ],
-        "editorSetting": {
-          "language": "r",
-          "editOnDblClick": false
-        }
-      },
-      "settings": {
-        "params": {},
-        "forms": {}
-      },
-      "results": {
-        "code": "SUCCESS",
-        "msg": [
-          {
-            "type": "TEXT",
-            "data": "\nroot\n |– _c0: long (nullable \u003d false)\n   _c0\n1 4521\n\n\n\n"
-          }
-        ]
-      },
-      "apps": [],
-      "jobName": "paragraph_1455142043062_1598026718",
-      "id": "20160210-230723_1811469598",
-      "dateCreated": "Feb 10, 2016 11:07:23 AM",
-      "dateStarted": "Jan 29, 2017 2:43:47 AM",
-      "dateFinished": "Jan 29, 2017 2:43:49 AM",
-      "status": "FINISHED",
-      "progressUpdateIntervalMs": 500
-    },
-    {
-      "title": "Query with Spark Dataframe with SQL",
-      "text": "%sql select count(*) as count from bank",
-      "user": "anonymous",
-      "dateUpdated": "Jan 29, 2017 2:47:05 AM",
-      "config": {
-        "colWidth": 6.0,
-        "enabled": true,
-        "editorMode": "ace/mode/sql",
-        "title": true,
-        "results": [
-          {
-            "graph": {
-              "mode": "table",
-              "height": 126.25,
-              "optionOpen": true,
-              "keys": [],
-              "values": [],
-              "groups": [],
-              "scatter": {}
-            },
-            "helium": {}
-          }
-        ],
-        "editorSetting": {
-          "language": "sql",
-          "editOnDblClick": false
-        }
-      },
-      "settings": {
-        "params": {},
-        "forms": {}
-      },
-      "results": {
-        "code": "SUCCESS",
-        "msg": [
-          {
-            "type": "TABLE",
-            "data": "count\n4521\n"
-          }
-        ]
-      },
-      "apps": [],
-      "jobName": "paragraph_1455142050697_-1353382095",
-      "id": "20160210-230730_1259663883",
-      "dateCreated": "Feb 10, 2016 11:07:30 AM",
-      "dateStarted": "Jan 29, 2017 2:43:55 AM",
-      "dateFinished": "Jan 29, 2017 2:43:55 AM",
-      "status": "FINISHED",
-      "progressUpdateIntervalMs": 500
-    },
-    {
-      "title": "Create a R Dataframe",
-      "text": "%sparkr \n\nlocalNames \u003c- data.frame(name\u003dc(\"John\", \"Smith\", \"Sarah\"), budget\u003dc(19, 53, 18))\nnames \u003c- createDataFrame(localNames)\nprintSchema(names)\ncreateOrReplaceTempView(names, \"names\")\n\n# SparkR::head(names)",
-      "user": "anonymous",
-      "dateUpdated": "Jan 29, 2017 3:19:59 AM",
-      "config": {
-        "colWidth": 12.0,
-        "enabled": true,
-        "title": true,
-        "editorMode": "ace/mode/r",
-        "results": [
-          {
-            "graph": {
-              "mode": "table",
-              "height": 84.64583587646484,
-              "optionOpen": false,
-              "keys": [],
-              "values": [],
-              "groups": [],
-              "scatter": {}
-            }
-          }
-        ],
-        "editorSetting": {
-          "language": "r",
-          "editOnDblClick": false
-        },
-        "editorHide": false
-      },
-      "settings": {
-        "params": {},
-        "forms": {}
-      },
-      "results": {
-        "code": "SUCCESS",
-        "msg": [
-          {
-            "type": "TEXT",
-            "data": "\nroot\n |– name: string (nullable \u003d true)\n |– budget: double (nullable \u003d true)\n\n\n\n"
-          }
-        ]
-      },
-      "apps": [],
-      "jobName": "paragraph_1455142112413_519883679",
-      "id": "20160210-230832_1847721959",
-      "dateCreated": "Feb 10, 2016 11:08:32 AM",
-      "dateStarted": "Jan 29, 2017 2:43:58 AM",
-      "dateFinished": "Jan 29, 2017 2:43:58 AM",
-      "status": "FINISHED",
-      "progressUpdateIntervalMs": 500
-    },
-    {
-      "title": "Read the R Dataframe from Spark",
-      "text": "sql(\"select * from names\").head",
-      "user": "anonymous",
-      "dateUpdated": "Jan 29, 2017 2:47:18 AM",
-      "config": {
-        "colWidth": 12.0,
-        "enabled": true,
-        "editorMode": "ace/mode/scala",
-        "title": true,
-        "results": [
-          {
-            "graph": {
-              "mode": "table",
-              "height": 92.64583587646484,
-              "optionOpen": false,
-              "keys": [],
-              "values": [],
-              "groups": [],
-              "scatter": {}
-            }
-          }
-        ],
-        "editorSetting": {
-          "language": "scala",
-          "editOnDblClick": true
-        },
-        "editorHide": false,
-        "tableHide": false
-      },
-      "settings": {
-        "params": {},
-        "forms": {}
-      },
-      "results": {
-        "code": "SUCCESS",
-        "msg": [
-          {
-            "type": "TEXT",
-            "data": "\nres11: org.apache.spark.sql.Row \u003d [John,19.0]\n"
-          }
-        ]
-      },
-      "apps": [],
-      "jobName": "paragraph_1455188357108_95477841",
-      "id": "20160211-115917_445850505",
-      "dateCreated": "Feb 11, 2016 11:59:17 AM",
-      "dateStarted": "Jan 29, 2017 2:44:08 AM",
-      "dateFinished": "Jan 29, 2017 2:44:09 AM",
-      "status": "FINISHED",
-      "progressUpdateIntervalMs": 500
-    },
-    {
-      "title": "Query the R Datafame with SQL",
-      "text": "%sql select * from names\n",
-      "user": "anonymous",
-      "dateUpdated": "Jan 29, 2017 2:47:29 AM",
-      "config": {
-        "colWidth": 12.0,
-        "enabled": true,
-        "editorMode": "ace/mode/sql",
-        "title": true,
-        "results": [
-          {
-            "graph": {
-              "mode": "pieChart",
-              "height": 263.3125,
-              "optionOpen": false,
-              "keys": [
-                {
-                  "name": "name",
-                  "index": 0.0,
-                  "aggr": "sum"
-                }
-              ],
-              "values": [
-                {
-                  "name": "budget",
-                  "index": 1.0,
-                  "aggr": "sum"
-                }
-              ],
-              "groups": [],
-              "scatter": {
-                "xAxis": {
-                  "name": "name",
-                  "index": 0.0,
-                  "aggr": "sum"
-                }
-              },
-              "setting": {
-                "multiBarChart": {}
-              },
-              "commonSetting": {}
-            },
-            "helium": {}
-          }
-        ],
-        "editorSetting": {
-          "language": "sql",
-          "editOnDblClick": false
-        }
-      },
-      "settings": {
-        "params": {},
-        "forms": {}
-      },
-      "results": {
-        "code": "SUCCESS",
-        "msg": [
-          {
-            "type": "TABLE",
-            "data": "name\tbudget\nJohn\t19.0\nSmith\t53.0\nSarah\t18.0\n"
-          }
-        ]
-      },
-      "apps": [],
-      "jobName": "paragraph_1455142115582_-1840950897",
-      "id": "20160210-230835_19876971",
-      "dateCreated": "Feb 10, 2016 11:08:35 AM",
-      "dateStarted": "Jan 29, 2017 2:44:11 AM",
-      "dateFinished": "Jan 29, 2017 2:44:11 AM",
-      "status": "FINISHED",
-      "progressUpdateIntervalMs": 500
-    },
-    {
       "title": "GoogleVis: Bar Chart",
-      "text": "%sparkr\nlibrary(googleVis)\ndf\u003ddata.frame(country\u003dc(\"US\", \"GB\", \"BR\"), \n              val1\u003dc(10,13,14), \n              val2\u003dc(23,12,32))\nBar \u003c- gvisBarChart(df)\nprint(Bar, tag \u003d \u0027chart\u0027)\n",
+      "text": "%sparkr\nlibrary(googleVis)\ndf\u003ddata.frame(country\u003dc(\"US\", \"GB\", \"BR\"), \n              val1\u003dc(10,13,14), \n              val2\u003dc(23,12,32))\nBar \u003c- gvisBarChart(df)\ncat(\"%html \", Bar$html$chart)\n",
       "user": "anonymous",
       "dateUpdated": "Jan 29, 2017 3:16:38 AM",
       "config": {
@@ -899,7 +362,7 @@
     },
     {
       "title": "GoogleVis: Candlestick Chart",
-      "text": "%sparkr\nlibrary(googleVis)\n\nCandle \u003c- gvisCandlestickChart(OpenClose, \n                               options\u003dlist(legend\u003d\u0027none\u0027))\n\nprint(Candle, tag \u003d \u0027chart\u0027)",
+      "text": "%sparkr\nlibrary(googleVis)\n\nCandle \u003c- gvisCandlestickChart(OpenClose, \n                               options\u003dlist(legend\u003d\u0027none\u0027))\n\ncat(\"%html \", Candle$html$chart)",
       "user": "anonymous",
       "dateUpdated": "Jan 29, 2017 3:16:35 AM",
       "config": {
@@ -947,7 +410,7 @@
     },
     {
       "title": "GoogleVis: Line chart",
-      "text": "%sparkr\nlibrary(googleVis)\ndf\u003ddata.frame(country\u003dc(\"US\", \"GB\", \"BR\"), \n              val1\u003dc(10,13,14), \n              val2\u003dc(23,12,32))\n\nLine \u003c- gvisLineChart(df)\n\nprint(Line, tag \u003d \u0027chart\u0027)\n",
+      "text": "%sparkr\nlibrary(googleVis)\ndf\u003ddata.frame(country\u003dc(\"US\", \"GB\", \"BR\"), \n              val1\u003dc(10,13,14), \n              val2\u003dc(23,12,32))\n\nLine \u003c- gvisLineChart(df)\n\ncat(\"%html \", Line$html$chart)\n",
       "user": "anonymous",
       "dateUpdated": "Jan 29, 2017 3:17:31 AM",
       "config": {
@@ -994,7 +457,7 @@
       "progressUpdateIntervalMs": 500
     },
     {
-      "text": "%sparkr pairs(iris)",
+      "text": "%sparkr\npairs(iris)\nplot(iris)",
       "user": "anonymous",
       "dateUpdated": "Jan 29, 2017 2:58:27 AM",
       "config": {
@@ -1090,7 +553,7 @@
       "progressUpdateIntervalMs": 500
     },
     {
-      "text": "%sparkr\nlibrary(ggplot2)\npres_rating \u003c- data.frame(\n  rating \u003d as.numeric(presidents),\n  year \u003d as.numeric(floor(time(presidents))),\n  quarter \u003d as.numeric(cycle(presidents))\n)\np \u003c- ggplot(pres_rating, aes(x\u003dyear, y\u003dquarter, fill\u003drating))\np + geom_raster()",
+      "text": "%sparkr\nlibrary(ggplot2)\npres_rating \u003c- data.frame(\n  rating \u003d as.numeric(presidents),\n  year \u003d as.numeric(floor(time(presidents))),\n  quarter \u003d as.numeric(cycle(presidents))\n)\np \u003c- ggplot(pres_rating, aes(x\u003dyear, y\u003dquarter, fill\u003drating))\nplot(p + geom_raster())",
       "user": "anonymous",
       "dateUpdated": "Jan 29, 2017 3:04:03 AM",
       "config": {
@@ -1140,7 +603,7 @@
     },
     {
       "title": "GoogleViz: Bubble Chart",
-      "text": "%sparkr\nlibrary(googleVis)\nbubble \u003c- gvisBubbleChart(Fruits, idvar\u003d\"Fruit\", \n                          xvar\u003d\"Sales\", yvar\u003d\"Expenses\",\n                          colorvar\u003d\"Year\", sizevar\u003d\"Profit\",\n                          options\u003dlist(\n                            hAxis\u003d\u0027{minValue:75, maxValue:125}\u0027))\nprint(bubble, tag \u003d \u0027chart\u0027)",
+      "text": "%sparkr\nlibrary(googleVis)\nbubble \u003c- gvisBubbleChart(Fruits, idvar\u003d\"Fruit\", \n                          xvar\u003d\"Sales\", yvar\u003d\"Expenses\",\n                          colorvar\u003d\"Year\", sizevar\u003d\"Profit\",\n                          options\u003dlist(\n                            hAxis\u003d\u0027{minValue:75, maxValue:125}\u0027))\ncat(\"%html \", bubble$html$chart)",
       "user": "anonymous",
       "dateUpdated": "Jan 29, 2017 3:14:35 AM",
       "config": {
@@ -1191,7 +654,7 @@
     },
     {
       "title": "GoogleViz: Geo Chart",
-      "text": "%sparkr\nlibrary(googleVis)\ngeo \u003d gvisGeoChart(Exports, locationvar \u003d \"Country\", colorvar\u003d\"Profit\", options\u003dlist(Projection \u003d \"kavrayskiy-vii\"))\nprint(geo, tag \u003d \u0027chart\u0027)",
+      "text": "%sparkr\nlibrary(googleVis)\ngeo \u003d gvisGeoChart(Exports, locationvar \u003d \"Country\", colorvar\u003d\"Profit\", options\u003dlist(Projection \u003d \"kavrayskiy-vii\"))\ncat(\"%html \", geo$html$chart)",
       "user": "anonymous",
       "dateUpdated": "Jan 29, 2017 3:14:38 AM",
       "config": {
