@@ -266,7 +266,7 @@
       "progressUpdateIntervalMs": 500
     },
     {
-      "text": "%md\n### Iteratively updating a plot\n#### (a) Using multiple plots\nNow let\u0027s show an example where we update each element of the plot in a separate paragraph. However, you may have noticed that each matplotlib figure instance gets closed immediately after its shown. To fix this, we set the `close` property to `False` in our configuration:",
+      "text": "%md\n### Iteratively updating a plot\n#### (a) Using Python\nNow let\u0027s show an example where we update each element of the plot in a separate paragraph. However, you may have noticed that each matplotlib figure instance gets closed immediately after its shown. To fix this, we set the `close` property to `False` in our configuration:",
       "dateUpdated": "Nov 2, 2016 2:53:47 PM",
       "config": {
         "colWidth": 12.0,
@@ -299,7 +299,7 @@
         "msg": [
           {
             "type": "HTML",
-            "data": "\u003ch3\u003eIteratively updating a plot\u003c/h3\u003e\n\u003ch4\u003e(a) Using multiple plots\u003c/h4\u003e\n\u003cp\u003eNow let\u0027s show an example where we update each element of the plot in a separate paragraph. However, you may have noticed that each matplotlib figure instance gets closed immediately after its shown. To fix this, we set the \u003ccode\u003eclose\u003c/code\u003e property to \u003ccode\u003eFalse\u003c/code\u003e in our configuration:\u003c/p\u003e\n"
+            "data": "\u003ch3\u003eIteratively updating a plot\u003c/h3\u003e\n\u003ch4\u003e(a) Using Python\u003c/h4\u003e\n\u003cp\u003eNow let\u0027s show an example where we update each element of the plot in a separate paragraph. However, you may have noticed that each matplotlib figure instance gets closed immediately after its shown. To fix this, we set the \u003ccode\u003eclose\u003c/code\u003e property to \u003ccode\u003eFalse\u003c/code\u003e in our configuration:\u003c/p\u003e\n"
           }
         ]
       },
@@ -528,7 +528,7 @@
       "progressUpdateIntervalMs": 500
     },
     {
-      "text": "%md\n####(b) Using a single plot\nTo iteratively update a single plot, we can leverage Zeppelin\u0027s built-in Angular Display System. Currently this feature is only available for the `pyspark` interpreter for raster (png and jpg) formats. To enable this, we must set a special `angular` flag to `True` in our configuration:",
+      "text": "%md\n####(b) Using PySpark",
       "dateUpdated": "Nov 2, 2016 2:53:47 PM",
       "config": {
         "colWidth": 12.0,
@@ -561,7 +561,7 @@
         "msg": [
           {
             "type": "HTML",
-            "data": "\u003ch4\u003e(b) Using a single plot\u003c/h4\u003e\n\u003cp\u003eTo iteratively update a single plot, we can leverage Zeppelin\u0027s built-in Angular Display System. Currently this feature is only available for the \u003ccode\u003epyspark\u003c/code\u003e interpreter for raster (png and jpg) formats. To enable this, we must set a special \u003ccode\u003eangular\u003c/code\u003e flag to \u003ccode\u003eTrue\u003c/code\u003e in our configuration.\u003c/p\u003e\n"
+            "data": "\u003ch4\u003e(b) Using PySpark\u003c/h4\u003e"
           }
         ]
       },
@@ -572,7 +572,7 @@
     },
     {
       "title": "First line (figure will be displayed here)",
-      "text": "%pyspark\nimport matplotlib.pyplot as plt\nplt.close() # Added here to reset the plot when rerunning the paragraph\nz.configure_mpl(angular\u003dTrue, close\u003dFalse)\nplt.plot([1, 2, 3], label\u003dr\u0027$y\u003dx$\u0027)",
+      "text": "%pyspark\nimport matplotlib.pyplot as plt\nplt.close() # Added here to reset the plot when rerunning the paragraph\nplt.switch_backend(\u0027svg\u0027)\n\ndef show(plt):\n    import StringIO\n    img \u003d StringIO.StringIO()\n    plt.savefig(img, format\u003d\u0027svg\u0027)\n    img.seek(0)\n    print(r\u0027%html \u0027 + img.buf)\n\nplt.plot([1, 2, 3], label\u003dr\u0027$y\u003dx$\u0027)\nshow(plt)",
       "user": "anonymous",
       "dateUpdated": "Nov 2, 2016 2:55:37 PM",
       "config": {
@@ -618,7 +618,7 @@
     },
     {
       "title": "Second line",
-      "text": "%pyspark\nplt.plot([3, 2, 1], label\u003dr\u0027$y\u003d3-x$\u0027)",
+      "text": "%pyspark\nplt.plot([3, 2, 1], label\u003dr\u0027$y\u003d3-x$\u0027)\nshow(plt)",
       "dateUpdated": "Nov 2, 2016 2:53:47 PM",
       "config": {
         "colWidth": 5.0,
@@ -644,7 +644,7 @@
     },
     {
       "title": "Label axes",
-      "text": "%pyspark\nplt.xlabel(r\u0027$x$\u0027, fontsize\u003d20)\nplt.ylabel(r\u0027$y$\u0027, fontsize\u003d20)",
+      "text": "%pyspark\nplt.xlabel(r\u0027$x$\u0027, fontsize\u003d20)\nplt.ylabel(r\u0027$y$\u0027, fontsize\u003d20)\nshow(plt)",
       "dateUpdated": "Nov 2, 2016 2:53:47 PM",
       "config": {
         "colWidth": 5.0,
@@ -670,7 +670,7 @@
     },
     {
       "title": "Add legend",
-      "text": "%pyspark\nplt.legend(loc\u003d\u0027upper center\u0027, fontsize\u003d20)",
+      "text": "%pyspark\nplt.legend(loc\u003d\u0027upper center\u0027, fontsize\u003d20)\nshow(plt)",
       "dateUpdated": "Nov 2, 2016 2:53:47 PM",
       "config": {
         "colWidth": 5.0,
@@ -697,7 +697,7 @@
     },
     {
       "title": "Add title",
-      "text": "%pyspark\nplt.title(\u0027Inline plotting example\u0027, fontsize\u003d20)",
+      "text": "%pyspark\nplt.title(\u0027Inline plotting example\u0027, fontsize\u003d20)\nshow(plt)",
       "dateUpdated": "Nov 2, 2016 2:53:47 PM",
       "config": {
         "colWidth": 5.0,
