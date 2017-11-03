@@ -19,4 +19,7 @@ RUN yum install -y gcc python-devel python-pip && pip install matplotlib numpy p
 COPY preconfigure.sh /tmp
 RUN chmod +x /tmp/preconfigure.sh ; /tmp/preconfigure.sh
 
+# Workaround for MZEP-59
+ENV DRILL_HOME /opt/mapr
+
 ENTRYPOINT ["/opt/mapr/installer/docker/mapr-setup.sh", "container"]
