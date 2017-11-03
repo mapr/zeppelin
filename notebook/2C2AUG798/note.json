@@ -572,7 +572,7 @@
     },
     {
       "title": "First line (figure will be displayed here)",
-      "text": "%pyspark\nimport matplotlib.pyplot as plt\nplt.close() # Added here to reset the plot when rerunning the paragraph\nplt.switch_backend(\u0027svg\u0027)\n\ndef show(plt):\n    import StringIO\n    img \u003d StringIO.StringIO()\n    plt.savefig(img, format\u003d\u0027svg\u0027)\n    img.seek(0)\n    print(r\u0027%html \u0027 + img.buf)\n\nplt.plot([1, 2, 3], label\u003dr\u0027$y\u003dx$\u0027)\nshow(plt)",
+      "text": "%livy.pyspark\nimport matplotlib.pyplot as plt\nplt.close() # Added here to reset the plot when rerunning the paragraph\nplt.switch_backend(\u0027svg\u0027)\n\ndef show(plt):\n    import StringIO\n    img \u003d StringIO.StringIO()\n    plt.savefig(img, format\u003d\u0027svg\u0027)\n    img.seek(0)\n    print(r\u0027%html \u0027 + img.buf)\n\nplt.plot([1, 2, 3], label\u003dr\u0027$y\u003dx$\u0027)\nshow(plt)",
       "user": "anonymous",
       "dateUpdated": "Nov 2, 2016 2:55:37 PM",
       "config": {
@@ -618,7 +618,7 @@
     },
     {
       "title": "Second line",
-      "text": "%pyspark\nplt.plot([3, 2, 1], label\u003dr\u0027$y\u003d3-x$\u0027)\nshow(plt)",
+      "text": "%livy.pyspark\nplt.plot([3, 2, 1], label\u003dr\u0027$y\u003d3-x$\u0027)\nshow(plt)",
       "dateUpdated": "Nov 2, 2016 2:53:47 PM",
       "config": {
         "colWidth": 5.0,
@@ -644,7 +644,7 @@
     },
     {
       "title": "Label axes",
-      "text": "%pyspark\nplt.xlabel(r\u0027$x$\u0027, fontsize\u003d20)\nplt.ylabel(r\u0027$y$\u0027, fontsize\u003d20)\nshow(plt)",
+      "text": "%livy.pyspark\nplt.xlabel(r\u0027$x$\u0027, fontsize\u003d20)\nplt.ylabel(r\u0027$y$\u0027, fontsize\u003d20)\nshow(plt)",
       "dateUpdated": "Nov 2, 2016 2:53:47 PM",
       "config": {
         "colWidth": 5.0,
@@ -670,7 +670,7 @@
     },
     {
       "title": "Add legend",
-      "text": "%pyspark\nplt.legend(loc\u003d\u0027upper center\u0027, fontsize\u003d20)\nshow(plt)",
+      "text": "%livy.pyspark\nplt.legend(loc\u003d\u0027upper center\u0027, fontsize\u003d20)\nshow(plt)",
       "dateUpdated": "Nov 2, 2016 2:53:47 PM",
       "config": {
         "colWidth": 5.0,
@@ -697,7 +697,7 @@
     },
     {
       "title": "Add title",
-      "text": "%pyspark\nplt.title(\u0027Inline plotting example\u0027, fontsize\u003d20)\nshow(plt)",
+      "text": "%livy.pyspark\nplt.title(\u0027Inline plotting example\u0027, fontsize\u003d20)\nshow(plt)",
       "dateUpdated": "Nov 2, 2016 2:53:47 PM",
       "config": {
         "colWidth": 5.0,
