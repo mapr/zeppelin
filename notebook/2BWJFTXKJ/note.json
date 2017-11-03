@@ -2,7 +2,7 @@
   "paragraphs": [
     {
       "title": "Hello R",
-      "text": "%sparkr\nfoo \u003c- TRUE\nprint(foo)\nbare \u003c- c(1, 2.5, 4)\nprint(bare)\ndouble \u003c- 15.0\nprint(double)",
+      "text": "%livy.sparkr\nfoo \u003c- TRUE\nprint(foo)\nbare \u003c- c(1, 2.5, 4)\nprint(bare)\ndouble \u003c- 15.0\nprint(double)",
       "user": "anonymous",
       "dateUpdated": "Jan 29, 2017 2:45:40 AM",
       "config": {
@@ -52,7 +52,7 @@
     },
     {
       "title": "Load R Librairies",
-      "text": "%sparkr\nlibrary(data.table)\ndt \u003c- data.table(1:3)\nprint(dt)\nfor (i in 1:5) {\n  print(i*2)\n}\nprint(1:50)",
+      "text": "%livy.sparkr\nlibrary(data.table)\ndt \u003c- data.table(1:3)\nprint(dt)\nfor (i in 1:5) {\n  print(i*2)\n}\nprint(1:50)",
       "user": "anonymous",
       "dateUpdated": "Jan 29, 2017 2:45:44 AM",
       "config": {
@@ -140,7 +140,7 @@
     },
     {
       "title": "Load Iris Dataset",
-      "text": "%sparkr\ncolnames(iris)\niris$Petal.Length\niris$Sepal.Length",
+      "text": "%livy.sparkr\ncolnames(iris)\niris$Petal.Length\niris$Sepal.Length",
       "user": "anonymous",
       "dateUpdated": "Jan 29, 2017 2:45:47 AM",
       "config": {
@@ -190,7 +190,7 @@
     },
     {
       "title": "TABLE Display",
-      "text": "%sparkr cat(\"%table name\\tsize\\nsmall\\t100\\nlarge\\t1000\")",
+      "text": "%livy.sparkr cat(\"%table name\\tsize\\nsmall\\t100\\nlarge\\t1000\")",
       "user": "anonymous",
       "dateUpdated": "Jan 29, 2017 3:20:33 AM",
       "config": {
@@ -264,7 +264,7 @@
     },
     {
       "title": "HTML Display",
-      "text": "%sparkr \n\ncat(\"%html \u003ch3\u003eHello HTML\u003c/h3\u003e\")\ncat(\"\u003cfont color\u003d\u0027blue\u0027\u003e\u003cspan class\u003d\u0027fa fa-bars\u0027\u003e Easy...\u003c/font\u003e\u003c/span\u003e\")\nfor (i in 1:10) {\n  cat(paste0(\"\u003ch4\u003e\", i, \" * 2 \u003d \", i*2, \"\u003c/h4\u003e\"))\n}",
+      "text": "%livy.sparkr \n\ncat(\"%html \u003ch3\u003eHello HTML\u003c/h3\u003e\")\ncat(\"\u003cfont color\u003d\u0027blue\u0027\u003e\u003cspan class\u003d\u0027fa fa-bars\u0027\u003e Easy...\u003c/font\u003e\u003c/span\u003e\")\nfor (i in 1:10) {\n  cat(paste0(\"\u003ch4\u003e\", i, \" * 2 \u003d \", i*2, \"\u003c/h4\u003e\"))\n}",
       "user": "anonymous",
       "dateUpdated": "Jan 29, 2017 2:52:20 AM",
       "config": {
@@ -314,7 +314,7 @@
     },
     {
       "title": "GoogleVis: Bar Chart",
-      "text": "%sparkr\nlibrary(googleVis)\ndf\u003ddata.frame(country\u003dc(\"US\", \"GB\", \"BR\"), \n              val1\u003dc(10,13,14), \n              val2\u003dc(23,12,32))\nBar \u003c- gvisBarChart(df)\ncat(\"%html \", Bar$html$chart)\n",
+      "text": "%livy.sparkr\nlibrary(googleVis)\ndf\u003ddata.frame(country\u003dc(\"US\", \"GB\", \"BR\"), \n              val1\u003dc(10,13,14), \n              val2\u003dc(23,12,32))\nBar \u003c- gvisBarChart(df)\ncat(\"%html \", Bar$html$chart)\n",
       "user": "anonymous",
       "dateUpdated": "Jan 29, 2017 3:16:38 AM",
       "config": {
@@ -362,7 +362,7 @@
     },
     {
       "title": "GoogleVis: Candlestick Chart",
-      "text": "%sparkr\nlibrary(googleVis)\n\nCandle \u003c- gvisCandlestickChart(OpenClose, \n                               options\u003dlist(legend\u003d\u0027none\u0027))\n\ncat(\"%html \", Candle$html$chart)",
+      "text": "%livy.sparkr\nlibrary(googleVis)\n\nCandle \u003c- gvisCandlestickChart(OpenClose, \n                               options\u003dlist(legend\u003d\u0027none\u0027))\n\ncat(\"%html \", Candle$html$chart)",
       "user": "anonymous",
       "dateUpdated": "Jan 29, 2017 3:16:35 AM",
       "config": {
@@ -410,7 +410,7 @@
     },
     {
       "title": "GoogleVis: Line chart",
-      "text": "%sparkr\nlibrary(googleVis)\ndf\u003ddata.frame(country\u003dc(\"US\", \"GB\", \"BR\"), \n              val1\u003dc(10,13,14), \n              val2\u003dc(23,12,32))\n\nLine \u003c- gvisLineChart(df)\n\ncat(\"%html \", Line$html$chart)\n",
+      "text": "%livy.sparkr\nlibrary(googleVis)\ndf\u003ddata.frame(country\u003dc(\"US\", \"GB\", \"BR\"), \n              val1\u003dc(10,13,14), \n              val2\u003dc(23,12,32))\n\nLine \u003c- gvisLineChart(df)\n\ncat(\"%html \", Line$html$chart)\n",
       "user": "anonymous",
       "dateUpdated": "Jan 29, 2017 3:17:31 AM",
       "config": {
@@ -457,7 +457,7 @@
       "progressUpdateIntervalMs": 500
     },
     {
-      "text": "%sparkr\npairs(iris)\nplot(iris)",
+      "text": "%livy.sparkr\npairs(iris)\nplot(iris)",
       "user": "anonymous",
       "dateUpdated": "Jan 29, 2017 2:58:27 AM",
       "config": {
@@ -505,7 +505,7 @@
       "progressUpdateIntervalMs": 500
     },
     {
-      "text": "%sparkr \nplot(iris, col \u003d heat.colors(3))",
+      "text": "%livy.sparkr \nplot(iris, col \u003d heat.colors(3))",
       "user": "anonymous",
       "dateUpdated": "Jan 29, 2017 2:58:24 AM",
       "config": {
@@ -553,7 +553,7 @@
       "progressUpdateIntervalMs": 500
     },
     {
-      "text": "%sparkr\nlibrary(ggplot2)\npres_rating \u003c- data.frame(\n  rating \u003d as.numeric(presidents),\n  year \u003d as.numeric(floor(time(presidents))),\n  quarter \u003d as.numeric(cycle(presidents))\n)\np \u003c- ggplot(pres_rating, aes(x\u003dyear, y\u003dquarter, fill\u003drating))\nplot(p + geom_raster())",
+      "text": "%livy.sparkr\nlibrary(ggplot2)\npres_rating \u003c- data.frame(\n  rating \u003d as.numeric(presidents),\n  year \u003d as.numeric(floor(time(presidents))),\n  quarter \u003d as.numeric(cycle(presidents))\n)\np \u003c- ggplot(pres_rating, aes(x\u003dyear, y\u003dquarter, fill\u003drating))\nplot(p + geom_raster())",
       "user": "anonymous",
       "dateUpdated": "Jan 29, 2017 3:04:03 AM",
       "config": {
@@ -603,7 +603,7 @@
     },
     {
       "title": "GoogleViz: Bubble Chart",
-      "text": "%sparkr\nlibrary(googleVis)\nbubble \u003c- gvisBubbleChart(Fruits, idvar\u003d\"Fruit\", \n                          xvar\u003d\"Sales\", yvar\u003d\"Expenses\",\n                          colorvar\u003d\"Year\", sizevar\u003d\"Profit\",\n                          options\u003dlist(\n                            hAxis\u003d\u0027{minValue:75, maxValue:125}\u0027))\ncat(\"%html \", bubble$html$chart)",
+      "text": "%livy.sparkr\nlibrary(googleVis)\nbubble \u003c- gvisBubbleChart(Fruits, idvar\u003d\"Fruit\", \n                          xvar\u003d\"Sales\", yvar\u003d\"Expenses\",\n                          colorvar\u003d\"Year\", sizevar\u003d\"Profit\",\n                          options\u003dlist(\n                            hAxis\u003d\u0027{minValue:75, maxValue:125}\u0027))\ncat(\"%html \", bubble$html$chart)",
       "user": "anonymous",
       "dateUpdated": "Jan 29, 2017 3:14:35 AM",
       "config": {
@@ -654,7 +654,7 @@
     },
     {
       "title": "GoogleViz: Geo Chart",
-      "text": "%sparkr\nlibrary(googleVis)\ngeo \u003d gvisGeoChart(Exports, locationvar \u003d \"Country\", colorvar\u003d\"Profit\", options\u003dlist(Projection \u003d \"kavrayskiy-vii\"))\ncat(\"%html \", geo$html$chart)",
+      "text": "%livy.sparkr\nlibrary(googleVis)\ngeo \u003d gvisGeoChart(Exports, locationvar \u003d \"Country\", colorvar\u003d\"Profit\", options\u003dlist(Projection \u003d \"kavrayskiy-vii\"))\ncat(\"%html \", geo$html$chart)",
       "user": "anonymous",
       "dateUpdated": "Jan 29, 2017 3:14:38 AM",
       "config": {
