@@ -1,2 +1,5 @@
 #!/bin/sh
+
+sed -i -r "s|^.*(livy\.server\.yarn\.app-lookup-timeout).*$|\1 = 300s|" /opt/mapr/livy/livy-$(cat /opt/mapr/livy/livyversion)/conf/livy.conf.container_template
+
 exec sudo -E -u $MAPR_CONTAINER_USER /opt/mapr/livy/livy-$(cat /opt/mapr/livy/livyversion)/bin/start-in-container.sh
