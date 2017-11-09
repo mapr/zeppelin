@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MEP_RELEASE=mep400
+IMAGE_VERSION="v1.0_6.0.0_4.0.0"
 
 BUILD_CENTOS7=false
 BUILD_UBUNTU16=false
@@ -25,7 +25,7 @@ fi
 
 getMaprSetup() {
     DIR="${1:-.}"
-    [ ! -e "${DIR}/mapr-setup.sh" ] && curl -o "${DIR}/mapr-setup.sh" "http://package.mapr.com/releases/installer/mapr-setup.sh"
+    [ ! -e "${DIR}/mapr-setup.sh" ] && curl -o "${DIR}/mapr-setup.sh" "http://artifactory.devops.lab/artifactory/prestage/releases/installer/redhat/mapr-setup.sh"
     chmod +x "${DIR}/mapr-setup.sh"
 }
 
@@ -33,11 +33,11 @@ getMaprSetup() {
 if [ "$BUILD_CENTOS7" = "true" ]; then
     echo "Building centos7"
     getMaprSetup src/
-    docker build -t "maprtech/pacc-zeppelin-centos7:${MEP_RELEASE}" -f src/centos7/Dockerfile src/
+    docker build -t "maprtech/data-science-refinery:${IMAGE_VERSION}_centos7" -f src/centos7/Dockerfile src/
 fi
 
 if [ "$BUILD_UBUNTU16" = "true" ]; then
     echo "Building ubuntu16"
     getMaprSetup src/
-    docker build -t "maprtech/pacc-zeppelin-ubuntu16:${MEP_RELEASE}" -f src/ubuntu16/Dockerfile src/
+    docker build -t "maprtech/data-science-refinery:${IMAGE_VERSION}_ubuntu16" -f src/ubuntu16/Dockerfile src/
 fi
