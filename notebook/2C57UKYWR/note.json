@@ -77,7 +77,7 @@
       "progressUpdateIntervalMs": 500
     },
     {
-      "text": "%sh\n\ncd $(mktemp -d)\nwget https://s3.amazonaws.com/apache-zeppelin/tutorial/bank/bank.csv\nhadoop fs -put bank.csv .\n",
+      "text": "%sh\n\ncd ~\nif ! [ -e bank.csv ]; then\n    wget https://s3.amazonaws.com/apache-zeppelin/tutorial/bank/bank.csv\nfi\nif ! hadoop fs -test -e bank.csv; then\n    hadoop fs -put bank.csv .\nelse\n    echo \"bank.csv alreay in your home directory in DFS\"\nfi",
       "user": "anonymous",
       "dateUpdated": "Jan 22, 2017 12:51:48 PM",
       "config": {
