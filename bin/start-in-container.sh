@@ -10,6 +10,8 @@ ZEPPELIN_CONF_DIR="${ZEPPELIN_HOME}/conf"
 ZEPPELIN_KEYS_DIR="${ZEPPELIN_CONF_DIR}/keys"
 ZEPPELIN_SITE_PATH="${ZEPPELIN_CONF_DIR}/zeppelin-site.xml"
 ZEPPELIN_SITE_TEMPLATE="${ZEPPELIN_CONF_DIR}/zeppelin-site.xml.container_template"
+ZEPPELIN_INTP_CONF_PATH="${ZEPPELIN_CONF_DIR}/interpreter.json"
+ZEPPELIN_INTP_CONF_TEMPLATE="${ZEPPELIN_CONF_DIR}/interpreter.json.container_template"
 
 ZEPPELIN_SSL_PORT="${ZEPPELIN_SSL_PORT:-9995}"
 ZEPPELIN_KEYSTORE_PATH="${ZEPPELIN_KEYS_DIR}/ssl_keystore"
@@ -17,7 +19,7 @@ ZEPPELIN_KEYSTORE_PASS="mapr123"
 ZEPPELIN_KEYSTORE_TYPE="JKS"
 
 
-createCertificates() {
+create_certificates() {
   if [ "$JAVA_HOME"x = "x" ]; then
     KEYTOOL=`which keytool`
   else
@@ -45,7 +47,7 @@ createCertificates() {
   fi
 }
 
-createZeppelinSite() {
+create_zeppelin_site() {
   if [ ! -e "$ZEPPELIN_SITE_PATH" ]; then
     cp "$ZEPPELIN_SITE_TEMPLATE" "$ZEPPELIN_SITE_PATH"
     sed -i \
@@ -59,7 +61,29 @@ createZeppelinSite() {
   fi
 }
 
-createCertificates
-createZeppelinSite
+configure_interpreter_json() {
+  if [ -e "${ZEPPELIN_INTP_CONF_PATH}" ]; then
+    return
+  fi
+
+  cp "${ZEPPELIN_INTP_CONF_TEMPLATE}" "${ZEPPELIN_INTP_CONF_PATH}"
+
+  JDBC_URL_DRILL="jdbc:drill:drillbit=localhost:31010"
+  JDBC_URL_HIVE="jdbc:hive2://localhost:10000/default"
+  if [ -n "${MAPR_TICKETFILE_LOCATION}" ]; then
+    JDBC_URL_DRILL+=";auth=MAPRSASL"
+    JDBC_URL_HIVE+=";auth=MAPRSASL"
+  fi
+
+  sed -i \
+    -e "s|__USERNAME__|${MAPR_CONTAINER_USER}|" \
+    -e "s|__JDBC_URL_DRILL__|${JDBC_URL_DRILL}|" \
+    -e "s|__JDBC_URL_HIVE__|${JDBC_URL_HIVE}|" \
+    "${ZEPPELIN_INTP_CONF_PATH}"
+}
+
+create_certificates
+create_zeppelin_site
+configure_interpreter_json
 
 exec "${ZEPPELIN_HOME}/bin/zeppelin-daemon.sh" start
