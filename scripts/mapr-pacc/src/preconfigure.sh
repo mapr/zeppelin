@@ -43,3 +43,5 @@ if [ -e "${SPARK_HOME}" ]; then
         fi
     done
 fi
+
+echo 'cd ~' >> /etc/profile.d/mapr.sh
