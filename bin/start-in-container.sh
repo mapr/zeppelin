@@ -1,15 +1,17 @@
 #!/bin/bash
 
-export MAPR_HOME=${MAPR_HOME:-/opt/mapr}
-export MAPR_CLUSTER=${MAPR_CLUSTER:-my.cluster.com}
+MAPR_HOME=${MAPR_HOME:-/opt/mapr}
+MAPR_CLUSTER=${MAPR_CLUSTER:-my.cluster.com}
 
-export ZEPPELIN_VERSION=$(cat "${MAPR_HOME}/zeppelin/zeppelinversion")
-export ZEPPELIN_HOME="${MAPR_HOME}/zeppelin/zeppelin-${ZEPPELIN_VERSION}"
-export ZEPPELIN_CONF_DIR="${ZEPPELIN_HOME}/conf"
 
+ZEPPELIN_VERSION=$(cat "${MAPR_HOME}/zeppelin/zeppelinversion")
+ZEPPELIN_HOME="${MAPR_HOME}/zeppelin/zeppelin-${ZEPPELIN_VERSION}"
+ZEPPELIN_CONF_DIR="${ZEPPELIN_HOME}/conf"
 ZEPPELIN_KEYS_DIR="${ZEPPELIN_CONF_DIR}/keys"
 ZEPPELIN_SITE_PATH="${ZEPPELIN_CONF_DIR}/zeppelin-site.xml"
 ZEPPELIN_SITE_TEMPLATE="${ZEPPELIN_CONF_DIR}/zeppelin-site.xml.container_template"
+ZEPPELIN_INTP_CONF_PATH="${ZEPPELIN_CONF_DIR}/interpreter.json"
+ZEPPELIN_INTP_CONF_TEMPLATE="${ZEPPELIN_CONF_DIR}/interpreter.json.container_template"
 
 ZEPPELIN_SSL_PORT="${ZEPPELIN_SSL_PORT:-9995}"
 ZEPPELIN_KEYSTORE_PATH="${ZEPPELIN_KEYS_DIR}/ssl_keystore"
@@ -60,32 +62,24 @@ create_zeppelin_site() {
 }
 
 configure_interpreter_json() {
-  # Do this tricky hack, as conf/interpreter.json are created only after Zeppelin startup
-  nohup bash <<'EOF' &
-ZEPPELIN_INTERPRETER_JSON="${ZEPPELIN_CONF_DIR}/interpreter.json"
-
-JDBC_URL_DRILL="jdbc:drill:drillbit=localhost:31010"
-JDBC_URL_HIVE="jdbc:hive2://localhost:10000/default"
-if [ -n "${MAPR_TICKETFILE_LOCATION}" ]; then
-  JDBC_URL_DRILL+=";auth=MAPRSASL"
-  JDBC_URL_HIVE+=";auth=MAPRSASL"
-fi
-
-RETRIES=15
-while [ "${RETRIES}" -gt 0 ]; do
-  if [ -e "${ZEPPELIN_INTERPRETER_JSON}" ]; then
-    sed -i \
-      -e "s|__USER_DRILL__|${MAPR_CONTAINER_USER}|" \
-      -e "s|__USER_HIVE__|${MAPR_CONTAINER_USER}|" \
-      -e "s|__JDBC_URL_DRILL__|${JDBC_URL_DRILL}|" \
-      -e "s|__JDBC_URL_HIVE__|${JDBC_URL_HIVE}|" \
-      "${ZEPPELIN_INTERPRETER_JSON}"
-    break
+  if [ -e "${ZEPPELIN_INTP_CONF_PATH}" ]; then
+    return
   fi
-  RETRIES=$(expr "${RETRIES}" - 1)
-  sleep 1
-done
-EOF
+
+  cp "${ZEPPELIN_INTP_CONF_TEMPLATE}" "${ZEPPELIN_INTP_CONF_PATH}"
+
+  JDBC_URL_DRILL="jdbc:drill:drillbit=localhost:31010"
+  JDBC_URL_HIVE="jdbc:hive2://localhost:10000/default"
+  if [ -n "${MAPR_TICKETFILE_LOCATION}" ]; then
+    JDBC_URL_DRILL+=";auth=MAPRSASL"
+    JDBC_URL_HIVE+=";auth=MAPRSASL"
+  fi
+
+  sed -i \
+    -e "s|__USERNAME__|${MAPR_CONTAINER_USER}|" \
+    -e "s|__JDBC_URL_DRILL__|${JDBC_URL_DRILL}|" \
+    -e "s|__JDBC_URL_HIVE__|${JDBC_URL_HIVE}|" \
+    "${ZEPPELIN_INTP_CONF_PATH}"
 }
 
 create_certificates

@@ -78,13 +78,13 @@
       "default.url": {
         "envName": null,
         "propertyName": "default.url",
-        "defaultValue": "__JDBC_URL_HIVE__",
+        "defaultValue": "jdbc:hive2://localhost:10000/default",
         "description": "The URL for Hive JDBC."
       },
       "default.user": {
         "envName": null,
         "propertyName": "default.user",
-        "defaultValue": "__USER_HIVE__",
+        "defaultValue": "",
         "description": "The JDBC user name"
       },
       "default.password": {
@@ -149,19 +149,19 @@
       "default.url": {
         "envName": null,
         "propertyName": "default.url",
-        "defaultValue": "__JDBC_URL_DRILL__",
+        "defaultValue": "jdbc:drill:drillbit=localhost:31010",
         "description": "The URL for Drill JDBC."
       },
       "default.user": {
         "envName": null,
         "propertyName": "default.user",
-        "defaultValue": "__USER_DRILL__",
+        "defaultValue": "admin",
         "description": "The JDBC user name"
       },
       "default.password": {
         "envName": null,
         "propertyName": "default.password",
-        "defaultValue": "",
+        "defaultValue": "admin",
         "description": "The JDBC user password"
       },
       "default.driver": {
