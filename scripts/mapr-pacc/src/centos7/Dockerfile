@@ -12,12 +12,11 @@ COPY "rc.d" "/opt/mapr/installer/docker/rc.d"
 
 EXPOSE  9995
 
-RUN /opt/mapr/installer/docker/mapr-setup.sh container client 6.0.0 4.0.0 mapr-client mapr-posix-client-container mapr-hbase mapr-pig mapr-spark mapr-kafka mapr-zeppelin mapr-livy
+RUN /opt/mapr/installer/docker/mapr-setup.sh -r "http://artifactory.devops.lab/artifactory/prestage/releases/" container client 6.0.0 4.0.0 mapr-client mapr-posix-client-container mapr-hbase mapr-pig mapr-spark mapr-kafka mapr-livy
 
-RUN yum install -y gcc python-devel python-pip && pip install matplotlib numpy pandas
-
+COPY mapr-zeppelin-*.rpm /tmp
 COPY preconfigure.sh /tmp
-RUN chmod +x /tmp/preconfigure.sh ; /tmp/preconfigure.sh
+RUN chmod +x /tmp/preconfigure.sh ; /tmp/preconfigure.sh ; rm /tmp/preconfigure.sh
 
 # Workaround for MZEP-59
 ENV DRILL_HOME /opt/mapr
