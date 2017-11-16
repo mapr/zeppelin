@@ -25,7 +25,7 @@ fi
 
 getMaprSetup() {
     DIR="${1:-.}"
-    [ ! -e "${DIR}/mapr-setup.sh" ] && curl -o "${DIR}/mapr-setup.sh" "http://artifactory.devops.lab/artifactory/prestage/releases/installer/redhat/mapr-setup.sh"
+    [ ! -e "${DIR}/mapr-setup.sh" ] && curl -o "${DIR}/mapr-setup.sh" "http://package.mapr.com/releases/installer/mapr-setup.sh"
     chmod +x "${DIR}/mapr-setup.sh"
 }
 
