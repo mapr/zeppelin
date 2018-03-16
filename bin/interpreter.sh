@@ -175,6 +175,12 @@ if [[ "${INTERPRETER_ID}" == "spark" ]]; then
     fi
   fi
 
+  # DSR-21: Prevent from problem with HiveContext cauased by existing metastore_db direcotry in CWD
+  user_home=$(getent passwd $USER | cut -d: -f6) # Ubuntu Docker container has no properly set HOME vairable
+  spark_interpreter_cwd="${user_home}/zeppelin/spark_intperpreter_cwd-$(date -u '+%Y%m%d%H%M%S')"
+  mkdir -p "$spark_interpreter_cwd"
+  cd "$spark_interpreter_cwd"
+
 elif [[ "${INTERPRETER_ID}" == "hbase" ]]; then
   if [[ -n "${HBASE_CONF_DIR}" ]]; then
     ZEPPELIN_INTP_CLASSPATH+=":${HBASE_CONF_DIR}"
