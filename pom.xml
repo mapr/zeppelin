@@ -759,6 +759,32 @@
       </repositories>
     </profile>
 
+    <profile>
+      <id>vendor-repo-mapr</id>
+      <repositories>
+        <repository>
+          <id>mapr-snapshots</id>
+          <url>${env.MAPR_MAVEN_REPO}</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+        </repository>
+        <repository>
+          <id>mapr-releases</id>
+          <url>http://repository.mapr.com/maven/</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </repository>
+      </repositories>
+    </profile>
+
     <!-- Geode can be enabled by -Pgeode. see https://issues.apache.org/jira/browse/ZEPPELIN-375 -->
     <profile>
       <id>geode</id>
