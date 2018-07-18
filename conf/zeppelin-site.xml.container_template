@@ -27,13 +27,13 @@
 
 <property>
   <name>zeppelin.server.port</name>
-  <value>8080</value>
+  <value>9995</value>
   <description>Server port.</description>
 </property>
 
 <property>
   <name>zeppelin.server.ssl.port</name>
-  <value>8443</value>
+  <value>9995</value>
   <description>Server ssl port. (used when ssl property is set to true)</description>
 </property>
 
