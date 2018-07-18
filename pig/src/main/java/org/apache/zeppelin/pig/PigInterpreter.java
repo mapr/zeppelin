@@ -116,7 +116,7 @@ public class PigInterpreter extends BasePigInterpreter {
       }
       PigStats stats = PigStats.get();
       if (stats != null) {
-        String errorMsg = stats.getDisplayString();
+        String errorMsg = PigUtils.extactJobStats(stats);
         if (errorMsg != null) {
           LOGGER.error("Fail to run pig script, " + errorMsg);
           return new InterpreterResult(Code.ERROR, errorMsg);
@@ -134,7 +134,7 @@ public class PigInterpreter extends BasePigInterpreter {
     StringBuilder outputBuilder = new StringBuilder();
     PigStats stats = PigStats.get();
     if (stats != null && includeJobStats) {
-      String jobStats = stats.getDisplayString();
+      String jobStats = PigUtils.extactJobStats(stats);
       if (jobStats != null) {
         outputBuilder.append(jobStats);
       }
