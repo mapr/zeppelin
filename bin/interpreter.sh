@@ -125,6 +125,9 @@ if [[ "${INTERPRETER_ID}" == "spark" ]]; then
     # This will evantually passes SPARK_APP_JAR to classpath of SparkIMain
     ZEPPELIN_INTP_CLASSPATH+=":${SPARK_APP_JAR}"
 
+    # MZEP-63
+    ZEPPELIN_INTP_CLASSPATH+=":${SPARK_HOME}/jars/*"
+
     pattern="$SPARK_HOME/python/lib/py4j-*-src.zip"
     py4j=($pattern)
     # pick the first match py4j zip - there should only be one
@@ -170,6 +173,12 @@ if [[ "${INTERPRETER_ID}" == "spark" ]]; then
       fi
     fi
   fi
+
+  # DSR-21: Prevent from problem with HiveContext cauased by existing metastore_db direcotry in CWD
+  user_home=$(getent passwd $USER | cut -d: -f6) # Ubuntu Docker container has no properly set HOME vairable
+  spark_interpreter_cwd="${user_home}/zeppelin/spark_intperpreter_cwd-$(date -u '+%Y%m%d%H%M%S')"
+  mkdir -p "$spark_interpreter_cwd"
+  cd "$spark_interpreter_cwd"
 
 elif [[ "${INTERPRETER_ID}" == "hbase" ]]; then
   if [[ -n "${HBASE_CONF_DIR}" ]]; then

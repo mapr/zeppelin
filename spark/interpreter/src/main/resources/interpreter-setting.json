@@ -57,7 +57,7 @@
       "master": {
         "envName": "MASTER",
         "propertyName": "spark.master",
-        "defaultValue": "local[*]",
+        "defaultValue": "yarn-cluster",
         "description": "Spark master uri. ex) spark://masterhost:7077",
         "type": "string"
       },
