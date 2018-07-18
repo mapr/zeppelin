@@ -342,7 +342,7 @@
 
 <property>
   <name>zeppelin.ssl</name>
-  <value>false</value>
+  <value>true</value>
   <description>Should SSL be used by the servers?</description>
 </property>
 
@@ -354,19 +354,19 @@
 
 <property>
   <name>zeppelin.ssl.keystore.path</name>
-  <value>keystore</value>
+  <value>__ZEPPELIN_KEYSTORE_PATH__</value>
   <description>Path to keystore relative to Zeppelin configuration directory</description>
 </property>
 
 <property>
   <name>zeppelin.ssl.keystore.type</name>
-  <value>JKS</value>
+  <value>__ZEPPELIN_KEYSTORE_TYPE__</value>
   <description>The format of the given keystore (e.g. JKS or PKCS12)</description>
 </property>
 
 <property>
   <name>zeppelin.ssl.keystore.password</name>
-  <value>change me</value>
+  <value>__ZEPPELIN_KEYSTORE_PASS__</value>
   <description>Keystore password. Can be obfuscated by the Jetty Password tool</description>
 </property>
 

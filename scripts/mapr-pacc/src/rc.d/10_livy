@@ -1,0 +1,3 @@
+#!/bin/sh
+
+exec sudo -E -u $MAPR_CONTAINER_USER /opt/mapr/livy/livy-$(cat /opt/mapr/livy/livyversion)/bin/start-in-container.sh
