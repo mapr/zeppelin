@@ -192,4 +192,14 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>mapr-mep-600</id>
+            <properties>
+                <hadoop.version>2.7.0-mapr-1710-SNAPSHOT</hadoop.version>
+                <pig.version>0.16.0-mapr-1703</pig.version>
+            </properties>
+        </profile>
+    </profiles>
 </project>
