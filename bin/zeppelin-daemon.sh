@@ -46,11 +46,12 @@ BIN=$(cd "${BIN}">/dev/null; pwd)
 . "${BIN}/common.sh"
 . "${BIN}/functions.sh"
 
+MAPR_HOME=${MAPR_HOME:-/opt/mapr}
 HOSTNAME=$(hostname)
 ZEPPELIN_NAME="Zeppelin"
 ZEPPELIN_LOGFILE="${ZEPPELIN_LOG_DIR}/zeppelin-${ZEPPELIN_IDENT_STRING}-${HOSTNAME}.log"
 ZEPPELIN_OUTFILE="${ZEPPELIN_LOG_DIR}/zeppelin-${ZEPPELIN_IDENT_STRING}-${HOSTNAME}.out"
-ZEPPELIN_PID="${ZEPPELIN_PID_DIR}/zeppelin-${ZEPPELIN_IDENT_STRING}-${HOSTNAME}.pid"
+ZEPPELIN_PID="${ZEPPELIN_PID_DIR}/zeppelin.pid"
 ZEPPELIN_MAIN=org.apache.zeppelin.server.ZeppelinServer
 JAVA_OPTS+=" -Dzeppelin.log.file=${ZEPPELIN_LOGFILE}"
 

@@ -22,6 +22,8 @@ else
   FWDIR=$(dirname "${BASH_SOURCE-$0}")
 fi
 
+MAPR_HOME=${MAPR_HOME:-/opt/mapr}
+
 if [[ -z "${ZEPPELIN_HOME}" ]]; then
   # Make ZEPPELIN_HOME look cleaner in logs by getting rid of the
   # extra ../
@@ -37,7 +39,7 @@ if [[ -z "${ZEPPELIN_LOG_DIR}" ]]; then
 fi
 
 if [[ -z "$ZEPPELIN_PID_DIR" ]]; then
-  export ZEPPELIN_PID_DIR="${ZEPPELIN_HOME}/run"
+  export ZEPPELIN_PID_DIR="${MAPR_HOME}/pid"
 fi
 
 if [[ -z "${ZEPPELIN_WAR}" ]]; then
