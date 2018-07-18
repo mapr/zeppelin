@@ -27,13 +27,13 @@
 
 <property>
   <name>zeppelin.server.port</name>
-  <value>8080</value>
+  <value>9995</value>
   <description>Server port.</description>
 </property>
 
 <property>
   <name>zeppelin.server.ssl.port</name>
-  <value>8443</value>
+  <value>9995</value>
   <description>Server ssl port. (used when ssl property is set to true)</description>
 </property>
 
@@ -330,7 +330,7 @@
 
 <property>
   <name>zeppelin.interpreter.connect.timeout</name>
-  <value>30000</value>
+  <value>300000</value>
   <description>Interpreter process connect timeout in msec.</description>
 </property>
 
@@ -406,7 +406,7 @@
 
 <property>
   <name>zeppelin.anonymous.allowed</name>
-  <value>true</value>
+  <value>false</value>
   <description>Anonymous user allowed by default</description>
 </property>
 
@@ -440,7 +440,6 @@
   <description>Enable directory listings on server.</description>
 </property>
 
-<!--
 <property>
   <name>zeppelin.interpreter.lifecyclemanager.class</name>
   <value>org.apache.zeppelin.interpreter.lifecycle.TimeoutLifecycleManager</value>
@@ -459,7 +458,6 @@
   <value>3600000</value>
   <description>Milliseconds of the interpreter timeout threshold, by default it is 1 hour</description>
 </property>
--->
 
 <!--
 <property>
@@ -548,12 +546,14 @@
   <value>origin</value>
   <description>Git repository remote</description>
 </property>
+-->
 
 <property>
   <name>zeppelin.notebook.cron.enable</name>
-  <value>false</value>
+  <value>true</value>
   <description>Notebook enable cron scheduler feature</description>
 </property>
+<!--
 <property>
   <name>zeppelin.notebook.cron.folders</name>
   <value></value>
