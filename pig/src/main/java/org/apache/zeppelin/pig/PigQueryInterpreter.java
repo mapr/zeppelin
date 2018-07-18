@@ -141,7 +141,7 @@ public class PigQueryInterpreter extends BasePigInterpreter {
       }
       PigStats stats = PigStats.get();
       if (stats != null) {
-        String errorMsg = stats.getDisplayString();
+        String errorMsg = PigUtils.extactJobStats(stats);
         if (errorMsg != null) {
           return new InterpreterResult(Code.ERROR, errorMsg);
         }

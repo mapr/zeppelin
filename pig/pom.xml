@@ -101,6 +101,7 @@
             <scope>provided</scope>
         </dependency>
 
+        <!--
         <dependency>
             <groupId>org.apache.tez</groupId>
             <artifactId>tez-api</artifactId>
@@ -112,13 +113,17 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        -->
 
+        <!--
         <dependency>
             <groupId>org.apache.tez</groupId>
             <artifactId>tez-common</artifactId>
             <version>${tez.version}</version>
         </dependency>
+        -->
 
+        <!--
         <dependency>
             <groupId>org.apache.tez</groupId>
             <artifactId>tez-dag</artifactId>
@@ -130,31 +135,41 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        -->
 
+        <!--
         <dependency>
             <groupId>org.apache.tez</groupId>
             <artifactId>tez-runtime-library</artifactId>
             <version>${tez.version}</version>
         </dependency>
+        -->
 
+        <!--
         <dependency>
             <groupId>org.apache.tez</groupId>
             <artifactId>tez-runtime-internals</artifactId>
             <version>${tez.version}</version>
         </dependency>
+        -->
 
+        <!--
         <dependency>
             <groupId>org.apache.tez</groupId>
             <artifactId>tez-mapreduce</artifactId>
             <version>${tez.version}</version>
         </dependency>
+         -->
 
+        <!--
         <dependency>
             <groupId>org.apache.tez</groupId>
             <artifactId>tez-yarn-timeline-history-with-acls</artifactId>
             <version>${tez.version}</version>
         </dependency>
+        -->
 
+        <!--
         <dependency>
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-core_${pig.scala.version}</artifactId>
@@ -165,6 +180,7 @@
             <artifactId>spark-yarn_${pig.scala.version}</artifactId>
             <version>${pig.spark.version}</version>
         </dependency>
+        -->
 
         <dependency>
             <groupId>junit</groupId>
