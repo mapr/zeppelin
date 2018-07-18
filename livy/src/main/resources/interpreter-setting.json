@@ -15,7 +15,7 @@
       "zeppelin.livy.session.create_timeout": {
         "envName": "ZEPPELIN_LIVY_SESSION_CREATE_TIMEOUT",
         "propertyName": "zeppelin.livy.session.create_timeout",
-        "defaultValue": "120",
+        "defaultValue": "180",
         "description": "Livy Server create session timeout (seconds).",
         "type": "number"
       },
