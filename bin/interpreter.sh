@@ -64,6 +64,10 @@ if [ -z "${PORT}" ] || [ -z "${INTERPRETER_DIR}" ]; then
     exit 1
 fi
 
+if [ -n "$CALLBACK_HOST" ] && [ -n "$HOST_IP" ]; then
+    CALLBACK_HOST="$HOST_IP"
+fi
+
 . "${bin}/common.sh"
 
 ZEPPELIN_INTP_CLASSPATH="${CLASSPATH}"
