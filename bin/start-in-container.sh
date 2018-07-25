@@ -81,6 +81,7 @@ livy_rsc_port_max_new=$(expr "$livy_rsc_port_max" + 10)
 LIVY_RSC_PORT_RANGE_NEW="${livy_rsc_port_min}~${livy_rsc_port_max_new}"
 
 SPARK_PORT_RANGE="${SPARK_PORT_RANGE:-11000~11010}"
+SPARK_PORT_RANGE=$(echo $SPARK_PORT_RANGE | sed "s/-/~/")
 
 REMOTE_ARCHIVES_DIR="/user/${MAPR_CONTAINER_USER}/zeppelin/archives"
 
@@ -293,7 +294,7 @@ if [ -e "${SPARK_HOME}" ]; then
     spark_configure_custom_envs
 
     if [ -n "$HOST_IP" ]; then
-        spark_ports=$(echo "$SPARK_PORT_RANGE" | sed 's/[~-]/\n/')
+        spark_ports=$(echo "$SPARK_PORT_RANGE" | sed 's/~/\n/')
         read -a ports <<< $(seq $spark_ports)
         spark_set_property "spark.driver.bindAddress" "0.0.0.0"
         spark_set_property "spark.driver.host" "${HOST_IP}"
@@ -361,10 +362,12 @@ create_certificates() {
 }
 
 zeppelin_configure() {
+    zeppelin_callback_port_range=$(echo "$SPARK_PORT_RANGE" | sed 's/~/:/')
     sed -i \
         -e "s|__ZEPPELIN_KEYSTORE_PATH__|$ZEPPELIN_KEYSTORE_PATH|" \
         -e "s|__ZEPPELIN_KEYSTORE_PASS__|$ZEPPELIN_KEYSTORE_PASS|" \
         -e "s|__ZEPPELIN_KEYSTORE_TYPE__|$ZEPPELIN_KEYSTORE_TYPE|" \
+        -e "s|__ZEPPELIN_CALLBACK_PORT_RANGE__|$zeppelin_callback_port_range|" \
         "$ZEPPELIN_SITE_PATH"
 }
 

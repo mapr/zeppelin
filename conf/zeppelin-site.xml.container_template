@@ -501,12 +501,10 @@
 </property>
 -->
 
-<!--
 <property>
   <name>zeppelin.interpreter.callback.portRange</name>
-  <value>10000:10010</value>
+  <value>__ZEPPELIN_CALLBACK_PORT_RANGE__</value>
 </property>
--->
 
 <!--
 <property>
