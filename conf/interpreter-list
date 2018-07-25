@@ -37,3 +37,5 @@ python          org.apache.zeppelin:zeppelin-python:0.8.0               Python i
 scio            org.apache.zeppelin:zeppelin-scio_2.11:0.8.0            Scio interpreter
 shell           org.apache.zeppelin:zeppelin-shell:0.8.0                Shell command
 maprdb          org.apache.zeppelin:zeppelin-maprdb:0.8.0               Zeppelin: MapR-DB Shell interpreter
+drill           org.apache.zeppelin:zeppelin-drill:0.8.0                Jdbc Drill interpreter
+hive            org.apache.zeppelin:zeppelin-hive:0.8.0                 Jdbc Hive interpreter
