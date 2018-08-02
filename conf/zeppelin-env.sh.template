@@ -113,8 +113,6 @@ export MAPR_HOME=${MAPR_HOME:-"/opt/mapr"}
 
 
 export ZEPPELIN_IMPERSONATE_CMD='sudo -H -u ${ZEPPELIN_IMPERSONATE_USER} bash -c '
-export ZEPPELIN_INTP_CLASSPATH_APPENDS="$(mapr classpath)"
-
 
 SPARK_VERSION=$(cat "${MAPR_HOME}/spark/sparkversion")
 export SPARK_HOME="${MAPR_HOME}/spark/spark-${SPARK_VERSION}"
