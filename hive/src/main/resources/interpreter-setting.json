@@ -62,7 +62,7 @@
       "default.splitQueries": {
         "envName": null,
         "propertyName": "default.splitQueries",
-        "defaultValue": false,
+        "defaultValue": true,
         "description": "Each query is executed apart and returns the result",
         "type": "checkbox"
       },
