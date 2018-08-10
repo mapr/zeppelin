@@ -144,6 +144,7 @@ setup_spark_jars() {
         ${MAPR_HOME}/lib/kafka-clients-*-mapr-*.jar
         ${MAPR_HOME}/lib/mapr-hbase-*-mapr-*.jar
         ${HBASE_HOME}/lib/hbase-*-mapr-*.jar
+        ${ZEPPELIN_HOME}/interpreter/spark/spark-interpreter*.jar
     "
     for jar_path in $JAR_WHILDCARDS; do
         jar_name=$(basename "${jar_path}")
