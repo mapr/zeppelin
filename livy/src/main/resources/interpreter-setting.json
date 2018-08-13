@@ -19,6 +19,27 @@
         "description": "Livy Server create session timeout (seconds).",
         "type": "number"
       },
+      "livy.spark.yarn.dist.archives": {
+        "envName": "ZEPPELIN_SPARK_YARN_DIST_ARCHIVES",
+        "propertyName": "livy.spark.yarn.dist.archives",
+        "defaultValue": "",
+        "description": "Sets additional archives for spark",
+        "type": "string"
+      },
+      "livy.spark.yarn.appMasterEnv.PYSPARK_PYTHON": {
+        "envName": "PYSPARK_PYTHON",
+        "propertyName": "livy.spark.yarn.appMasterEnv.PYSPARK_PYTHON",
+        "defaultValue": "python",
+        "description": "Sets default python interpreter for PySpark",
+        "type": "string"
+      },
+      "livy.spark.yarn.appMasterEnv.PYSPARK3_PYTHON": {
+        "envName": "PYSPARK3_PYTHON",
+        "propertyName": "livy.spark.yarn.appMasterEnv.PYSPARK3_PYTHON",
+        "defaultValue": "python3",
+        "description": "Sets default python interpreter for PySpark3",
+        "type": "string"
+      },
       "livy.spark.driver.cores": {
         "propertyName": "livy.spark.driver.cores",
         "defaultValue": "",
