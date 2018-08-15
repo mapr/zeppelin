@@ -37,7 +37,7 @@
     <profile>
       <id>mapr-mep-600</id>
       <properties>
-        <hive.version>2.1.1-mapr-1803</hive.version>
+        <hive.version>2.3.3-mapr</hive.version>
       </properties>
       <dependencies>
         <dependency>

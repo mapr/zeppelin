@@ -766,7 +766,7 @@
       <id>vendor-repo-mapr</id>
       <repositories>
         <repository>
-          <id>mapr-snapshots</id>
+          <id>mapr-maven-repo</id>
           <url>${env.MAPR_MAVEN_REPO}</url>
           <releases>
             <enabled>true</enabled>
@@ -776,7 +776,18 @@
           </snapshots>
         </repository>
         <repository>
-          <id>mapr-releases</id>
+          <!-- Following repo is required since proper Hive artifacts available through it -->
+          <id>mapr-releases-repo</id>
+          <url>${env.MAPR_RELEASES_REPO}</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+        </repository>
+        <repository>
+          <id>repository-mapr-com</id>
           <url>http://repository.mapr.com/maven/</url>
           <releases>
             <enabled>true</enabled>
