@@ -466,7 +466,7 @@
     },
     {
       "title": "Read from Scala the R Variables",
-      "text": "%spark\nprintln(\"rs \u003d \"+ z.get(\"rs\"))\nprintln(\"rb \u003d \"+ z.get(\"rb\"))\nprintln(\"rd \u003d \"+ z.get(\"rd\"))\nprintln(\"rm \u003d \"+ z.get(\"rm\"))\n// println(z.get(\"rm\").getClass)\n// println(\"rm \u003d \"+ z.get(\"rm\").asInstanceOf[Array[Double]].toSeq)",
+      "text": "%spark\nprintln(\"rs \u003d \"+ z.get(\"rs\"))\nprintln(\"rb \u003d \"+ z.get(\"rb\"))\nprintln(\"rd \u003d \"+ z.get(\"rd\"))\n// println(\"rm \u003d \"+ z.get(\"rm\"))\n// println(z.get(\"rm\").getClass)\nprintln(\"rm \u003d \"+ z.get(\"rm\").asInstanceOf[Array[Double]].toSeq)",
       "user": "anonymous",
       "config": {
         "colWidth": 3.0,
@@ -502,7 +502,7 @@
         "msg": [
           {
             "type": "TEXT",
-            "data": "rs \u003d Hello Scala from R\nrb \u003d true\nrd \u003d 15.0\nrm \u003d 2.4\n"
+            "data": "rs \u003d Hello Scala from R\nrb \u003d true\nrd \u003d 15.0\nrm \u003d WrappedArray(2.4, 2.5, 4.0)\n"
           }
         ]
       },
@@ -738,7 +738,7 @@
     },
     {
       "title": "Read the R Dataframe from Spark",
-      "text": "%spark\nsqlc.sql(\"select * from names\").head",
+      "text": "%spark\nsqlContext.sql(\"select * from names\").head",
       "user": "anonymous",
       "config": {
         "colWidth": 12.0,
