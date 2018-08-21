@@ -265,9 +265,7 @@ spark_configure_custom_envs() {
     fi
 
     if [ -n "$ZEPPELIN_ARCHIVE_PYTHON3" ]; then
-        spark_configure_python3 || log_msg "Using default Python 3"
-    else
-        log_msg "Using default Python 3"
+       log_warn "Property 'ZEPPELIN_ARCHIVE_PYTHON3' is deprecated. Ignoring."
     fi
 }
 
