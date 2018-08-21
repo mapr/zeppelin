@@ -297,6 +297,9 @@ fi
 
 livy_subs_client_conf "__LIVY_HOST_IP__" "$HOST_IP"
 livy_subs_client_conf "__LIVY_RSC_PORT_RANGE__" "$LIVY_RSC_PORT_RANGE_NEW"
+# TODO: refactor setup of livy.conf.
+# MZEP-162:
+sed -i 's/^.*livy\.ui\.enabled.*$/livy.ui.enabled=false/g' "${LIVY_HOME}/conf/livy.conf"
 
 
 "${LIVY_HOME}/bin/livy-server" start &
