@@ -242,24 +242,8 @@ spark_configure_python() {
     log_msg "Configuring Zeppelin to use custom Python with Spark interpreter"
     local zeppelin_env_sh="${ZEPPELIN_HOME}/conf/zeppelin-env.sh"
     cat >> "$zeppelin_env_sh" << EOF
-export ZEPPELIN_SPARK_YARN_DIST_ARCHIVES="${ZEPPELIN_SPARK_YARN_DIST_ARCHIVES},maprfs://${out_archive_remote}"
+export ZEPPELIN_SPARK_YARN_DIST_ARCHIVES="maprfs://${out_archive_remote}"
 export PYSPARK_PYTHON='./${out_archive_filename}/bin/python'
-
-EOF
-    return 0
-}
-
-spark_configure_python3() {
-    log_msg "Setting up Python 3 archive"
-    setup_archive "$ZEPPELIN_ARCHIVE_PYTHON3" || return 1
-    log_msg "Configuring Spark to use custom Python 3"
-    spark_append_property "spark.yarn.dist.archives" "maprfs://${out_archive_remote}"
-    spark_set_property "spark.yarn.appMasterEnv.PYSPARK3_PYTHON" "./${out_archive_filename}/bin/python3"
-    local zeppelin_env_sh="${ZEPPELIN_HOME}/conf/zeppelin-env.sh"
-    cat >> "$zeppelin_env_sh" << EOF
-# Following lines added by DSR startup script
-export ZEPPELIN_SPARK_YARN_DIST_ARCHIVES="${ZEPPELIN_SPARK_YARN_DIST_ARCHIVES},maprfs://${out_archive_remote}"
-export PYSPARK3_PYTHON='./${out_archive_filename}/bin/python3'
 
 EOF
     return 0
