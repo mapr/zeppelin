@@ -128,6 +128,6 @@ fi
 export ZEPPELIN_JDBC_URL_DRILL="jdbc:drill:drillbit=localhost:31010"
 export ZEPPELIN_JDBC_URL_HIVE="jdbc:hive2://localhost:10000/default"
 if [ -e "${MAPR_TICKETFILE_LOCATION}" ]; then
-  ZEPPELIN_JDBC_URL_HIVE+=";auth=MAPRSASL"
+  ZEPPELIN_JDBC_URL_HIVE+=";auth=MAPRSASL;ssl=true"
   ZEPPELIN_JDBC_URL_DRILL+=";auth=MAPRSASL"
 fi

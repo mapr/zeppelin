@@ -33,27 +33,20 @@
   <version>0.8.0</version>
   <name>Zeppelin: JDBC Hive interpreter</name>
 
+  <properties>
+    <!--library versions-->
+    <interpreter.name>hive</interpreter.name>
+    <hive2.version>2.1.0</hive2.version>
+  </properties>
+
   <profiles>
     <profile>
       <id>mapr-mep-600</id>
       <properties>
-        <hive.version>2.3.3-mapr</hive.version>
+        <hive2.version>2.3.3-mapr</hive2.version>
       </properties>
-      <dependencies>
-        <dependency>
-          <groupId>org.apache.hive</groupId>
-          <artifactId>hive-jdbc</artifactId>
-          <version>${hive.version}</version>
-          <classifier>standalone</classifier>
-        </dependency>
-      </dependencies>
     </profile>
   </profiles>
-
-  <properties>
-    <!--library versions-->
-    <interpreter.name>hive</interpreter.name>
-  </properties>
 
   <dependencies>
     <dependency>
@@ -68,6 +61,35 @@
       <artifactId>zeppelin-jdbc</artifactId>
       <version>${project.version}</version>
       <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.hive</groupId>
+      <artifactId>hive-jdbc</artifactId>
+      <version>${hive2.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.hadoop</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.mapr.hadoop</groupId>
+          <artifactId>maprfs</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.mapr.security</groupId>
+          <artifactId>mapr-security-web</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.logging.log4j</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+        <exclusion>
+          <!-- Guava is already in MAPR_CLASSPATH -->
+          <groupId>com.google.guava</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
   </dependencies>
 
