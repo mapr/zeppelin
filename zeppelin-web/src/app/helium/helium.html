@@ -28,9 +28,10 @@ limitations under the License.
           </a>
           <button tabindex="0" role="button"
                   ng-repeat="pkgTypes in allPackageTypes"
+                  ng-if="pkgTypes != 'INTERPRETER'"
                   class="btn btn-default btn-sm heliumRepoBtn helium-popover"
-                  ng-class="($parent.pkgListByType === pkgTypes) ? 'heliumRepoBtnToggled' : ''"
-                  ng-click="$parent.pkgListByType = pkgTypes">
+                  ng-class="($parent.$parent.pkgListByType === pkgTypes) ? 'heliumRepoBtnToggled' : ''"
+                  ng-click="$parent.$parent.pkgListByType = pkgTypes">
             <i class="fa fa-cube"></i>
             {{pkgTypes}}
           </button>
