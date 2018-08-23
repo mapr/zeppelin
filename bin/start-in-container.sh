@@ -373,7 +373,22 @@ create_certificates
 zeppelin_configure
 
 
-if [ "$DEPLOY_MODE" = "kubernetes" ]; then
+
+# DSR-42
+# Ensure that DEPLOY_MODE variable is not set as it affects Spark behaviour.
+if [ -n "$DEPLOY_MODE" ]; then
+    log_warn "'DEPLOY_MODE' parameter is obsolete. Use 'ZEPPELIN_DEPLOY_MODE' instead."
+
+    # Backward compatibility with DEPLOY_MODE parameter.
+    if [ -z "$ZEPPELIN_DEPLOY_MODE" ]; then
+        ZEPPELIN_DEPLOY_MODE="$DEPLOY_MODE"
+    fi
+
+    unset DEPLOY_MODE
+fi
+
+
+if [ "$ZEPPELIN_DEPLOY_MODE" = "kubernetes" ]; then
     exec "${ZEPPELIN_HOME}/bin/zeppelin.sh" start
 else
     exec "${ZEPPELIN_HOME}/bin/zeppelin-daemon.sh" start
