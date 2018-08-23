@@ -79,6 +79,11 @@ if [ -x /usr/bin/id ]; then
     LOGNAME=${LOGNAME:-$USER}
     MAIL=${MAIL:-"/var/spool/mail/$USER"}
     export USER LOGNAME MAIL
+
+    if [ -x /usr/bin/getent ]; then
+        HOME=$(/usr/bin/getent passwd $USER | cut -d ':' -f 6)
+        export HOME
+    fi
 fi
 
 cd ~

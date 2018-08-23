@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# Fix for Ubuntu issues with environment variables for non-root user in Docker.
+MAPR_ENV_FILE="/etc/profile.d/mapr.sh"
+if [ -e "$MAPR_ENV_FILE" ]; then
+  . "$MAPR_ENV_FILE"
+fi
+
+
 MAPR_HOME=${MAPR_HOME:-/opt/mapr}
 MAPR_CLUSTER=${MAPR_CLUSTER:-my.cluster.com}
 
