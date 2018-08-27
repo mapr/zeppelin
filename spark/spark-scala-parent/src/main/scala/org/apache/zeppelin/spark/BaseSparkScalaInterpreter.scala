@@ -20,6 +20,8 @@ package org.apache.zeppelin.spark
 
 import java.io.File
 
+import org.apache.hadoop.yarn.client.api.YarnClient
+import org.apache.hadoop.yarn.conf.YarnConfiguration
 import org.apache.spark.sql.SQLContext
 import org.apache.spark.{JobProgressUtil, SparkConf, SparkContext}
 import org.apache.zeppelin.interpreter.thrift.InterpreterCompletion
@@ -34,6 +36,7 @@ import scala.util.control.NonFatal
 /**
   * Base class for different scala versions of SparkInterpreter. It should be
   * binary compatible between multiple scala versions.
+  *
   * @param conf
   * @param depFiles
   */
@@ -216,10 +219,8 @@ abstract class BaseSparkScalaInterpreter(val conf: SparkConf,
     getUserFiles().foreach(file => sc.addFile(file))
     sqlContext = sparkSession.getClass.getMethod("sqlContext").invoke(sparkSession)
       .asInstanceOf[SQLContext]
-    sc.getClass.getMethod("uiWebUrl").invoke(sc).asInstanceOf[Option[String]] match {
-      case Some(url) => sparkUrl = url
-      case None =>
-    }
+
+    sparkUrl = if (isOnYarnCluster(sc)) sparkYarnAppUrl(sc) else sparkLocalAppUrl(sc)
 
     bind("spark", sparkSession.getClass.getCanonicalName, sparkSession, List("""@transient"""))
     bind("sc", "org.apache.spark.SparkContext", sc, List("""@transient"""))
@@ -230,6 +231,29 @@ abstract class BaseSparkScalaInterpreter(val conf: SparkConf,
     interpret("import spark.sql")
     interpret("import org.apache.spark.sql.functions._")
   }
+
+  private def sparkYarnAppUrl(sc: SparkContext): String = {
+    val yarnClient = createYarnClient(sc)
+    val yarnApps = yarnClient.getApplications.asScala
+    yarnApps.find(_.getApplicationId.toString == sc.applicationId) match {
+      case Some(x) => x.getTrackingUrl
+      case None => sparkLocalAppUrl(sc)
+    }
+  }
+
+  private def createYarnClient(sc: SparkContext): YarnClient = {
+    val hadoopConf = sc.hadoopConfiguration
+    val yarnConf = new YarnConfiguration(hadoopConf)
+    val yarnClient = YarnClient.createYarnClient
+    yarnClient.init(yarnConf)
+    yarnClient.start()
+    return yarnClient
+  }
+
+  private def sparkLocalAppUrl(sc: SparkContext): String = sc.uiWebUrl.getOrElse("")
+
+  private def isOnYarnCluster(sc: SparkContext): Boolean =
+    sc.master == "yarn" && sc.deployMode == "cluster"
 
   private def isSparkSessionPresent(): Boolean = {
     try {
