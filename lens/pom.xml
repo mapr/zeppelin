@@ -174,4 +174,22 @@
     </plugins>
   </build>
 
+  <profiles>
+    <profile>
+      <id>mapr-mep-600</id>
+      <properties>
+        <hadoop-common.version>2.7.0-mapr-1710-SNAPSHOT</hadoop-common.version>
+      </properties>
+      <dependencyManagement>
+        <dependencies>
+          <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-common</artifactId>
+            <scope>provided</scope>
+          </dependency>
+        </dependencies>
+      </dependencyManagement>
+    </profile>
+  </profiles>
+
 </project>

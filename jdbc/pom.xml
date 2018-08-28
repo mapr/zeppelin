@@ -226,6 +226,13 @@
         </dependency>
       </dependencies>
     </profile>
+
+    <profile>
+      <id>mapr-mep-600</id>
+      <properties>
+        <hadoop.common.version>2.7.0-mapr-1710-SNAPSHOT</hadoop.common.version>
+      </properties>
+    </profile>
   </profiles>
   
   <properties>

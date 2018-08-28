@@ -590,4 +590,19 @@
     </plugins>
   </build>
 
+  <profiles>
+    <profile>
+      <id>mapr-mep-600</id>
+      <dependencyManagement>
+        <dependencies>
+          <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-client</artifactId>
+            <version>2.7.0-mapr-1710-SNAPSHOT</version>
+            <scope>provided</scope>
+          </dependency>
+        </dependencies>
+      </dependencyManagement>
+    </profile>
+  </profiles>
 </project>

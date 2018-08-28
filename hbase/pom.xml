@@ -127,4 +127,26 @@
     </plugins>
   </build>
 
+  <profiles>
+    <profile>
+      <id>mapr-mep-600</id>
+      <properties>
+        <hbase.hadoop.version>2.7.0-mapr-1710-SNAPSHOT</hbase.hadoop.version>
+      </properties>
+      <dependencyManagement>
+        <dependencies>
+          <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-yarn-common</artifactId>
+            <scope>provided</scope>
+          </dependency>
+          <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-yarn-api</artifactId>
+            <scope>provided</scope>
+          </dependency>
+        </dependencies>
+      </dependencyManagement>
+    </profile>
+  </profiles>
 </project>

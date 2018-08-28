@@ -1141,6 +1141,47 @@
         </plugins>
       </build>
     </profile>
+
+    <profile>
+      <id>mapr-mep-600</id>
+      <dependencyManagement>
+        <dependencies>
+          <dependency>
+            <groupId>org.apache.zookeeper</groupId>
+            <artifactId>zookeeper</artifactId>
+            <version>3.4.11-mapr-SNAPSHOT</version>
+            <scope>provided</scope>
+          </dependency>
+        </dependencies>
+      </dependencyManagement>
+      <build>
+        <plugins>
+          <plugin>
+            <!--
+              Disable enforcer checks, as it does not respect dependeny versions configured
+              through mapr-mep-600 profile, and fails.
+            -->
+            <artifactId>maven-enforcer-plugin</artifactId>
+            <version>${plugin.enforcer.version}</version>
+            <executions>
+              <execution>
+                <id>enforce</id>
+                <configuration>
+                  <rules>
+                    <DependencyConvergence/>
+                  </rules>
+                  <failFast>true</failFast>
+                  <skip>true</skip>
+                </configuration>
+                <goals>
+                  <goal>enforce</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
   </profiles>
 
 </project>
