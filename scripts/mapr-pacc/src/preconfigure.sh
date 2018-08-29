@@ -5,13 +5,13 @@ MAPR_HOME=${MAPR_HOME:-/opt/mapr}
 install_python_modules_debian() {
     apt-get install --no-install-recommends -q -y gcc python-dev python-setuptools
     easy_install pip
-    pip install matplotlib numpy pandas
+    pip install matplotlib numpy pandas jupyter grpcio protobuf
 }
 
 install_python_modules_redhat() {
     yum install -y gcc python-devel python-setuptools
     easy_install pip
-    pip install matplotlib numpy pandas
+    pip install matplotlib numpy pandas jupyter grpcio protobuf
 }
 
 install_r_modules_debian() {
