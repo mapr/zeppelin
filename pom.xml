@@ -148,6 +148,8 @@
     <dropwizard.version>4.1.14</dropwizard.version>
     <micrometer.version>1.6.0</micrometer.version>
 
+    <zookeeper.version>3.5.6.0-mapr-SNAPSHOT</zookeeper.version>
+
     <hadoop2.7.version>2.7.6.300-eep-820-SNAPSHOT</hadoop2.7.version>
     <hadoop2.6.version>2.6.5</hadoop2.6.version>
     <hadoop3.0.version>3.0.3</hadoop3.0.version>
@@ -1039,6 +1041,13 @@
         <artifactId>neo4j</artifactId>
         <version>${testcontainers.version}</version>
         <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.zookeeper</groupId>
+        <artifactId>zookeeper</artifactId>
+        <version>${zookeeper.version}</version>
+        <scope>provided</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>
