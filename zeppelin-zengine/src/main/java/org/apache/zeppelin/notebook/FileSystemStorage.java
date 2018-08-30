@@ -9,6 +9,7 @@ import org.apache.hadoop.fs.RawLocalFileSystem;
 import org.apache.hadoop.fs.permission.FsPermission;
 import org.apache.hadoop.io.IOUtils;
 import org.apache.hadoop.security.UserGroupInformation;
+import org.apache.hadoop.security.UserGroupInformation.AuthenticationMethod;
 import org.apache.zeppelin.conf.ZeppelinConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +40,7 @@ public class FileSystemStorage {
   // only do UserGroupInformation.loginUserFromKeytab one time, otherwise you will still get
   // your ticket expired.
   static {
-    if (UserGroupInformation.isSecurityEnabled()) {
+    if (isKerberosSecurityEnabled()) {
       ZeppelinConfiguration zConf = ZeppelinConfiguration.create();
       String keytab = zConf.getString(
           ZeppelinConfiguration.ConfVars.ZEPPELIN_SERVER_KERBEROS_KEYTAB);
@@ -261,4 +262,20 @@ public class FileSystemStorage {
     }
   }
 
+  private static boolean isKerberosSecurityEnabled() {
+    return UserGroupInformation.isSecurityEnabled() && isCurrentUserAuthenticatedWithKerberos();
+  }
+
+  private static boolean isCurrentUserAuthenticatedWithKerberos() {
+    return AuthenticationMethod.KERBEROS.equals(getCurrentUserAuthMethod());
+  }
+
+  private static AuthenticationMethod getCurrentUserAuthMethod() {
+    try {
+      return UserGroupInformation.getCurrentUser().getAuthenticationMethod();
+    } catch (IOException e) {
+      LOGGER.warn("Couldn't get user authentication method for current user: " + e.getMessage());
+      return null;
+    }
+  }
 }
