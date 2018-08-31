@@ -324,6 +324,12 @@
         <scope>test</scope>
       </dependency>
 
+      <dependency>
+        <groupId>org.apache.zookeeper</groupId>
+        <artifactId>zookeeper</artifactId>
+        <version>3.4.11-mapr-SNAPSHOT</version>
+        <scope>provided</scope>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -497,6 +503,7 @@
                 <DependencyConvergence/>
               </rules>
               <failFast>true</failFast>
+              <skip>true</skip>
             </configuration>
             <goals>
               <goal>enforce</goal>

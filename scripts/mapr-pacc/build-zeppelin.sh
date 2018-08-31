@@ -1,12 +1,16 @@
 #!/bin/bash
 
 BUILD_ALL=true
+PUSH_IMAGES=false
 for arg in "$@"; do
     case "$arg" in
         -d|--devel)
             export DOCKER_REPO=${DOCKER_REPO:-"maprtech/testzepplinpacc"}
             export IMAGE_VERSION=${IMAGE_VERSION:-$(date -u "+%Y%m%d%H%M")}
             export MAPR_REPO_ROOT=${MAPR_REPO_ROOT:-"http://artifactory.devops.lab/artifactory/prestage/releases-dev"}
+            ;;
+        -p|--push)
+            PUSH_IMAGES=true
             ;;
         centos7)
             BUILD_CENTOS7=true
@@ -44,10 +48,16 @@ if [ "$BUILD_CENTOS7" = "true" ]; then
     echo "Building centos7"
     getMaprSetup src/
     docker build -t "${DOCKER_REPO}:${IMAGE_VERSION}_centos7" --build-arg MAPR_REPO_ROOT="${MAPR_REPO_ROOT}" -f src/centos7/Dockerfile src/
+    if [ "$PUSH_IMAGES" = "true" ]; then
+        docker push "${DOCKER_REPO}:${IMAGE_VERSION}_centos7"
+    fi
 fi
 
 if [ "$BUILD_UBUNTU16" = "true" ]; then
     echo "Building ubuntu16"
     getMaprSetup src/
     docker build -t "${DOCKER_REPO}:${IMAGE_VERSION}_ubuntu16" --build-arg MAPR_REPO_ROOT="${MAPR_REPO_ROOT}" -f src/ubuntu16/Dockerfile src/
+    if [ "$PUSH_IMAGES" = "true" ]; then
+        docker push "${DOCKER_REPO}:${IMAGE_VERSION}_ubuntu16"
+    fi
 fi

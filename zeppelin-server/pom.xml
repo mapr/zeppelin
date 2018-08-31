@@ -375,6 +375,14 @@
       <scope>test</scope>
     </dependency>
 
+    <dependency>
+      <groupId>org.apache.hadoop</groupId>
+      <artifactId>hadoop-common</artifactId>
+      <version>2.7.0-mapr-1710-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
+
+
   </dependencies>
   <build>
     <plugins>
@@ -521,13 +529,6 @@
         <zeppelin.daemon.package.base>
 	        ../zeppelin-distribution/target/zeppelin-${project.version}/zeppelin-${project.version}/bin
         </zeppelin.daemon.package.base>
-      </properties>
-    </profile>
-
-    <profile>
-      <id>mapr-mep-600</id>
-      <properties>
-        <hadoop-common.version>2.7.0-mapr-1710-SNAPSHOT</hadoop-common.version>
       </properties>
     </profile>
   </profiles>
