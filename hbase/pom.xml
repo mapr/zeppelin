@@ -36,7 +36,7 @@
     <!--library versions-->
     <interpreter.name>hbase</interpreter.name>
     <hbase.hbase.version>1.0.0</hbase.hbase.version>
-    <hbase.hadoop.version>2.6.0</hbase.hadoop.version>
+    <hbase.hadoop.version>2.7.0-mapr-1710-SNAPSHOT</hbase.hadoop.version>
     <jruby.version>1.6.8</jruby.version>
     <protobuf.version>2.5.0</protobuf.version>
     <commons.exec.version>1.1</commons.exec.version>
@@ -80,11 +80,13 @@
       <groupId>org.apache.hadoop</groupId>
       <artifactId>hadoop-yarn-common</artifactId>
       <version>${hbase.hadoop.version}</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.hadoop</groupId>
       <artifactId>hadoop-yarn-api</artifactId>
       <version>${hbase.hadoop.version}</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.hbase</groupId>
@@ -127,26 +129,4 @@
     </plugins>
   </build>
 
-  <profiles>
-    <profile>
-      <id>mapr-mep-600</id>
-      <properties>
-        <hbase.hadoop.version>2.7.0-mapr-1710-SNAPSHOT</hbase.hadoop.version>
-      </properties>
-      <dependencyManagement>
-        <dependencies>
-          <dependency>
-            <groupId>org.apache.hadoop</groupId>
-            <artifactId>hadoop-yarn-common</artifactId>
-            <scope>provided</scope>
-          </dependency>
-          <dependency>
-            <groupId>org.apache.hadoop</groupId>
-            <artifactId>hadoop-yarn-api</artifactId>
-            <scope>provided</scope>
-          </dependency>
-        </dependencies>
-      </dependencyManagement>
-    </profile>
-  </profiles>
 </project>

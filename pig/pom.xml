@@ -38,8 +38,8 @@
 
     <properties>
         <interpreter.name>pig</interpreter.name>
-        <pig.version>0.17.0</pig.version>
-        <hadoop.version>2.6.0</hadoop.version>
+        <pig.version>0.16.0-mapr-1703</pig.version>
+        <hadoop.version>2.7.0-mapr-1710-SNAPSHOT</hadoop.version>
         <tez.version>0.7.0</tez.version>
         <pig.spark.version>1.6.3</pig.spark.version>
         <pig.scala.version>2.10</pig.scala.version>
@@ -98,6 +98,7 @@
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-client</artifactId>
             <version>${hadoop.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <!--
@@ -208,23 +209,4 @@
             </plugin>
         </plugins>
     </build>
-
-    <profiles>
-        <profile>
-            <id>mapr-mep-600</id>
-            <properties>
-                <hadoop.version>2.7.0-mapr-1710-SNAPSHOT</hadoop.version>
-                <pig.version>0.16.0-mapr-1703</pig.version>
-            </properties>
-            <dependencyManagement>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.apache.hadoop</groupId>
-                        <artifactId>hadoop-client</artifactId>
-                        <scope>provided</scope>
-                    </dependency>
-                </dependencies>
-            </dependencyManagement>
-        </profile>
-    </profiles>
 </project>

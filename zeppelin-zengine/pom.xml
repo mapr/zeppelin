@@ -36,7 +36,7 @@
 
   <properties>
     <!--library versions-->
-    <hadoop.version>2.7.3</hadoop.version>
+    <hadoop.version>2.7.0-mapr-1710-SNAPSHOT</hadoop.version>
     <commons.lang3.version>3.4</commons.lang3.version>
     <commons.vfs2.version>2.0</commons.vfs2.version>
     <gcs.storage.version>1.14.0</gcs.storage.version>
@@ -427,6 +427,7 @@
           <groupId>org.apache.hadoop</groupId>
           <artifactId>hadoop-client</artifactId>
           <version>${hadoop.version}</version>
+          <scope>provided</scope>
           <exclusions>
             <exclusion>
               <groupId>com.sun.jersey</groupId>
@@ -717,6 +718,7 @@
           <groupId>org.apache.hadoop</groupId>
           <artifactId>hadoop-azure</artifactId>
           <version>${hadoop.version}</version>
+          <scope>provided</scope>
           <exclusions>
             <exclusion>
               <groupId>com.fasterxml.jackson.core</groupId>
@@ -755,6 +757,7 @@
           <groupId>org.apache.hadoop</groupId>
           <artifactId>hadoop-aws</artifactId>
           <version>${hadoop.version}</version>
+          <scope>provided</scope>
           <exclusions>
             <exclusion>
               <groupId>com.amazonaws</groupId>
@@ -903,32 +906,6 @@
           </exclusions>
         </dependency>
       </dependencies>
-    </profile>
-
-    <profile>
-      <id>mapr-mep-600</id>
-      <properties>
-        <hadoop.version>2.7.0-mapr-1710-SNAPSHOT</hadoop.version>
-      </properties>
-      <dependencyManagement>
-        <dependencies>
-          <dependency>
-            <groupId>org.apache.hadoop</groupId>
-            <artifactId>hadoop-client</artifactId>
-            <scope>provided</scope>
-          </dependency>
-          <dependency>
-            <groupId>org.apache.hadoop</groupId>
-            <artifactId>hadoop-azure</artifactId>
-            <scope>provided</scope>
-          </dependency>
-          <dependency>
-            <groupId>org.apache.hadoop</groupId>
-            <artifactId>hadoop-aws</artifactId>
-            <scope>provided</scope>
-          </dependency>
-        </dependencies>
-      </dependencyManagement>
     </profile>
   </profiles>
 </project>

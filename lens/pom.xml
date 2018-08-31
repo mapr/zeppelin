@@ -37,7 +37,7 @@
     <interpreter.name>lens</interpreter.name>
     <lens.version>2.5.0-beta</lens.version>
     <spring-shell.version>1.1.0.RELEASE</spring-shell.version>
-    <hadoop-common.version>2.4.0</hadoop-common.version>
+    <hadoop-common.version>2.7.0-mapr-1710-SNAPSHOT</hadoop-common.version>
     <checkerframework.jdk7.version>1.9.1</checkerframework.jdk7.version>
     <jackson.asl.version>1.9.13</jackson.asl.version>
     <jackson.version>1.9.11</jackson.version>
@@ -136,6 +136,7 @@
       <groupId>org.apache.hadoop</groupId>
       <artifactId>hadoop-common</artifactId>
       <version>${hadoop-common.version}</version>
+      <scope>provided</scope>
       <exclusions>
           <exclusion>
             <groupId>com.sun.jersey</groupId>
@@ -173,23 +174,5 @@
       </plugin>
     </plugins>
   </build>
-
-  <profiles>
-    <profile>
-      <id>mapr-mep-600</id>
-      <properties>
-        <hadoop-common.version>2.7.0-mapr-1710-SNAPSHOT</hadoop-common.version>
-      </properties>
-      <dependencyManagement>
-        <dependencies>
-          <dependency>
-            <groupId>org.apache.hadoop</groupId>
-            <artifactId>hadoop-common</artifactId>
-            <scope>provided</scope>
-          </dependency>
-        </dependencies>
-      </dependencyManagement>
-    </profile>
-  </profiles>
 
 </project>

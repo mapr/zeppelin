@@ -257,6 +257,8 @@
             <id>mapr-mep-600</id>
             <properties>
                 <spark.version>2.3.1-mapr-SNAPSHOT</spark.version>
+                <protobuf.version>2.5.0</protobuf.version>
+                <spark.py4j.version>0.10.6</spark.py4j.version>
            </properties>
        </profile>
 
