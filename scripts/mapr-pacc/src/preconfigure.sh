@@ -14,20 +14,6 @@ install_python_modules_redhat() {
     pip install matplotlib numpy pandas jupyter grpcio protobuf
 }
 
-install_r_modules_debian() {
-    apt-get install --no-install-recommends -q -y r-base r-base-dev
-    R --vanilla <<'EOF'
-install.packages(c("data.table", "ggplot2", "googleVis", "knitr"), repos="https://cloud.r-project.org/")
-EOF
-}
-
-install_r_modules_redhat() {
-    yum install -y R-core R-core-devel
-    R --vanilla <<'EOF'
-install.packages(c("data.table", "ggplot2", "googleVis", "knitr"), repos="https://cloud.r-project.org/")
-EOF
-}
-
 install_zeppelin_debian() {
     dpkg -i /tmp/mapr-zeppelin_*.deb
     rm /tmp/mapr-zeppelin_*.deb
@@ -57,14 +43,12 @@ if [ -e "/etc/debian_version" ]; then
     export DEBIAN_FRONTEND=noninteractive
     apt-get update -qq
     install_python_modules_debian
-    install_r_modules_debian
     install_zeppelin_debian
     clean_repos_debian
 fi
 
 if [ -e "/etc/redhat-release" ]; then
     install_python_modules_redhat
-    install_r_modules_redhat
     install_zeppelin_redhat
     clean_repos_redhat
 fi
