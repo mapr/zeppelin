@@ -119,6 +119,7 @@ export SPARK_HOME="${MAPR_HOME}/spark/spark-${SPARK_VERSION}"
 
 HADOOP_VERSION=$(cat "${MAPR_HOME}/hadoop/hadoopversion")
 export HADOOP_HOME="${MAPR_HOME}/hadoop/hadoop-${HADOOP_VERSION}"
+export HADOOP_CONF_DIR="${HADOOP_HOME}/etc/hadoop"
 
 
 # Container specific configuration
