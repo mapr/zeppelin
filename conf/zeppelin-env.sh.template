@@ -79,8 +79,7 @@
 # export HADOOP_CONF_DIR         		# yarn-site.xml is located in configuration directory in HADOOP_CONF_DIR.
 # Pyspark (supported with Spark 1.2.1 and above)
 # To configure pyspark, you need to set spark distribution's path to 'spark.home' property in Interpreter setting screen in Zeppelin GUI
-# export PYSPARK_PYTHON                         # path to the python command. must be the same path on the driver(Zeppelin) and all workers.
-# export PYSPARK_DRIVER_PYTH0N=$PYSPARK_PYTHON  # path to the python command. must be the same path on the driver(Zeppelin) and all workers.
+# export PYSPARK_PYTHON          		# path to the python command. must be the same path on the driver(Zeppelin) and all workers.
 # export PYTHONPATH
 
 ## Spark interpreter options ##
@@ -106,20 +105,30 @@
 
 #### Zeppelin impersonation configuration
 # export ZEPPELIN_IMPERSONATE_CMD       # Optional, when user want to run interpreter as end web user. eg) 'sudo -H -u ${ZEPPELIN_IMPERSONATE_USER} bash -c '
+export ZEPPELIN_IMPERSONATE_CMD='sudo -H -u ${ZEPPELIN_IMPERSONATE_USER} bash -c '
 # export ZEPPELIN_IMPERSONATE_SPARK_PROXY_USER  #Optional, by default is true; can be set to false if you don't want to use --proxy-user option with Spark interpreter when impersonation enabled
 
 
 export MAPR_HOME=${MAPR_HOME:-"/opt/mapr"}
 
+if [ -z "$ZEPPELIN_HOME" ]; then
+    ZEPPELIN_VERSION=$(cat "${MAPR_HOME}/zeppelin/zeppelinversion")
+    export ZEPPELIN_HOME="${MAPR_HOME}/zeppelin/zeppelin-${ZEPPELIN_VERSION}"
+fi
 
-export ZEPPELIN_IMPERSONATE_CMD='sudo -H -u ${ZEPPELIN_IMPERSONATE_USER} bash -c '
+if [ -z "$SPARK_HOME" ]; then
+    SPARK_VERSION=$(cat "${MAPR_HOME}/spark/sparkversion")
+    export SPARK_HOME="${MAPR_HOME}/spark/spark-${SPARK_VERSION}"
+fi
 
-SPARK_VERSION=$(cat "${MAPR_HOME}/spark/sparkversion")
-export SPARK_HOME="${MAPR_HOME}/spark/spark-${SPARK_VERSION}"
+if [ -z "$HADOOP_HOME" ]; then
+    HADOOP_VERSION=$(cat "${MAPR_HOME}/hadoop/hadoopversion")
+    export HADOOP_HOME="${MAPR_HOME}/hadoop/hadoop-${HADOOP_VERSION}"
+fi
 
-HADOOP_VERSION=$(cat "${MAPR_HOME}/hadoop/hadoopversion")
-export HADOOP_HOME="${MAPR_HOME}/hadoop/hadoop-${HADOOP_VERSION}"
-export HADOOP_CONF_DIR="${HADOOP_HOME}/etc/hadoop"
+if [ -z "$HADOOP_CONF_DIR" ]; then
+    export HADOOP_CONF_DIR="${HADOOP_HOME}/etc/hadoop"
+fi
 
 
 # Container specific configuration
@@ -129,6 +138,33 @@ fi
 export ZEPPELIN_JDBC_URL_DRILL="jdbc:drill:drillbit=localhost:31010"
 export ZEPPELIN_JDBC_URL_HIVE="jdbc:hive2://localhost:10000/default"
 if [ -e "${MAPR_TICKETFILE_LOCATION}" ]; then
-  ZEPPELIN_JDBC_URL_HIVE+=";auth=MAPRSASL;ssl=true"
-  ZEPPELIN_JDBC_URL_DRILL+=";auth=MAPRSASL"
+    ZEPPELIN_JDBC_URL_HIVE+=";auth=MAPRSASL;ssl=true"
+    ZEPPELIN_JDBC_URL_DRILL+=";auth=MAPRSASL"
+fi
+
+# HTTPS by default
+export ZEPPELIN_SSL=true
+export ZEPPELIN_SSL_PORT="${ZEPPELIN_SSL_PORT:-9995}"
+export ZEPPELIN_SSL_KEYSTORE_PATH="${ZEPPELIN_HOME}/conf/keys/ssl_keystore"
+export ZEPPELIN_SSL_KEYSTORE_PASSWORD="mapr123"
+export ZEPPELIN_SSL_KEYSTORE_TYPE="JKS"
+
+
+# Notebook Storage setup
+if [ -n "$ZEPPELIN_NOTEBOOK_DIR" ]; then
+    if echo "$ZEPPELIN_NOTEBOOK_DIR" | grep -q "^maprfs:"; then
+        export ZEPPELIN_NOTEBOOK_STORAGE="org.apache.zeppelin.notebook.repo.FileSystemNotebookRepo"
+    fi
+fi
+
+# Config Storage setup
+if [ -n "$ZEPPELIN_CONFIG_FS_DIR" ]; then
+    if echo "$ZEPPELIN_CONFIG_FS_DIR" | grep -q "^maprfs:"; then
+        export ZEPPELIN_CONFIG_STORAGE_CLASS="org.apache.zeppelin.storage.FileSystemConfigStorage"
+    fi
+fi
+
+
+if [ -e "${ZEPPELIN_HOME}/conf/zeppelin-env-dsr.sh" ]; then
+    . "${ZEPPELIN_HOME}/conf/zeppelin-env-dsr.sh"
 fi
