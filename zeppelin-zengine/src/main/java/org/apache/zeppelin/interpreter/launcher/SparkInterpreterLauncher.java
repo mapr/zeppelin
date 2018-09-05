@@ -25,7 +25,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -65,12 +67,14 @@ public class SparkInterpreterLauncher extends ShellScriptLauncher {
       sparkConfBuilder.append(" --master " + sparkMaster);
     }
     if (isYarnMode() && getDeployMode().equals("cluster")) {
+      List<String> files = new ArrayList<>();
       if (sparkProperties.containsKey("spark.files")) {
-        sparkProperties.put("spark.files", sparkProperties.getProperty("spark.files") + "," +
-            zConf.getConfDir() + "/log4j_yarn_cluster.properties");
-      } else {
-        sparkProperties.put("spark.files", zConf.getConfDir() + "/log4j_yarn_cluster.properties");
+        files.add(sparkProperties.getProperty("spark.files"));
       }
+      files.add(zConf.getConfDir() + "/log4j_yarn_cluster.properties");
+      files.add(zConf.getZeppelinHome() + "/interpreter/lib/python/mpl_config.py");
+      files.add(zConf.getZeppelinHome() + "/interpreter/lib/python/backend_zinline.py");
+      sparkProperties.put("spark.files", StringUtils.join(files, ","));
     }
     for (String name : sparkProperties.stringPropertyNames()) {
       sparkConfBuilder.append(" --conf " + name + "=" + sparkProperties.getProperty(name));
