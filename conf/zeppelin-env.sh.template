@@ -160,7 +160,7 @@ if [ -n "${MAPR_CONTAINER_USER}" ]; then
 fi
 
 # Build Hive JDBC URL
-ZEPPELIN_JDBC_URL_HIVE="jdbc:hive2://hivenode.cluster.com:10000/default"
+ZEPPELIN_JDBC_URL_HIVE="jdbc:hive2://hivenode:10000/default"
 if [ -e "${MAPR_TICKETFILE_LOCATION}" ]; then
     ZEPPELIN_JDBC_URL_HIVE+=";auth=MAPRSASL;ssl=true"
 fi
@@ -172,7 +172,7 @@ if [ -n "$MAPR_DRILLBITS_HOSTS" ]; then
 else if [ -n "$MAPR_ZK_QUORUM" ]; then
     ZEPPELIN_JDBC_URL_DRILL="jdbc:drill:zk=${MAPR_ZK_QUORUM}/drill/${MAPR_CLUSTER}"
 else
-    ZEPPELIN_JDBC_URL_DRILL="jdbc:drill:drillbit=drillbitnode.cluster.com:31010"
+    ZEPPELIN_JDBC_URL_DRILL="jdbc:drill:drillbit=drillbitnode:31010"
 fi
 if [ -e "${MAPR_TICKETFILE_LOCATION}" ]; then
     ZEPPELIN_JDBC_URL_DRILL+=";auth=MAPRSASL"
