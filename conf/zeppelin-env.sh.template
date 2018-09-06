@@ -131,17 +131,6 @@ if [ -z "$HADOOP_CONF_DIR" ]; then
 fi
 
 
-# Container specific configuration
-if [ -n "${MAPR_CONTAINER_USER}" ]; then
-    export ZEPPELIN_INTERPRETER_USER="${MAPR_CONTAINER_USER}"
-fi
-export ZEPPELIN_JDBC_URL_DRILL="jdbc:drill:drillbit=localhost:31010"
-export ZEPPELIN_JDBC_URL_HIVE="jdbc:hive2://localhost:10000/default"
-if [ -e "${MAPR_TICKETFILE_LOCATION}" ]; then
-    ZEPPELIN_JDBC_URL_HIVE+=";auth=MAPRSASL;ssl=true"
-    ZEPPELIN_JDBC_URL_DRILL+=";auth=MAPRSASL"
-fi
-
 # HTTPS by default
 export ZEPPELIN_SSL=true
 export ZEPPELIN_SSL_PORT="${ZEPPELIN_SSL_PORT:-9995}"
@@ -163,6 +152,32 @@ if [ -n "$ZEPPELIN_CONFIG_FS_DIR" ]; then
         export ZEPPELIN_CONFIG_STORAGE_CLASS="org.apache.zeppelin.storage.FileSystemConfigStorage"
     fi
 fi
+
+
+# Container specific configuration
+if [ -n "${MAPR_CONTAINER_USER}" ]; then
+    export ZEPPELIN_INTERPRETER_USER="${MAPR_CONTAINER_USER}"
+fi
+
+# Build Hive JDBC URL
+ZEPPELIN_JDBC_URL_HIVE="jdbc:hive2://hivenode.cluster.com:10000/default"
+if [ -e "${MAPR_TICKETFILE_LOCATION}" ]; then
+    ZEPPELIN_JDBC_URL_HIVE+=";auth=MAPRSASL;ssl=true"
+fi
+export ZEPPELIN_JDBC_URL_HIVE
+
+# Build Drill JDBC URL
+if [ -n "$MAPR_DRILLBITS_HOSTS" ]; then
+    ZEPPELIN_JDBC_URL_DRILL="jdbc:drill:drillbit=${MAPR_DRILLBITS_HOSTS}"
+else if [ -n "$MAPR_ZK_QUORUM" ]; then
+    ZEPPELIN_JDBC_URL_DRILL="jdbc:drill:zk=${MAPR_ZK_QUORUM}/drill/${MAPR_CLUSTER}"
+else
+    ZEPPELIN_JDBC_URL_DRILL="jdbc:drill:drillbit=drillbitnode.cluster.com:31010"
+fi
+if [ -e "${MAPR_TICKETFILE_LOCATION}" ]; then
+    ZEPPELIN_JDBC_URL_DRILL+=";auth=MAPRSASL"
+fi
+export ZEPPELIN_JDBC_URL_DRILL
 
 
 if [ -e "${ZEPPELIN_HOME}/conf/zeppelin-env-dsr.sh" ]; then
