@@ -21,7 +21,7 @@
       },
       "zeppelin.python.useIPython": {
         "propertyName": "zeppelin.python.useIPython",
-        "defaultValue": true,
+        "defaultValue": false,
         "description": "Whether use IPython when it is available in `%python`",
         "type": "checkbox"
       }
