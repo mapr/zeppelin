@@ -187,7 +187,7 @@
       "zeppelin.pyspark.useIPython": {
         "envName": null,
         "propertyName": "zeppelin.pyspark.useIPython",
-        "defaultValue": true,
+        "defaultValue": false,
         "description": "whether use IPython when it is available",
         "type": "checkbox"
       }
