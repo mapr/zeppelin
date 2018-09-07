@@ -153,6 +153,7 @@ if [ -n "$ZEPPELIN_CONFIG_FS_DIR" ]; then
     fi
 fi
 
+export ZEPPELIN_HELIUM_REGISTRY="helium,file://${ZEPPELIN_HOME}/conf/helium-repo.json"
 
 # Container specific configuration
 if [ -n "${MAPR_CONTAINER_USER}" ]; then
