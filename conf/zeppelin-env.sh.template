@@ -169,7 +169,7 @@ export ZEPPELIN_JDBC_URL_HIVE
 # Build Drill JDBC URL
 if [ -n "$MAPR_DRILLBITS_HOSTS" ]; then
     ZEPPELIN_JDBC_URL_DRILL="jdbc:drill:drillbit=${MAPR_DRILLBITS_HOSTS}"
-else if [ -n "$MAPR_ZK_QUORUM" ]; then
+elif [ -n "$MAPR_ZK_QUORUM" ]; then
     ZEPPELIN_JDBC_URL_DRILL="jdbc:drill:zk=${MAPR_ZK_QUORUM}/drill/${MAPR_CLUSTER}"
 else
     ZEPPELIN_JDBC_URL_DRILL="jdbc:drill:drillbit=drillbitnode:31010"
