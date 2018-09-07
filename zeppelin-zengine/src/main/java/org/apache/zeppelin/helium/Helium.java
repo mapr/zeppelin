@@ -99,6 +99,9 @@ public class Helium {
         if (uri.startsWith("http://") || uri.startsWith("https://")) {
           logger.info("Add helium online registry {}", uri);
           registry.add(new HeliumOnlineRegistry(uri, uri, registryCacheDir));
+        } else if (uri.startsWith("file://")) {
+          logger.info("Add helium file registry {}", uri);
+          registry.add(new HeliumFileRegistry(uri, uri));
         } else {
           logger.info("Add helium local registry {}", uri);
           registry.add(new HeliumLocalRegistry(uri, uri));
