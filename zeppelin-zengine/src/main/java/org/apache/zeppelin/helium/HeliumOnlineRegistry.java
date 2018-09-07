@@ -41,7 +41,6 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -103,23 +102,8 @@ public class HeliumOnlineRegistry extends HeliumRegistry {
       logger.error(uri() + " returned " + response.getStatusLine().toString());
       return readFromCache();
     } else {
-      List<HeliumPackage> packageList = new LinkedList<>();
-
-      BufferedReader reader;
-      reader = new BufferedReader(
-          new InputStreamReader(response.getEntity().getContent()));
-
-      List<Map<String, Map<String, HeliumPackage>>> packages = gson.fromJson(
-          reader,
-          new TypeToken<List<Map<String, Map<String, HeliumPackage>>>>() {
-          }.getType());
-      reader.close();
-
-      for (Map<String, Map<String, HeliumPackage>> pkg : packages) {
-        for (Map<String, HeliumPackage> versions : pkg.values()) {
-          packageList.addAll(versions.values());
-        }
-      }
+      List<HeliumPackage> packageList =
+              HeliumJsonUtils.parsePackages(response.getEntity().getContent(), gson);
 
       writeToCache(packageList);
       return packageList;
