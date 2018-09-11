@@ -22,7 +22,4 @@ COPY mapr-zeppelin_*.deb /tmp
 COPY preconfigure.sh /tmp
 RUN chmod +x /tmp/preconfigure.sh ; /tmp/preconfigure.sh ; rm /tmp/preconfigure.sh
 
-# Workaround for MZEP-59
-ENV DRILL_HOME /opt/mapr
-
 ENTRYPOINT ["/opt/mapr/installer/docker/mapr-setup.sh", "container"]

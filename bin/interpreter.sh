@@ -185,7 +185,7 @@ elif [[ "${INTERPRETER_ID}" == "drill" ]]; then
   ZEPPELIN_INTP_CLASSPATH+=":${ZEPPELIN_HOME}/interpreter/jdbc/*"
 
 elif [[ "${INTERPRETER_ID}" == "hive" ]]; then
-  ZEPPELIN_INTP_CLASSPATH+=":${ZEPPELIN_HOME}/interpreter/jdbc/*:$(mapr classpath)"
+  ZEPPELIN_INTP_CLASSPATH+=":${ZEPPELIN_HOME}/interpreter/jdbc/*:$(mapr classpath 2>/dev/null)"
 
 elif [[ "${INTERPRETER_ID}" == "hbase" ]]; then
   if [[ -n "${HBASE_CONF_DIR}" ]]; then
@@ -234,7 +234,7 @@ if [[ ! -z "$ZEPPELIN_IMPERSONATE_USER" ]]; then
 fi
 
 if [[ "${INTERPRETER_ID}" != "spark" ]]; then
-  ZEPPELIN_INTP_CLASSPATH+=":$(mapr classpath)"
+  ZEPPELIN_INTP_CLASSPATH+=":$(mapr classpath 2>/dev/null)"
 fi
 
 if [[ -n "${SPARK_SUBMIT}" ]]; then

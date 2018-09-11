@@ -74,6 +74,8 @@ if [ -x /usr/bin/id ]; then
     fi
 fi
 
+export DRILL_HOME="${DRILL_HOME:-/opt/mapr}"
+
 cd ~
 
 EOM
