@@ -143,6 +143,8 @@ export ZEPPELIN_SSL_KEYSTORE_TYPE="JKS"
 if [ -n "$ZEPPELIN_NOTEBOOK_DIR" ]; then
     if echo "$ZEPPELIN_NOTEBOOK_DIR" | grep -q "^maprfs:"; then
         export ZEPPELIN_NOTEBOOK_STORAGE="org.apache.zeppelin.notebook.repo.FileSystemNotebookRepo"
+    else
+        mkdir -p "$ZEPPELIN_NOTEBOOK_DIR"
     fi
 fi
 
@@ -150,6 +152,8 @@ fi
 if [ -n "$ZEPPELIN_CONFIG_FS_DIR" ]; then
     if echo "$ZEPPELIN_CONFIG_FS_DIR" | grep -q "^maprfs:"; then
         export ZEPPELIN_CONFIG_STORAGE_CLASS="org.apache.zeppelin.storage.FileSystemConfigStorage"
+    else
+        mkdir -p "$ZEPPELIN_CONFIG_FS_DIR"
     fi
 fi
 
