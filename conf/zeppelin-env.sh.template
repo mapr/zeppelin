@@ -139,6 +139,16 @@ export ZEPPELIN_SSL_KEYSTORE_PASSWORD="mapr123"
 export ZEPPELIN_SSL_KEYSTORE_TYPE="JKS"
 
 
+# Explicitly set Java Trust Store, as it can be overwritten on initialization of MapR libs
+# to /opt/mapr/conf/ssl_truststore, which is not exists on client setup, and may cause problems
+# on fetching something from internet using HTTPS
+if [ -e "/etc/debian_version" ]; then
+    export ZEPPELIN_JAVA_OPTS="$ZEPPELIN_JAVA_OPTS -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts "
+elif [ -e "/etc/redhat-release" ]; then
+    export ZEPPELIN_JAVA_OPTS="$ZEPPELIN_JAVA_OPTS -Djavax.net.ssl.trustStore=/etc/pki/java/cacerts "
+fi
+
+
 # Notebook Storage setup
 if [ -n "$ZEPPELIN_NOTEBOOK_DIR" ]; then
     if echo "$ZEPPELIN_NOTEBOOK_DIR" | grep -q "^maprfs:"; then
