@@ -46,7 +46,7 @@ BIN=$(cd "${BIN}">/dev/null; pwd)
 . "${BIN}/common.sh"
 . "${BIN}/functions.sh"
 
-MAPR_HOME=${MAPR_HOME:-/opt/mapr}
+export ZEPPELIN_PID_DIR="${MAPR_HOME}/pid"
 HOSTNAME=$(hostname)
 ZEPPELIN_NAME="Zeppelin"
 ZEPPELIN_LOGFILE="${ZEPPELIN_LOG_DIR}/zeppelin-${ZEPPELIN_IDENT_STRING}-${HOSTNAME}.log"
