@@ -29,7 +29,7 @@
       "spark.app.name": {
         "envName": "SPARK_APP_NAME",
         "propertyName": "spark.app.name",
-        "defaultValue": "Zeppelin",
+        "defaultValue": "Zeppelin Spark Session",
         "description": "The name of spark application.",
         "type": "string"
       },
