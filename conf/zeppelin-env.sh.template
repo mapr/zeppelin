@@ -169,10 +169,32 @@ fi
 
 export ZEPPELIN_HELIUM_REGISTRY="helium,file://${ZEPPELIN_HOME}/conf/helium-repo.json"
 
+
 # Container specific configuration
 if [ -n "${MAPR_CONTAINER_USER}" ]; then
     export ZEPPELIN_INTERPRETER_USER="${MAPR_CONTAINER_USER}"
 fi
+
+ensure_port() {
+    local links="$1"
+    local default_port="$2"
+    local res=""
+    local link host port
+    local IFS=","
+    for link in $links; do
+        host=$(echo "$link" | cut -d ':' -f 1)
+        port=$(echo "$link" | cut -d ':' -f 2)
+        if [ "$host" = "$port" ]; then
+            port="$default_port"
+        fi
+        if [ -z "$res" ]; then
+            res="$host:$port"
+        else
+            res="$res,$host:$port"
+        fi
+    done
+    echo "$res"
+}
 
 # Build Hive JDBC URL
 ZEPPELIN_JDBC_URL_HIVE="jdbc:hive2://hivenode:10000/default"
@@ -183,9 +205,11 @@ export ZEPPELIN_JDBC_URL_HIVE
 
 # Build Drill JDBC URL
 if [ -n "$MAPR_DRILLBITS_HOSTS" ]; then
-    ZEPPELIN_JDBC_URL_DRILL="jdbc:drill:drillbit=${MAPR_DRILLBITS_HOSTS}"
+    mapr_drillbits_hosts_cleaned=$(ensure_port "$MAPR_DRILLBITS_HOSTS" 31010)
+    ZEPPELIN_JDBC_URL_DRILL="jdbc:drill:drillbit=${mapr_drillbits_hosts_cleaned}"
 elif [ -n "$MAPR_ZK_QUORUM" ]; then
-    ZEPPELIN_JDBC_URL_DRILL="jdbc:drill:zk=${MAPR_ZK_QUORUM}/drill/${MAPR_CLUSTER}-drillbits"
+    mapr_zk_quorum_cleaned=$(ensure_port "$MAPR_ZK_QUORUM" 5181)
+    ZEPPELIN_JDBC_URL_DRILL="jdbc:drill:zk=${mapr_zk_quorum_cleaned}/drill/${MAPR_CLUSTER}-drillbits"
 else
     ZEPPELIN_JDBC_URL_DRILL="jdbc:drill:drillbit=drillbitnode:31010"
 fi
