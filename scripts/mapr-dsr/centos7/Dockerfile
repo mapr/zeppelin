@@ -37,7 +37,7 @@ RUN ZEPPELIN_VERSION="$(cat /opt/mapr/zeppelin/zeppelinversion)" ;\
     ZEPPELIN_HOME="/opt/mapr/zeppelin/zeppelin-${ZEPPELIN_VERSION}" ;\
     mkdir -p /opt/mapr/installer/docker/rc.d ;\
     cp "${ZEPPELIN_HOME}/scripts/mapr-dsr/misc/rc.d/20_zeppelin" /opt/mapr/installer/docker/rc.d ;\
-    cp "${ZEPPELIN_HOME}/scripts/mapr-dsr/misc/profile.d/mapr-dsr.sh" /etc/profile.d/mapr-dsr.sh
+    cat "${ZEPPELIN_HOME}/scripts/mapr-dsr/misc/profile.d/mapr.sh" >> /etc/profile.d/mapr.sh
 
 RUN rm /etc/yum.repos.d/mapr_*.repo ;\
     yum -q clean all ;\
