@@ -256,7 +256,7 @@
         <profile>
             <id>mapr-mep-600</id>
             <properties>
-                <spark.version>2.3.1-mapr-SNAPSHOT</spark.version>
+                <spark.version>2.3.1-mapr-1808</spark.version>
                 <protobuf.version>2.5.0</protobuf.version>
                 <spark.py4j.version>0.10.6</spark.py4j.version>
            </properties>
