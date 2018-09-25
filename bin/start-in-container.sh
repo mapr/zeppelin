@@ -3,7 +3,7 @@
 #
 # Fix for Ubuntu issues with environment variables for non-root user in Docker.
 #
-MAPR_ENV_FILE="/etc/profile.d/mapr-dsr.sh"
+MAPR_ENV_FILE="/etc/profile.d/mapr.sh"
 if [ -e "$MAPR_ENV_FILE" ]; then
   . "$MAPR_ENV_FILE"
 fi
