@@ -37,7 +37,7 @@
     <profile>
       <id>mapr-mep-600</id>
       <properties>
-        <simbadrill.version>1.5.9.1018</simbadrill.version>
+        <simbadrill.version>1.6.0.0000</simbadrill.version>
       </properties>
       <dependencies>
         <dependency>
