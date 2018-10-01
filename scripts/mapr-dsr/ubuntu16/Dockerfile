@@ -11,7 +11,7 @@ ARG MAPR_DSR_REPO_ROOT="https://package.mapr.com/labs/data-science-refinery"
 
 ENV container docker
 
-RUN export DEBIAN_FRONTEND=noninteractive && apt-get update -qq && apt-get install --no-install-recommends -q -y curl sudo tzdata wget apt-utils dnsutils file iputils-ping net-tools nfs-common openssl syslinux sysv-rc-conf libssl1.0.0 openjdk-8-jdk unzip && apt-get autoremove --purge -q -y && rm -rf /var/lib/apt/lists/* && apt-get clean -q
+RUN export DEBIAN_FRONTEND=noninteractive && apt-get update -qq && apt-get install --no-install-recommends -q -y curl sudo tzdata wget apt-transport-https apt-utils dnsutils file iputils-ping net-tools nfs-common openssl syslinux sysv-rc-conf libssl1.0.0 openjdk-8-jdk unzip && apt-get autoremove --purge -q -y && rm -rf /var/lib/apt/lists/* && apt-get clean -q
 
 RUN mkdir -p /opt/mapr/installer/docker/ ;\
     wget "$MAPR_SETUP_URL" -P /opt/mapr/installer/docker/ ;\
