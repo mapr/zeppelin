@@ -36,7 +36,7 @@
   <properties>
     <!--library versions-->
     <interpreter.name>drill</interpreter.name>
-    <simbadrill.version>1.6.0.0000</simbadrill.version>
+    <simbadrill.version>1.6.0.1001</simbadrill.version>
   </properties>
 
   <dependencies>
