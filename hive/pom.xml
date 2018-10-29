@@ -36,17 +36,8 @@
   <properties>
     <!--library versions-->
     <interpreter.name>hive</interpreter.name>
-    <hive2.version>2.1.0</hive2.version>
+    <hive2.version>2.3.3-mapr</hive2.version>
   </properties>
-
-  <profiles>
-    <profile>
-      <id>mapr-mep-600</id>
-      <properties>
-        <hive2.version>2.3.3-mapr</hive2.version>
-      </properties>
-    </profile>
-  </profiles>
 
   <dependencies>
     <dependency>

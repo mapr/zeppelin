@@ -33,39 +33,10 @@
   <version>0.8.0-mapr-SNAPSHOT</version>
   <name>Zeppelin: JDBC Drill interpreter</name>
 
-  <profiles>
-    <profile>
-      <id>mapr-mep-600</id>
-      <properties>
-        <simbadrill.version>1.6.0.0000</simbadrill.version>
-      </properties>
-      <dependencies>
-        <dependency>
-          <groupId>com.mapr.drill</groupId>
-          <artifactId>DrillJDBC41</artifactId>
-          <version>${simbadrill.version}</version>
-          <exclusions>
-            <exclusion>
-              <groupId>com.mapr.hadoop</groupId>
-              <artifactId>maprfs</artifactId>
-            </exclusion>
-            <exclusion>
-              <groupId>org.apache.hadoop</groupId>
-              <artifactId>hadoop-auth</artifactId>
-            </exclusion>
-            <exclusion>
-              <groupId>org.apache.hadoop</groupId>
-              <artifactId>hadoop-common</artifactId>
-            </exclusion>
-          </exclusions>
-        </dependency>
-      </dependencies>
-    </profile>
-  </profiles>
-
   <properties>
     <!--library versions-->
     <interpreter.name>drill</interpreter.name>
+    <simbadrill.version>1.6.0.0000</simbadrill.version>
   </properties>
 
   <dependencies>
@@ -81,6 +52,26 @@
       <artifactId>zeppelin-jdbc</artifactId>
       <version>${project.version}</version>
       <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.mapr.drill</groupId>
+      <artifactId>DrillJDBC41</artifactId>
+      <version>${simbadrill.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>com.mapr.hadoop</groupId>
+          <artifactId>maprfs</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.hadoop</groupId>
+          <artifactId>hadoop-auth</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.hadoop</groupId>
+          <artifactId>hadoop-common</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
   </dependencies>
 
