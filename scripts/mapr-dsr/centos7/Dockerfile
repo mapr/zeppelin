@@ -1,9 +1,9 @@
 FROM centos:centos7
 
-LABEL mapr.os=centos7 mapr.version=6.1.0 mapr.mep_version=6.0.0
+LABEL mapr.os=centos7 mapr.version=6.1.0 mapr.mep_version=6.1.0
 
 ARG MAPR_VERSION_CORE="6.1.0"
-ARG MAPR_VERSION_MEP="6.0.0"
+ARG MAPR_VERSION_MEP="6.1.0"
 ARG MAPR_VERSION_DSR="v1.3.1"
 ARG MAPR_REPO_ROOT="https://package.mapr.com/releases"
 ARG MAPR_SETUP_URL="${MAPR_REPO_ROOT}/installer/mapr-setup.sh"
