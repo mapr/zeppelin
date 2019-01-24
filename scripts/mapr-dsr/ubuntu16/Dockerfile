@@ -17,7 +17,7 @@ RUN mkdir -p /opt/mapr/installer/docker/ ;\
     wget "$MAPR_SETUP_URL" -P /opt/mapr/installer/docker/ ;\
     chmod +x /opt/mapr/installer/docker/mapr-setup.sh
 
-RUN /opt/mapr/installer/docker/mapr-setup.sh -r "$MAPR_REPO_ROOT" container client 6.1.0 6.0.0 mapr-client mapr-posix-client-container mapr-hbase mapr-pig mapr-spark mapr-kafka mapr-livy
+RUN /opt/mapr/installer/docker/mapr-setup.sh -r "$MAPR_REPO_ROOT" container client "$MAPR_VERSION_CORE" "$MAPR_VERSION_MEP" mapr-client mapr-posix-client-container mapr-hbase mapr-pig mapr-spark mapr-kafka mapr-livy
 
 RUN echo "deb ${MAPR_DSR_REPO_ROOT}/${MAPR_VERSION_DSR}/ubuntu binary trusty" > /etc/apt/sources.list.d/mapr_dsr.list
 
