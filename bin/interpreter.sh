@@ -228,6 +228,7 @@ if [[ ! -z "$ZEPPELIN_IMPERSONATE_USER" ]] && [[ -n "${suid}" || -z "${SPARK_SUB
     INTERPRETER_RUN_COMMAND+="'"
 fi
 
+echo "Interpreter launch command: $INTERPRETER_RUN_COMMAND"
 eval $INTERPRETER_RUN_COMMAND &
 pid=$!
 
