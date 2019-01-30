@@ -36,7 +36,7 @@
   <properties>
     <!--library versions-->
     <interpreter.name>hive</interpreter.name>
-    <hive2.version>2.3.3-mapr</hive2.version> <!-- No mapr-SNAPSHOT artifacts available? -->
+    <hive2.version>2.3.3-mapr-1901</hive2.version> <!-- No mapr-SNAPSHOT artifacts available? -->
   </properties>
 
   <dependencies>
