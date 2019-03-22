@@ -193,6 +193,18 @@
     <profiles>
 
         <profile>
+            <id>spark-2.4-mapr</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <spark.version>2.4.0.0-mapr-SNAPSHOT</spark.version>
+                <protobuf.version>2.5.0</protobuf.version>
+                <py4j.version>0.10.7</py4j.version>
+            </properties>
+        </profile>
+
+        <profile>
             <id>spark-2.4</id>
             <properties>
                 <spark.version>2.4.0</spark.version>
@@ -216,9 +228,6 @@
                 <spark.version>2.2.1</spark.version>
                 <py4j.version>0.10.4</py4j.version>
             </properties>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
             <modules>
                 <module>scala-2.10</module>
             </modules>
