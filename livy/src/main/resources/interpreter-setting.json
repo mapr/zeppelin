@@ -15,9 +15,23 @@
       "zeppelin.livy.session.create_timeout": {
         "envName": "ZEPPELIN_LIVY_SESSION_CREATE_TIMEOUT",
         "propertyName": "zeppelin.livy.session.create_timeout",
-        "defaultValue": "120",
+        "defaultValue": "180",
         "description": "Livy Server create session timeout (seconds).",
         "type": "number"
+      },
+      "livy.spark.yarn.dist.archives": {
+        "envName": "ZEPPELIN_SPARK_YARN_DIST_ARCHIVES",
+        "propertyName": "livy.spark.yarn.dist.archives",
+        "defaultValue": "",
+        "description": "Sets additional archives for spark",
+        "type": "string"
+      },
+      "livy.spark.yarn.appMasterEnv.PYSPARK_PYTHON": {
+        "envName": "PYSPARK_PYTHON",
+        "propertyName": "livy.spark.yarn.appMasterEnv.PYSPARK_PYTHON",
+        "defaultValue": "python",
+        "description": "Sets default python interpreter for PySpark",
+        "type": "string"
       },
       "livy.spark.driver.cores": {
         "propertyName": "livy.spark.driver.cores",
@@ -183,28 +197,6 @@
     "group": "livy",
     "name": "pyspark",
     "className": "org.apache.zeppelin.livy.LivyPySparkInterpreter",
-    "properties": {
-    },
-    "option": {
-      "remote": true,
-      "port": -1,
-      "perNote": "shared",
-      "perUser": "scoped",
-      "isExistingProcess": false,
-      "setPermission": false,
-      "users": []
-    },
-    "editor": {
-      "language": "python",
-      "editOnDblClick": false,
-      "completionKey": "TAB",
-      "completionSupport": true
-    }
-  },
-  {
-    "group": "livy",
-    "name": "pyspark3",
-    "className": "org.apache.zeppelin.livy.LivyPySpark3Interpreter",
     "properties": {
     },
     "option": {
