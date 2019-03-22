@@ -48,3 +48,4 @@ sparql          org.apache.zeppelin:zeppelin-sparql:0.9.0               Sparql i
 submarine       org.apache.zeppelin:zeppelin-submarine:0.9.0            Submarine interpreter
 maprdb          org.apache.zeppelin:zeppelin-maprdb:0.9.0               MapR-DB Shell interpreter
 drill           org.apache.zeppelin:zeppelin-drill:0.9.0                Jdbc Drill interpreter
+hive            org.apache.zeppelin:zeppelin-hive:0.9.0                 Jdbc Hive interpreter
