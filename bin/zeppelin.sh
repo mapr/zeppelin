@@ -39,6 +39,8 @@ bin=$(cd "${bin}">/dev/null; pwd)
 
 . "${bin}/common.sh"
 
+export ZEPPELIN_PID_DIR="${MAPR_HOME}/pid"
+
 if [ "$1" == "--version" ] || [ "$1" == "-v" ]; then
     getZeppelinVersion
 fi
