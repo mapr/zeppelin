@@ -15,14 +15,14 @@
       "spark.master": {
         "envName": "SPARK_MASTER",
         "propertyName": "spark.master",
-        "defaultValue": "local[*]",
+        "defaultValue": "yarn",
         "description": "Spark master uri. local | yarn-client | yarn-cluster | spark master address of standalone mode, ex) spark://master_host:7077",
         "type": "string"
       },
       "spark.submit.deployMode": {
         "envName": "",
         "propertyName": "spark.submit.deployMode",
-        "defaultValue": "",
+        "defaultValue": "cluster",
         "description": "The deploy mode of Spark driver program, either \"client\" or \"cluster\", Which means to launch driver program locally (\"client\") or remotely (\"cluster\") on one of the nodes inside the cluster.",
         "type": "string"
       },
@@ -111,6 +111,13 @@
         "defaultValue": true,
         "description": "Print scala REPL output",
         "type": "checkbox"
+      },
+      "spark.yarn.dist.archives": {
+        "envName": "ZEPPELIN_SPARK_YARN_DIST_ARCHIVES",
+        "propertyName": "spark.yarn.dist.archives",
+        "defaultValue": "",
+        "description": "Sets additional archives for spark",
+        "type": "string"
       },
       "zeppelin.spark.maxResult": {
         "envName": null,
