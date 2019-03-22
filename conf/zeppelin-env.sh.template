@@ -108,3 +108,121 @@
 #### Zeppelin impersonation configuration
 # export ZEPPELIN_IMPERSONATE_CMD       # Optional, when user want to run interpreter as end web user. eg) 'sudo -H -u ${ZEPPELIN_IMPERSONATE_USER} bash -c '
 # export ZEPPELIN_IMPERSONATE_SPARK_PROXY_USER  #Optional, by default is true; can be set to false if you don't want to use --proxy-user option with Spark interpreter when impersonation enabled
+
+
+export MAPR_HOME=${MAPR_HOME:-"/opt/mapr"}
+
+ZEPPELIN_VERSION_FILE="${MAPR_HOME}/zeppelin/zeppelinversion"
+if [ -z "$ZEPPELIN_HOME" ] && [ -e "$ZEPPELIN_VERSION_FILE" ]; then
+    ZEPPELIN_VERSION=$(cat "$ZEPPELIN_VERSION_FILE")
+    export ZEPPELIN_HOME="${MAPR_HOME}/zeppelin/zeppelin-${ZEPPELIN_VERSION}"
+fi
+
+SPARK_VERSION_FILE="${MAPR_HOME}/spark/sparkversion"
+if [ -z "$SPARK_HOME" ] && [ -e "$SPARK_VERSION_FILE" ]; then
+    SPARK_VERSION=$(cat "$SPARK_VERSION_FILE")
+    export SPARK_HOME="${MAPR_HOME}/spark/spark-${SPARK_VERSION}"
+fi
+
+HADOOP_VERSION_FILE="${MAPR_HOME}/hadoop/hadoopversion"
+if [ -z "$HADOOP_HOME" ] && [ -e "$HADOOP_VERSION_FILE" ]; then
+    HADOOP_VERSION=$(cat "$HADOOP_VERSION_FILE")
+    export HADOOP_HOME="${MAPR_HOME}/hadoop/hadoop-${HADOOP_VERSION}"
+fi
+
+if [ -z "$HADOOP_CONF_DIR" ] && [ -n "$HADOOP_HOME" ]; then
+    export HADOOP_CONF_DIR="${HADOOP_HOME}/etc/hadoop"
+fi
+
+
+# HTTPS by default
+export ZEPPELIN_SSL=${ZEPPELIN_SSL:-"true"}
+export ZEPPELIN_SSL_PORT="${ZEPPELIN_SSL_PORT:-"9995"}"
+export ZEPPELIN_SSL_KEYSTORE_PATH="${ZEPPELIN_HOME}/conf/keys/ssl_keystore"
+export ZEPPELIN_SSL_KEYSTORE_PASSWORD="mapr123"
+export ZEPPELIN_SSL_KEYSTORE_TYPE="JKS"
+
+
+# Explicitly set Java Trust Store, as it can be overwritten on initialization of MapR libs
+# to /opt/mapr/conf/ssl_truststore, which is not exists on client setup, and may cause problems
+# on fetching something from internet using HTTPS
+if [ -e "/etc/debian_version" ]; then
+    export ZEPPELIN_JAVA_OPTS="$ZEPPELIN_JAVA_OPTS -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts "
+elif [ -e "/etc/redhat-release" ]; then
+    export ZEPPELIN_JAVA_OPTS="$ZEPPELIN_JAVA_OPTS -Djavax.net.ssl.trustStore=/etc/pki/java/cacerts "
+fi
+
+
+# Notebook Storage setup
+if [ -n "$ZEPPELIN_NOTEBOOK_DIR" ]; then
+    if echo "$ZEPPELIN_NOTEBOOK_DIR" | grep -q "^maprfs:"; then
+        export ZEPPELIN_NOTEBOOK_STORAGE="org.apache.zeppelin.notebook.repo.FileSystemNotebookRepo"
+    else
+        mkdir -p "$ZEPPELIN_NOTEBOOK_DIR"
+    fi
+fi
+
+# Config Storage setup
+if [ -n "$ZEPPELIN_CONFIG_FS_DIR" ]; then
+    if echo "$ZEPPELIN_CONFIG_FS_DIR" | grep -q "^maprfs:"; then
+        export ZEPPELIN_CONFIG_STORAGE_CLASS="org.apache.zeppelin.storage.FileSystemConfigStorage"
+    else
+        mkdir -p "$ZEPPELIN_CONFIG_FS_DIR"
+    fi
+fi
+
+export ZEPPELIN_HELIUM_REGISTRY="helium,file://${ZEPPELIN_HOME}/conf/helium-repo.json"
+
+
+# Container specific configuration
+if [ -n "${MAPR_CONTAINER_USER}" ]; then
+    export ZEPPELIN_INTERPRETER_USER="${MAPR_CONTAINER_USER}"
+fi
+
+ensure_port() {
+    local links="$1"
+    local default_port="$2"
+    local res=""
+    local link host port
+    local IFS=","
+    for link in $links; do
+        host=$(echo "$link" | cut -d ':' -f 1)
+        port=$(echo "$link" | cut -d ':' -f 2)
+        if [ "$host" = "$port" ]; then
+            port="$default_port"
+        fi
+        if [ -z "$res" ]; then
+            res="$host:$port"
+        else
+            res="$res,$host:$port"
+        fi
+    done
+    echo "$res"
+}
+
+# Build Hive JDBC URL
+ZEPPELIN_JDBC_URL_HIVE="jdbc:hive2://hivenode:10000/default"
+if [ -e "${MAPR_TICKETFILE_LOCATION}" ]; then
+    ZEPPELIN_JDBC_URL_HIVE+=";auth=MAPRSASL;ssl=true"
+fi
+export ZEPPELIN_JDBC_URL_HIVE
+
+# Build Drill JDBC URL
+if [ -n "$MAPR_DRILLBITS_HOSTS" ]; then
+    mapr_drillbits_hosts_cleaned=$(ensure_port "$MAPR_DRILLBITS_HOSTS" 31010)
+    ZEPPELIN_JDBC_URL_DRILL="jdbc:drill:drillbit=${mapr_drillbits_hosts_cleaned}"
+elif [ -n "$MAPR_ZK_QUORUM" ]; then
+    mapr_zk_quorum_cleaned=$(ensure_port "$MAPR_ZK_QUORUM" 5181)
+    ZEPPELIN_JDBC_URL_DRILL="jdbc:drill:zk=${mapr_zk_quorum_cleaned}/drill/${MAPR_CLUSTER}-drillbits"
+else
+    ZEPPELIN_JDBC_URL_DRILL="jdbc:drill:drillbit=drillbitnode:31010"
+fi
+if [ -e "${MAPR_TICKETFILE_LOCATION}" ]; then
+    ZEPPELIN_JDBC_URL_DRILL+=";auth=MAPRSASL"
+fi
+export ZEPPELIN_JDBC_URL_DRILL
+
+
+if [ -e "${ZEPPELIN_HOME}/conf/zeppelin-env-dsr.sh" ]; then
+    . "${ZEPPELIN_HOME}/conf/zeppelin-env-dsr.sh"
+fi
