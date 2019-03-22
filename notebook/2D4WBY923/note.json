@@ -1,0 +1,309 @@
+{
+  "paragraphs": [
+    {
+      "text": "%md\n\n## Accessing MapR-DB in Zeppelin Using the MapR-DB OJAI Connector with Python\n\nThis section contains examples of Apache Spark Python jobs that use the MapR-DB OJAI Connector for Apache Spark to read and write MapR-DB JSON tables.",
+      "user": "anonymous",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv class\u003d\"markdown-body\"\u003e\n\u003ch2\u003eAccessing MapR-DB in Zeppelin Using the MapR-DB OJAI Connector with Python\u003c/h2\u003e\n\u003cp\u003eThis section contains examples of Apache Spark Python jobs that use the MapR-DB OJAI Connector for Apache Spark to read and write MapR-DB JSON tables.\u003c/p\u003e\n\u003c/div\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1517250946760_1002545274",
+      "id": "20180129-183546_204768414",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Load source data to MapR-FS",
+      "text": "%sh\nTEMPDIR\u003d$(mktemp -d)\ncd $TEMPDIR\n\n# Spark can not parse JSON file with newlines, so we need to remove newlines from data file using \"tr -d \u0027\\n\u0027\"\ntr -d \u0027\\n\u0027 \u003e ./zeppelin_maprdb_sample.json \u003c\u003cEOF\n[ { \"_id\": \"rsmith\",\n    \"address\": {\"city\": \"San Francisco\", \"line\": \"100 Main Street\", \"zip\": 94105},\n    \"dob\": \"1982-02-03\",\n    \"first_name\": \"Robert\",\n    \"interests\": [\"electronics\", \"music\", \"sports\"],\n    \"last_name\": \"Smith\"\n  },\n  { \"_id\": \"mdupont\",\n    \"address\": {\"city\": \"San Jose\", \"line\": \"1223 Broadway\", \"zip\": 95109},\n    \"dob\": \"1982-02-03\",\n    \"first_name\": \"Maxime\",\n    \"interests\": [\"sports\", \"movies\", \"electronics\"],\n    \"last_name\": \"Dupont\"\n  },\n  { \"_id\": \"jdoe\",\n    \"address\": {\"city\": \"San Francisco\", \"line\": \"12 Main Street\", \"zip\": 94005},\n    \"dob\": \"1970-06-23\",\n    \"first_name\": \"John\",\n    \"interests\": null,\n    \"last_name\": \"Doe\"\n  },\n  { \"_id\": \"dsimon\",\n    \"address\": null,\n    \"dob\": \"1980-10-13\",\n    \"first_name\": \"David\",\n    \"interests\": null,\n    \"last_name\": \"Simon\"\n  },\n  { \"_id\": \"alehmann\",\n    \"address\": null,\n    \"dob\": \"1980-10-13\",\n    \"first_name\": \"Andrew\",\n    \"interests\": [\"html\", \"css\", \"js\"],\n    \"last_name\": \"Lehmann\"\n  }\n]\nEOF\n\nhadoop fs -mkdir -p ./zeppelin/samples/\nif ! hadoop fs -test -e \"./zeppelin/samples/zeppelin_maprdb_sample.json\"; then\n    hadoop fs -put ./zeppelin_maprdb_sample.json ./zeppelin/samples/\nfi",
+      "user": "anonymous",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "sh",
+          "editOnDblClick": false
+        },
+        "editorMode": "ace/mode/sh",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "jobName": "paragraph_1517250966597_718615910",
+      "id": "20180129-183606_1283148760",
+      "status": "FINISHED",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Ensure that table for next example does not exist",
+      "text": "%livy\nimport com.mapr.db.spark.sql._\nimport com.mapr.db.MapRDB\n\nval workingDir \u003d \"/user/\" + sc.sparkUser + \"/zeppelin/samples\"\nval tablePath \u003d workingDir + \"/sample_table_json\"\n\nif (MapRDB.tableExists(tablePath))\n    MapRDB.deleteTable(tablePath)",
+      "user": "anonymous",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false
+        },
+        "editorMode": "ace/mode/scala",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "jobName": "paragraph_1517251041166_1280272683",
+      "id": "20180129-183721_804958126",
+      "status": "FINISHED",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Inserting a Spark DataFrame into a MapR-DB JSON Table",
+      "text": "%livy.pyspark\nimport json\nimport sys\nfrom pyspark.sql.functions import col\n\nworking_dir \u003d \"/user/\" + sc.sparkUser() + \"/zeppelin/samples\"\nsample_path \u003d working_dir + \"/zeppelin_maprdb_sample.json\"\ntable_path \u003d working_dir + \"/sample_table_json\"\n\ndf \u003d spark.read.json(\"maprfs://\" + sample_path)\n\nspark.saveToMapRDB(df,\n                   table_path,\n                   id_field_path\u003d\"last_name\", # Using id_field_path argument you can specify non-default field to use as identifier\n                   create_table\u003dTrue)\n\nresult \u003d spark.loadFromMapRDB(table_path)\nresult.show()",
+      "user": "anonymous",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false
+        },
+        "editorMode": "ace/mode/python",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+-------+--------------------+----------+----------+--------------------+---------+\n|    _id|             address|       dob|first_name|           interests|last_name|\n+-------+--------------------+----------+----------+--------------------+---------+\n|    Doe|[San Francisco,12...|1970-06-23|      John|                null|      Doe|\n| Dupont|[San Jose,1223 Br...|1982-02-03|    Maxime|[sports, movies, ...|   Dupont|\n|Lehmann|                null|1980-10-13|    Andrew|     [html, css, js]|  Lehmann|\n|  Simon|                null|1980-10-13|     David|                null|    Simon|\n|  Smith|[San Francisco,10...|1982-02-03|    Robert|[electronics, mus...|    Smith|\n+-------+--------------------+----------+----------+--------------------+---------+"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1517251069415_-965259816",
+      "id": "20180129-183749_2089498841",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Ensure that table for next example does not exist",
+      "text": "%livy\nimport com.mapr.db.spark.sql._\nimport com.mapr.db.MapRDB\n\nval workingDir \u003d \"/user/\" + sc.sparkUser + \"/zeppelin/samples\"\nval tablePath \u003d workingDir + \"/sample_table_json\"\n\nif (MapRDB.tableExists(tablePath))\n    MapRDB.deleteTable(tablePath)",
+      "user": "anonymous",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false
+        },
+        "editorMode": "ace/mode/scala",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "jobName": "paragraph_1517251092516_-1560435716",
+      "id": "20180129-183812_1378463398",
+      "status": "FINISHED",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Inserting a Spark DataFrame into a MapR-DB JSON Table Using Bulk Insert",
+      "text": "%livy.pyspark\nimport json\nimport sys\nfrom pyspark.sql.functions import col\n\nworking_dir \u003d \"/user/\" + sc.sparkUser() + \"/zeppelin/samples\"\nsample_path \u003d working_dir + \"/zeppelin_maprdb_sample.json\"\ntable_path \u003d working_dir + \"/sample_table_json\"\n\ndf \u003d spark.read.json(\"maprfs://\" + sample_path).orderBy(\"_id\")\n\nspark.saveToMapRDB(df, table_path, create_table\u003dTrue, bulk_insert\u003dTrue)\n\nresult \u003d spark.loadFromMapRDB(table_path)\nresult.show()",
+      "user": "anonymous",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false
+        },
+        "editorMode": "ace/mode/python",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+--------+--------------------+----------+----------+--------------------+---------+\n|     _id|             address|       dob|first_name|           interests|last_name|\n+--------+--------------------+----------+----------+--------------------+---------+\n|alehmann|                null|1980-10-13|    Andrew|     [html, css, js]|  Lehmann|\n|  dsimon|                null|1980-10-13|     David|                null|    Simon|\n|    jdoe|[San Francisco,12...|1970-06-23|      John|                null|      Doe|\n| mdupont|[San Jose,1223 Br...|1982-02-03|    Maxime|[sports, movies, ...|   Dupont|\n|  rsmith|[San Francisco,10...|1982-02-03|    Robert|[electronics, mus...|    Smith|\n+--------+--------------------+----------+----------+--------------------+---------+"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1517251120515_-1870127932",
+      "id": "20180129-183840_926142364",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Ensure that table for next example does not exist",
+      "text": "%livy\nimport com.mapr.db.spark.sql._\nimport com.mapr.db.MapRDB\n\nval workingDir \u003d \"/user/\" + sc.sparkUser + \"/zeppelin/samples\"\nval tablePath \u003d workingDir + \"/sample_table_json\"\n\nif (MapRDB.tableExists(tablePath))\n    MapRDB.deleteTable(tablePath)",
+      "user": "anonymous",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false
+        },
+        "editorMode": "ace/mode/scala",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "jobName": "paragraph_1517251137478_-916488650",
+      "id": "20180129-183857_1399073887",
+      "status": "FINISHED",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Selecting and Filtering Data when Loading a Spark DataFrame",
+      "text": "%livy.pyspark\nimport json\nimport sys\nfrom pyspark.sql.functions import col\n\nworking_dir \u003d \"/user/\" + sc.sparkUser() + \"/zeppelin/samples\"\nsample_path \u003d working_dir + \"/zeppelin_maprdb_sample.json\"\ntable_path \u003d working_dir + \"/sample_table_json\"\n\ndf \u003d spark.read.json(\"maprfs://\" + sample_path)\n\nspark.saveToMapRDB(df, table_path, create_table\u003dTrue)\n\nresult \u003d spark.loadFromMapRDB(table_path).filter((col(\"first_name\") \u003d\u003d \"Maxime\") | (col(\"address.city\") \u003d\u003d \"San Francisco\"))\nresult.show()",
+      "user": "anonymous",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false
+        },
+        "editorMode": "ace/mode/python",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+-------+--------------------+----------+----------+--------------------+---------+\n|    _id|             address|       dob|first_name|           interests|last_name|\n+-------+--------------------+----------+----------+--------------------+---------+\n|   jdoe|[San Francisco,12...|1970-06-23|      John|                null|      Doe|\n|mdupont|[San Jose,1223 Br...|1982-02-03|    Maxime|[sports, movies, ...|   Dupont|\n| rsmith|[San Francisco,10...|1982-02-03|    Robert|[electronics, mus...|    Smith|\n+-------+--------------------+----------+----------+--------------------+---------+"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1517251148821_1881420675",
+      "id": "20180129-183908_2093196848",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Ensure that table for next example does not exist",
+      "text": "%livy\nimport com.mapr.db.spark.sql._\nimport com.mapr.db.MapRDB\n\nval workingDir \u003d \"/user/\" + sc.sparkUser + \"/zeppelin/samples\"\nval tablePath \u003d workingDir + \"/sample_table_json\"\n\nif (MapRDB.tableExists(tablePath))\n    MapRDB.deleteTable(tablePath)",
+      "user": "anonymous",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false
+        },
+        "editorMode": "ace/mode/scala",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "jobName": "paragraph_1517251168676_-36521943",
+      "id": "20180129-183928_253842792",
+      "status": "FINISHED",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Joining DataFrames when Loading a Spark DataFrame",
+      "text": "%livy.pyspark\nimport json\nimport sys\nfrom pyspark.sql.functions import col\nfrom pyspark.sql import Row\n\nworking_dir \u003d \"/user/\" + sc.sparkUser() + \"/zeppelin/samples\"\nsample_path \u003d working_dir + \"/zeppelin_maprdb_sample.json\"\ntable_path \u003d working_dir + \"/sample_table_json\"\n\ndf \u003d spark.read.json(\"maprfs://\" + sample_path)\n\nspark.saveToMapRDB(df, table_path, create_table\u003dTrue)\n\nprofessions \u003d [\n    Row(_id\u003d\"rsmith\", profession\u003d\"Engineer\"),\n    Row(_id\u003d\"alehmann\", profession\u003d\"Doctor\"),\n    Row(_id\u003d\"alehmann\", profession\u003d\"Accountant\"),\n    Row(_id\u003d\"fake\", profession\u003d\"Software developer\"),\n  ]\ndf_professions \u003d sc.parallelize(professions).toDF()\n\nresult \u003d spark.loadFromMapRDB(table_path).join(df_professions, \"_id\")\nresult.show()",
+      "user": "anonymous",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false
+        },
+        "editorMode": "ace/mode/python",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+--------+--------------------+----------+----------+--------------------+---------+----------+\n|     _id|             address|       dob|first_name|           interests|last_name|profession|\n+--------+--------------------+----------+----------+--------------------+---------+----------+\n|alehmann|                null|1980-10-13|    Andrew|     [html, css, js]|  Lehmann|Accountant|\n|alehmann|                null|1980-10-13|    Andrew|     [html, css, js]|  Lehmann|    Doctor|\n|  rsmith|[San Francisco,10...|1982-02-03|    Robert|[electronics, mus...|    Smith|  Engineer|\n+--------+--------------------+----------+----------+--------------------+---------+----------+"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1517251180998_-1623995905",
+      "id": "20180129-183940_916661658",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    }
+  ],
+  "name": "MapR Tutorial/Spark MapR-DB OJAI Connector (Python)",
+  "id": "2D4WBY923",
+  "angularObjects": {},
+  "config": {},
+  "info": {}
+}
