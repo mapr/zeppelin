@@ -47,3 +47,4 @@ shell           org.apache.zeppelin:zeppelin-shell:0.9.0                Shell co
 sparql          org.apache.zeppelin:zeppelin-sparql:0.9.0               Sparql interpreter
 submarine       org.apache.zeppelin:zeppelin-submarine:0.9.0            Submarine interpreter
 maprdb          org.apache.zeppelin:zeppelin-maprdb:0.9.0               MapR-DB Shell interpreter
+drill           org.apache.zeppelin:zeppelin-drill:0.9.0                Jdbc Drill interpreter
