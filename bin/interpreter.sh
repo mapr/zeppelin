@@ -281,6 +281,10 @@ if [[ -n "$ZEPPELIN_IMPERSONATE_USER" ]]; then
   fi
 fi
 
+if [[ "${INTERPRETER_ID}" != "spark" ]]; then
+  ZEPPELIN_INTP_CLASSPATH+=":$(mapr classpath 2>/dev/null)"
+fi
+
 if [[ -n "${SPARK_SUBMIT}" ]]; then
   IFS=' ' read -r -a SPARK_SUBMIT_OPTIONS_ARRAY <<< "${SPARK_SUBMIT_OPTIONS}"
   IFS=' ' read -r -a ZEPPELIN_SPARK_CONF_ARRAY <<< "${ZEPPELIN_SPARK_CONF}"
