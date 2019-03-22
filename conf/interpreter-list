@@ -46,3 +46,4 @@ python          org.apache.zeppelin:zeppelin-python:0.11.0-SANPSHOT             
 shell           org.apache.zeppelin:zeppelin-shell:0.11.0-SANPSHOT                Shell command
 sparql          org.apache.zeppelin:zeppelin-sparql:0.11.0-SANPSHOT               Sparql interpreter
 # submarine       org.apache.zeppelin:zeppelin-submarine:0.11.0-SANPSHOT            Submarine interpreter
+maprdb          org.apache.zeppelin:zeppelin-maprdb:0.11.0-SANPSHOT               MapR-DB Shell interpreter
