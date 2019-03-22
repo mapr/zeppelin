@@ -107,5 +107,11 @@
       <outputDirectory>/lib/node_modules/zeppelin-spell</outputDirectory>
       <directory>../zeppelin-web/src/app/spell</directory>
     </fileSet>
+    <fileSet>
+      <directory>../scripts/mapr-dsr</directory>
+      <excludes>
+        <exclude>build.sh</exclude>
+      </excludes>
+    </fileSet>
   </fileSets>
 </assembly>
