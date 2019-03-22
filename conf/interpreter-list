@@ -46,3 +46,4 @@ scio            org.apache.zeppelin:zeppelin-scio:0.9.0                 Scio int
 shell           org.apache.zeppelin:zeppelin-shell:0.9.0                Shell command
 sparql          org.apache.zeppelin:zeppelin-sparql:0.9.0               Sparql interpreter
 submarine       org.apache.zeppelin:zeppelin-submarine:0.9.0            Submarine interpreter
+maprdb          org.apache.zeppelin:zeppelin-maprdb:0.9.0               MapR-DB Shell interpreter

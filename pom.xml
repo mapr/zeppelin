@@ -68,6 +68,7 @@
     <module>mongodb</module>
     <module>angular</module>
     <module>shell</module>
+    <module>maprdb</module>
     <module>livy</module>
     <!-- <module>hbase</module> -->
     <module>pig</module>

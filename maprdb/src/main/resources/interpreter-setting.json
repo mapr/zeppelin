@@ -1,0 +1,17 @@
+[
+  {
+    "group": "maprdb",
+    "name": "shell",
+    "className": "org.apache.zeppelin.maprdb.MapRDBShellInterpreter",
+    "properties": {
+      "maprdb.shell.command.timeout.millisecs": {
+        "propertyName": "maprdb.shell.command.timeout.millisecs",
+        "defaultValue": "300000",
+        "description": "MapR-DB Shell command time out in millisecs. Default = 300000 (5 min)"
+      }
+    },
+    "editor": {
+      "editOnDblClick": false
+    }
+  }
+]
