@@ -217,6 +217,10 @@ if [[ ! -z "$ZEPPELIN_IMPERSONATE_USER" ]]; then
   fi
 fi
 
+if [[ "${INTERPRETER_ID}" != "spark" ]]; then
+  ZEPPELIN_INTP_CLASSPATH+=":$(mapr classpath 2>/dev/null)"
+fi
+
 if [[ -n "${SPARK_SUBMIT}" ]]; then
     INTERPRETER_RUN_COMMAND+=' '` echo ${SPARK_SUBMIT} --class ${ZEPPELIN_SERVER} --driver-class-path \"${ZEPPELIN_INTP_CLASSPATH_OVERRIDES}:${ZEPPELIN_INTP_CLASSPATH}\" --driver-java-options \"${JAVA_INTP_OPTS}\" ${SPARK_SUBMIT_OPTIONS} ${ZEPPELIN_SPARK_CONF} ${SPARK_APP_JAR} ${CALLBACK_HOST} ${PORT} ${INTP_PORT}`
 else
