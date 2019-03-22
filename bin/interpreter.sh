@@ -181,6 +181,9 @@ if [[ "${INTERPRETER_ID}" == "spark" ]]; then
   mkdir -p "$spark_interpreter_cwd"
   cd "$spark_interpreter_cwd"
 
+elif [[ "${INTERPRETER_ID}" == "drill" ]]; then
+  ZEPPELIN_INTP_CLASSPATH+=":${ZEPPELIN_HOME}/interpreter/jdbc/*"
+
 elif [[ "${INTERPRETER_ID}" == "hbase" ]]; then
   if [[ -n "${HBASE_CONF_DIR}" ]]; then
     ZEPPELIN_INTP_CLASSPATH+=":${HBASE_CONF_DIR}"
