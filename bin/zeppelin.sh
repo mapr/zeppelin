@@ -78,6 +78,7 @@ bin="$(cd "${bin}">/dev/null; pwd)"
 . "${bin}/common.sh"
 
 check_java_version
+export ZEPPELIN_PID_DIR="${MAPR_HOME}/pid"
 
 if [ "$1" == "--version" ] || [ "$1" == "-v" ]; then
     getZeppelinVersion

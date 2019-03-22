@@ -22,6 +22,8 @@ else
   FWDIR=$(dirname "${BASH_SOURCE-$0}")
 fi
 
+export MAPR_HOME=${MAPR_HOME:-"/opt/mapr"}
+
 if [[ -z "${ZEPPELIN_HOME}" ]]; then
   # Make ZEPPELIN_HOME look cleaner in logs by getting rid of the
   # extra ../
