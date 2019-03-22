@@ -62,7 +62,7 @@
     <module>angular</module>
     <module>shell</module>
     <module>livy</module>
-    <module>hbase</module>
+    <!-- module>hbase</module -->
     <module>pig</module>
     <module>jdbc</module>
     <module>file</module>
@@ -494,6 +494,7 @@
                 <DependencyConvergence/>
               </rules>
               <failFast>true</failFast>
+              <skip>true</skip>
             </configuration>
             <goals>
               <goal>enforce</goal>

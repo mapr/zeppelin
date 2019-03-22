@@ -61,9 +61,9 @@
         <module>interpreter</module>
         <module>spark-scala-parent</module>
         <module>scala-2.11</module>
-        <module>spark-dependencies</module>
+        <!-- module>spark-dependencies</module -->
         <module>spark-shims</module>
-        <module>spark1-shims</module>
+        <!-- module>spark1-shims</module -->
         <module>spark2-shims</module>
     </modules>
 
