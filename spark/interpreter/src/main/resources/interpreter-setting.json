@@ -47,6 +47,13 @@
         "description": "Total number of cores to use. Empty value uses all available core.",
         "type": "number"
       },
+      "spark.yarn.dist.archives": {
+        "envName": "ZEPPELIN_SPARK_YARN_DIST_ARCHIVES",
+        "propertyName": "spark.yarn.dist.archives",
+        "defaultValue": "",
+        "description": "Sets additional archives for spark",
+        "type": "string"
+      },
       "zeppelin.spark.maxResult": {
         "envName": "ZEPPELIN_SPARK_MAXRESULT",
         "propertyName": "zeppelin.spark.maxResult",
@@ -57,7 +64,7 @@
       "master": {
         "envName": "MASTER",
         "propertyName": "spark.master",
-        "defaultValue": "local[*]",
+        "defaultValue": "yarn-cluster",
         "description": "Spark master uri. ex) spark://masterhost:7077",
         "type": "string"
       },
