@@ -38,7 +38,7 @@ RUN mkdir -p /opt/mapr/installer/docker/ && \
     wget "${MAPR_REPO_ROOT}/installer/redhat/mapr-setup.sh" -P /opt/mapr/installer/docker/ && \
     chmod +x /opt/mapr/installer/docker/mapr-setup.sh
 
-RUN /opt/mapr/installer/docker/mapr-setup.sh -r "$MAPR_REPO_ROOT" container client "$MAPR_VERSION_CORE" "$MAPR_VERSION_MEP" mapr-client mapr-posix-client-container mapr-hbase mapr-spark mapr-kafka
+RUN /opt/mapr/installer/docker/mapr-setup.sh -r "$MAPR_REPO_ROOT" container client "$MAPR_VERSION_CORE" "$MAPR_VERSION_MEP" mapr-client mapr-hbase mapr-spark mapr-kafka
 
 RUN mkdir -p /opt/mapr/zeppelin && \
     echo "$ZEPPELIN_VERSION" > /opt/mapr/zeppelin/zeppelinversion
