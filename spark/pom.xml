@@ -24,14 +24,14 @@
     <parent>
         <artifactId>interpreter-parent</artifactId>
         <groupId>org.apache.zeppelin</groupId>
-        <version>0.8.1-mapr-SNAPSHOT</version>
+        <version>0.8.1-mapr-1904</version>
         <relativePath>../interpreter-parent/pom.xml</relativePath>
     </parent>
 
     <groupId>org.apache.zeppelin</groupId>
     <artifactId>spark-parent</artifactId>
     <packaging>pom</packaging>
-    <version>0.8.1-mapr-SNAPSHOT</version>
+    <version>0.8.1-mapr-1904</version>
     <name>Zeppelin: Spark Parent</name>
     <description>Zeppelin Spark Support</description>
 
@@ -198,7 +198,7 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <spark.version>2.4.0.0-mapr-SNAPSHOT</spark.version>
+                <spark.version>2.4.0.0-mapr-620</spark.version>
                 <protobuf.version>2.5.0</protobuf.version>
                 <py4j.version>0.10.7</py4j.version>
             </properties>

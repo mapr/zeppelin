@@ -24,14 +24,14 @@
     <parent>
         <artifactId>interpreter-parent</artifactId>
         <groupId>org.apache.zeppelin</groupId>
-        <version>0.8.1-mapr-SNAPSHOT</version>
+        <version>0.8.1-mapr-1904</version>
         <relativePath>../interpreter-parent</relativePath>
     </parent>
 
     <groupId>org.apache.zeppelin</groupId>
     <artifactId>zeppelin-livy</artifactId>
     <packaging>jar</packaging>
-    <version>0.8.1-mapr-SNAPSHOT</version>
+    <version>0.8.1-mapr-1904</version>
     <name>Zeppelin: Livy interpreter</name>
 
     <properties>
@@ -44,7 +44,7 @@
         <!--test library versions-->
         <livy.version>0.5.0-incubating</livy.version>
         <spark.version>2.1.0</spark.version>
-        <hadoop.version>2.7.0-mapr-1710-SNAPSHOT</hadoop.version>
+        <hadoop.version>2.7.0-mapr-1808</hadoop.version>
         <!--plugin versions-->
         <plugin.failsafe.version>2.16</plugin.failsafe.version>
         <plugin.antrun.version>1.8</plugin.antrun.version>

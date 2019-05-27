@@ -23,20 +23,20 @@
   <parent>
     <artifactId>interpreter-parent</artifactId>
     <groupId>org.apache.zeppelin</groupId>
-    <version>0.8.1-mapr-SNAPSHOT</version>
+    <version>0.8.1-mapr-1904</version>
     <relativePath>../interpreter-parent</relativePath>
   </parent>
 
   <groupId>org.apache.zeppelin</groupId>
   <artifactId>zeppelin-hive</artifactId>
   <packaging>jar</packaging>
-  <version>0.8.1-mapr-SNAPSHOT</version>
+  <version>0.8.1-mapr-1904</version>
   <name>Zeppelin: JDBC Hive interpreter</name>
 
   <properties>
     <!--library versions-->
     <interpreter.name>hive</interpreter.name>
-    <hive2.version>2.3.3-mapr-SNAPSHOT</hive2.version>
+    <hive2.version>2.3.3-mapr-1904</hive2.version>
   </properties>
 
   <dependencies>
