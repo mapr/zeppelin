@@ -1,7 +1,6 @@
-# syntax=docker/dockerfile:1.0.2-experimental
 FROM ubuntu:16.04 as zeppelin_builder
 
-ARG ZEPPELIN_GIT_REPO="git@github.com:mapr/zeppelin.git"
+ARG ZEPPELIN_GIT_REPO="https://github.com/mapr/zeppelin.git"
 ARG ZEPPELIN_GIT_TAG="0.8.1-mapr-1904"
 ARG MAPR_MAVEN_REPO="http://repository.mapr.com/maven/"
 
@@ -13,9 +12,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     tar xf maven.tar.gz --strip-components=1 -C /opt/maven && \
     ln -s /opt/maven/bin/mvn /usr/local/bin/mvn
 
-RUN --mount=type=cache,id=mvncache,target=/root/.m2 --mount=type=cache,id=npmcache,target=/root/.npm --mount=type=ssh \
-    mkdir -p -m 0700 ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts && \
-    git clone "$ZEPPELIN_GIT_REPO" zeppelin && \
+RUN git clone "$ZEPPELIN_GIT_REPO" zeppelin && \
     cd zeppelin && \
     git checkout "$ZEPPELIN_GIT_TAG" && \
     mvn clean package -DskipTests -P 'scala-2.11,build-distr,vendor-repo-mapr' && \

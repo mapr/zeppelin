@@ -42,7 +42,7 @@ fi
 if [ "$RELEASE" = true ]; then
     DOCKER_REPO=${DOCKER_REPO:-"maprtech/data-science-refinery"}
     IMAGE_VERSION=${IMAGE_VERSION:-"${MAPR_VERSION_DSR}_${MAPR_VERSION_CORE}_${MAPR_VERSION_MEP}"}
-    ZEPPELIN_GIT_REPO=${ZEPPELIN_GIT_REPO:-"git@github.com:mapr/zeppelin.git"}
+    ZEPPELIN_GIT_REPO=${ZEPPELIN_GIT_REPO:-"https://github.com/mapr/zeppelin.git"}
     ZEPPELIN_GIT_TAG=${ZEPPELIN_GIT_TAG:-"0.8.1-mapr-1904"}
     MAPR_REPO_ROOT=${MAPR_REPO_ROOT:-"https://package.mapr.com/releases"}
     MAPR_MAVEN_REPO=${MAPR_MAVEN_REPO:-"http://repository.mapr.com/maven/"}
@@ -64,10 +64,8 @@ if [ "$BUILD_ALL" = true ]; then
 fi
 
 docker_build() {
-    export DOCKER_BUILDKIT=1
     docker build . \
         --no-cache \
-        --ssh default="${HOME}/.ssh/id_rsa" \
         --build-arg MAPR_VERSION_CORE="$MAPR_VERSION_CORE" \
         --build-arg MAPR_VERSION_MEP="$MAPR_VERSION_MEP" \
         --build-arg MAPR_REPO_ROOT="$MAPR_REPO_ROOT" \
