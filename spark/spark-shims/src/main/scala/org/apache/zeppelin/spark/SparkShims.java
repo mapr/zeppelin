@@ -92,15 +92,6 @@ public abstract class SparkShims {
    */
   public abstract void setupSparkListener(String master, String sparkWebUrl);
 
-  protected String getNoteId(String jobgroupId) {
-    String[] tokens = jobgroupId.split("-");
-    return tokens[2];
-  }
-
-  protected String getParagraphId(String jobgroupId) {
-    String[] tokens = jobgroupId.split("-");
-    return tokens[3];
-  }
 
   protected void buildSparkJobUrl(
       String master, String sparkWebUrl, int jobId, Properties jobProperties) {
@@ -119,10 +110,29 @@ public abstract class SparkShims {
     infos.put("jobUrl", jobUrl);
     infos.put("label", "SPARK JOB");
     infos.put("tooltip", "View in Spark web UI");
+    infos.put("noteId", getNoteId(jobGroupId));
+    infos.put("paraId", getParagraphId(jobGroupId));
+    LOGGER.debug("Send spark job url: " + infos);
     if (eventClient != null) {
       eventClient.onParaInfosReceived(noteId, paragraphId, infos);
     }
 
+  }
+
+  public static String getNoteId(String jobGroupId) {
+    String[] tokens = jobGroupId.split("\\|");
+    if (tokens.length != 4) {
+      throw new RuntimeException("Invalid jobGroupId: " + jobGroupId);
+    }
+    return tokens[2];
+  }
+
+  public static String getParagraphId(String jobGroupId) {
+    String[] tokens = jobGroupId.split("\\|");
+    if (tokens.length != 4) {
+      throw new RuntimeException("Invalid jobGroupId: " + jobGroupId);
+    }
+    return tokens[3];
   }
 
   /**

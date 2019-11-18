@@ -38,6 +38,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -167,9 +168,31 @@ public class NewSparkInterpreterTest {
     assertEquals(InterpreterResult.Code.SUCCESS, result.code());
 
     // spark rdd operation
+    //*
     result = interpreter.interpret("sc.range(1, 10).sum", getInterpreterContext());
     assertEquals(InterpreterResult.Code.SUCCESS, result.code());
     assertTrue(output.contains("45"));
+    /*/
+    context = getInterpreterContext();
+    context.setParagraphId("pid_1");
+    result = interpreter.interpret("sc\n.range(1, 10)\n.sum", context);
+    assertEquals(InterpreterResult.Code.SUCCESS, result.code());
+    assertTrue(output.contains("45"));
+    ArgumentCaptor<Map> captorEvent = ArgumentCaptor.forClass(Map.class);
+    verify(mockRemoteEventClient).onParaInfosReceived(captorEvent.capture());
+    assertEquals("pid_1", captorEvent.getValue().get("paraId"));
+
+    reset(mockRemoteEventClient);
+    context = getInterpreterContext();
+    context.setParagraphId("pid_2");
+    result = interpreter.interpret("sc\n.range(1, 10)\n.sum", context);
+    assertEquals(InterpreterResult.Code.SUCCESS, result.code());
+    assertTrue(output.contains("45"));
+    captorEvent = ArgumentCaptor.forClass(Map.class);
+    verify(mockRemoteEventClient).onParaInfosReceived(captorEvent.capture());
+    assertEquals("pid_2", captorEvent.getValue().get("paraId"));
+    //*/
+
     // spark job url is sent
     verify(mockRemoteEventClient).onParaInfosReceived(any(String.class), any(String.class), any(Map.class));
 
@@ -320,7 +343,7 @@ public class NewSparkInterpreterTest {
         InterpreterResult result = null;
         try {
           result = interpreter.interpret(
-              "val df = sc.parallelize(1 to 10, 2).foreach(e=>Thread.sleep(1000))", context2);
+              "val df = sc.parallelize(1 to 10, 5).foreach(e=>Thread.sleep(1000))", context2);
         } catch (InterpreterException e) {
           e.printStackTrace();
         }

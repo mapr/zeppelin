@@ -128,7 +128,10 @@ public class SparkShimsTest {
 
     @Test
     public void runUnerLocalTest() {
-      sparkShims.buildSparkJobUrl("local", "http://sparkurl", 0, mockProperties);
+      Properties properties = new Properties();
+      properties.setProperty("spark.jobGroup.id", "zeppelin|user1|noteId|paragraphId");
+      sparkShims.buildSparkJobUrl("local", "http://sparkurl", 0, properties);
+
       Map<String, String> mapValue = argumentCaptor.getValue();
       assertTrue(mapValue.keySet().contains("jobUrl"));
       assertTrue(mapValue.get("jobUrl").contains("/jobs/job?id="));
@@ -136,7 +139,9 @@ public class SparkShimsTest {
 
     @Test
     public void runUnerYarnTest() {
-      sparkShims.buildSparkJobUrl("yarn", "http://sparkurl", 0, mockProperties);
+      Properties properties = new Properties();
+      properties.setProperty("spark.jobGroup.id", "zeppelin|user1|noteId|paragraphId");
+      sparkShims.buildSparkJobUrl("yarn", "http://sparkurl", 0, properties);
 
       Map<String, String> mapValue = argumentCaptor.getValue();
       assertTrue(mapValue.keySet().contains("jobUrl"));
