@@ -324,6 +324,13 @@
         <scope>test</scope>
       </dependency>
 
+      <!-- CORE-332 Joda Time Library for Brazil -->
+      <dependency>
+        <groupId>joda-time</groupId>
+        <artifactId>joda-time</artifactId>
+        <version>2.10.3</version>
+      </dependency>
+
       <dependency>
         <groupId>org.apache.zookeeper</groupId>
         <artifactId>zookeeper</artifactId>
