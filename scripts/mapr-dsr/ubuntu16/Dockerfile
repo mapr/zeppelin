@@ -49,6 +49,7 @@ RUN mkdir -p /opt/mapr/zeppelin && \
 
 RUN export DEBIAN_FRONTEND=noninteractive && \
     apt update && \
+    apt install --no-install-recommends -q -y ca-certificates git less nano patch ssh-client vim && \
     apt install --no-install-recommends -q -y gcc python-dev python-setuptools && \
     easy_install pip && \
     pip install matplotlib numpy pandas

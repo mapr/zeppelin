@@ -43,7 +43,8 @@ RUN /opt/mapr/installer/docker/mapr-setup.sh -r "$MAPR_REPO_ROOT" container clie
 RUN mkdir -p /opt/mapr/zeppelin && \
     echo "$ZEPPELIN_VERSION" > /opt/mapr/zeppelin/zeppelinversion
 
-RUN yum install -y gcc python-devel python-setuptools && \
+RUN yum install -y git less nano patch vim && \
+    yum install -y gcc python-devel python-setuptools && \
     easy_install pip && \
     pip install matplotlib numpy pandas requests
 
