@@ -1,6 +1,6 @@
 #!/bin/sh
 
-MAPR_VERSION_DSR=${MAPR_VERSION_DSR:-"v1.4.0"}
+MAPR_VERSION_DSR=${MAPR_VERSION_DSR:-"v1.4.1"}
 MAPR_VERSION_CORE=${MAPR_VERSION_CORE:-"6.1.0"}
 MAPR_VERSION_MEP=${MAPR_VERSION_MEP:-"6.3.0"}
 
@@ -47,7 +47,7 @@ if [ "$RELEASE" = true ]; then
     DOCKER_REPO=${DOCKER_REPO:-"maprtech/data-science-refinery"}
     IMAGE_VERSION=${IMAGE_VERSION:-"${MAPR_VERSION_DSR}_${MAPR_VERSION_CORE}_${MAPR_VERSION_MEP}"}
     ZEPPELIN_GIT_REPO=${ZEPPELIN_GIT_REPO:-"git@github.com:mapr/zeppelin.git"}
-    ZEPPELIN_GIT_TAG=${ZEPPELIN_GIT_TAG:-"0.8.2-mapr-1911"}
+    ZEPPELIN_GIT_TAG=${ZEPPELIN_GIT_TAG:-"0.8.2-mapr-1912"}
     MAPR_REPO_ROOT=${MAPR_REPO_ROOT:-"https://package.mapr.com/releases"}
     MAPR_MAVEN_REPO=${MAPR_MAVEN_REPO:-"http://repository.mapr.com/maven/"}
 else
@@ -58,9 +58,9 @@ else
     MAPR_REPO_ROOT=${MAPR_REPO_ROOT:-"http://artifactory.devops.lab/artifactory/prestage/releases-dev"}
     MAPR_MAVEN_REPO=${MAPR_MAVEN_REPO:-"http://maven.corp.maprtech.com/nexus/content/groups/public/"}
 fi
-KUBEFLOW_REPO=${KUBEFLOW_REPO:-"us.gcr.io/mapreng-1/maprtech/zeppelin"}
+KUBEFLOW_REPO=${KUBEFLOW_REPO:-"gcr.io/mapr-252711/zeppelin-0.8.2"}
 KUBEFLOW_IMAGE_VERSION=${KUBEFLOW_IMAGE_VERSION:-"$IMAGE_VERSION"}
-SPARK_REPO="us.gcr.io/mapreng-1/maprtech/spark-zeppelin-2.4.4"
+SPARK_REPO="gcr.io/mapr-252711/spark-zeppelin-2.4.4"
 SPARK_IMAGE_VERSION=${SPARK_IMAGE_VERSION:-"$IMAGE_VERSION"}
 
 if [ "$BUILD_ALL" = true ]; then

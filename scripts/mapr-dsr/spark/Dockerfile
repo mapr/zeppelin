@@ -2,7 +2,7 @@
 FROM centos:centos7 as zeppelin_builder
 
 ARG ZEPPELIN_GIT_REPO="git@github.com:mapr/zeppelin.git"
-ARG ZEPPELIN_GIT_TAG="0.8.2-mapr-1911"
+ARG ZEPPELIN_GIT_TAG="0.8.2-mapr-1912"
 ARG MAPR_MAVEN_REPO="http://repository.mapr.com/maven/"
 
 RUN yum install -y git wget java-1.8.0-openjdk-devel which bzip2 && \
@@ -21,7 +21,7 @@ RUN --mount=type=cache,id=mvncache,target=/root/.m2 --mount=type=cache,id=npmcac
     mv "./zeppelin-distribution/target/zeppelin-${ZEPPELIN_MAVEN_VERSION}/zeppelin-${ZEPPELIN_MAVEN_VERSION}" /zeppelin_build
 
 
-FROM us.gcr.io/mapreng-1/maprtech/spark-2.4.4:latest
+FROM gcr.io/mapr-252711/spark-2.4.4:latest
 
 ARG ZEPPELIN_VERSION="0.8.2"
 
