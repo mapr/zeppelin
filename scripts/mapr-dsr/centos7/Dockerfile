@@ -1,4 +1,3 @@
-# syntax=docker/dockerfile:1.0.2-experimental
 FROM centos:centos7 as zeppelin_builder
 
 ARG ZEPPELIN_GIT_REPO="git@github.com:mapr/zeppelin.git"
@@ -11,7 +10,7 @@ RUN yum install -y git wget java-1.8.0-openjdk-devel which bzip2 && \
     tar xf maven.tar.gz --strip-components=1 -C /opt/maven && \
     ln -s /opt/maven/bin/mvn /usr/local/bin/mvn
 
-RUN --mount=type=cache,id=mvncache,target=/root/.m2 --mount=type=cache,id=npmcache,target=/root/.npm --mount=type=ssh \
+RUN \
     mkdir -p -m 0700 ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts && \
     git clone "$ZEPPELIN_GIT_REPO" zeppelin && \
     cd zeppelin && \
