@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ ! -e "/.entrypoint_stage_one" ]; then
+if [ "$$" = 1 ]; then
     #
     # Setup envinronment for Kubernetes deployment.
     #
@@ -90,7 +90,6 @@ if [ ! -e "/.entrypoint_stage_one" ]; then
     #
     # Continue execution of this entrypoint as MAPR_CONTAINER_USER
     #
-    touch /.entrypoint_stage_one
     # Following piece copied from "container_post_client" function of "mapr-setup.sh"
     exec sudo -E -H -n -u $MAPR_CONTAINER_USER \
         -g ${MAPR_CONTAINER_GROUP:-$MAPR_GROUP} "$0" "$@"
