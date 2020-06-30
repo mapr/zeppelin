@@ -196,7 +196,7 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <spark.version>2.4.4.0-mapr-SNAPSHOT</spark.version>
+                <spark.version>2.4.4.0-mapr-630</spark.version>
                 <protobuf.version>2.5.0</protobuf.version>
                 <py4j.version>0.10.7</py4j.version>
             </properties>
