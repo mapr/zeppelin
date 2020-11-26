@@ -1,6 +1,6 @@
 #!/bin/sh
 
-MAPR_VERSION_DSR=${MAPR_VERSION_DSR:-"v1.4.0"}
+MAPR_VERSION_DSR=${MAPR_VERSION_DSR:-"v1.4.0.1"}
 MAPR_VERSION_CORE=${MAPR_VERSION_CORE:-"6.1.0"}
 MAPR_VERSION_MEP=${MAPR_VERSION_MEP:-"6.2.0"}
 
@@ -43,7 +43,7 @@ if [ "$RELEASE" = true ]; then
     DOCKER_REPO=${DOCKER_REPO:-"maprtech/data-science-refinery"}
     IMAGE_VERSION=${IMAGE_VERSION:-"${MAPR_VERSION_DSR}_${MAPR_VERSION_CORE}_${MAPR_VERSION_MEP}"}
     ZEPPELIN_GIT_REPO=${ZEPPELIN_GIT_REPO:-"https://github.com/mapr/zeppelin.git"}
-    ZEPPELIN_GIT_TAG=${ZEPPELIN_GIT_TAG:-"0.8.1-mapr-1904"}
+    ZEPPELIN_GIT_TAG=${ZEPPELIN_GIT_TAG:-"0.8.1-mapr-1904-r1"}
     MAPR_REPO_ROOT=${MAPR_REPO_ROOT:-"https://package.mapr.com/releases"}
     MAPR_MAVEN_REPO=${MAPR_MAVEN_REPO:-"http://repository.mapr.com/maven/"}
 else
