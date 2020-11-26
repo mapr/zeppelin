@@ -19,6 +19,7 @@ package org.apache.zeppelin.notebook.socket;
 
 import com.google.gson.Gson;
 import org.apache.zeppelin.common.JsonSerializable;
+import org.slf4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -186,7 +187,9 @@ public class Message implements JsonSerializable {
     PARAS_INFO,                   // [s-c] paragraph runtime infos
     SAVE_NOTE_FORMS,              // save note forms
     REMOVE_NOTE_FORMS,            // remove note forms
-    NOTICE                        // [s-c] Notice
+    NOTICE,                       // [s-c] Notice
+    COLLABORATIVE_MODE_STATUS,    // [s-c] collaborative mode status
+    PATCH_PARAGRAPH               // [c-s][s-c] patch editor text
   }
 
   private static final Gson gson = new Gson();
@@ -213,6 +216,15 @@ public class Message implements JsonSerializable {
 
   public <T> T getType(String key) {
     return (T) data.get(key);
+  }
+
+  public <T> T getType(String key, Logger LOG) {
+    try {
+      return getType(key);
+    } catch (ClassCastException e) {
+      LOG.error("Failed to get " + key + " from message (Invalid type). " , e);
+      return null;
+    }
   }
 
   @Override
