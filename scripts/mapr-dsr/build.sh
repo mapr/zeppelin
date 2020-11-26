@@ -47,7 +47,7 @@ if [ "$RELEASE" = true ]; then
     DOCKER_REPO=${DOCKER_REPO:-"maprtech/data-science-refinery"}
     IMAGE_VERSION=${IMAGE_VERSION:-"${MAPR_VERSION_DSR}_${MAPR_VERSION_CORE}_${MAPR_VERSION_MEP}"}
     ZEPPELIN_GIT_REPO=${ZEPPELIN_GIT_REPO:-"git@github.com:mapr/zeppelin.git"}
-    ZEPPELIN_GIT_TAG=${ZEPPELIN_GIT_TAG:-"0.8.2-mapr-1912-r1"}
+    ZEPPELIN_GIT_TAG=${ZEPPELIN_GIT_TAG:-"0.8.2-mapr-1912-r2"}
     MAPR_REPO_ROOT=${MAPR_REPO_ROOT:-"https://package.mapr.com/releases"}
     MAPR_MAVEN_REPO=${MAPR_MAVEN_REPO:-"http://repository.mapr.com/maven/"}
 else

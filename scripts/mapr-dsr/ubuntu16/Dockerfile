@@ -1,7 +1,7 @@
 FROM ubuntu:16.04 as zeppelin_builder
 
 ARG ZEPPELIN_GIT_REPO="https://github.com/mapr/zeppelin.git"
-ARG ZEPPELIN_GIT_TAG="0.8.2-mapr-1912-r1"
+ARG ZEPPELIN_GIT_TAG="0.8.2-mapr-1912-r2"
 ARG MAPR_MAVEN_REPO="http://repository.mapr.com/maven/"
 
 RUN export DEBIAN_FRONTEND=noninteractive && \
