@@ -46,11 +46,12 @@ BIN=$(cd "${BIN}">/dev/null; pwd)
 . "${BIN}/common.sh"
 . "${BIN}/functions.sh"
 
+export ZEPPELIN_PID_DIR="${MAPR_HOME}/pid"
 HOSTNAME=$(hostname)
 ZEPPELIN_NAME="Zeppelin"
 ZEPPELIN_LOGFILE="${ZEPPELIN_LOG_DIR}/zeppelin-${ZEPPELIN_IDENT_STRING}-${HOSTNAME}.log"
 ZEPPELIN_OUTFILE="${ZEPPELIN_LOG_DIR}/zeppelin-${ZEPPELIN_IDENT_STRING}-${HOSTNAME}.out"
-ZEPPELIN_PID="${ZEPPELIN_PID_DIR}/zeppelin-${ZEPPELIN_IDENT_STRING}-${HOSTNAME}.pid"
+ZEPPELIN_PID="${ZEPPELIN_PID_DIR}/zeppelin.pid"
 ZEPPELIN_MAIN=org.apache.zeppelin.server.ZeppelinServer
 JAVA_OPTS+=" -Dzeppelin.log.file=${ZEPPELIN_LOGFILE}"
 
@@ -65,6 +66,10 @@ fi
 
 if [[ -d "${ZEPPELIN_HOME}/zeppelin-server/target/classes" ]]; then
   ZEPPELIN_CLASSPATH+=":${ZEPPELIN_HOME}/zeppelin-server/target/classes"
+fi
+
+if [[ -n "${HADOOP_CONF_DIR}" ]] && [[ -d "${HADOOP_CONF_DIR}" ]]; then
+  ZEPPELIN_CLASSPATH+=":${HADOOP_CONF_DIR}"
 fi
 
 # Add jdbc connector jar
@@ -162,9 +167,9 @@ function upstart() {
   # where the service manager starts and stops the process
   initialize_default_directories
 
-  echo "ZEPPELIN_CLASSPATH: ${ZEPPELIN_CLASSPATH_OVERRIDES}:${CLASSPATH}" >> "${ZEPPELIN_OUTFILE}"
+  echo "ZEPPELIN_CLASSPATH: ${ZEPPELIN_CLASSPATH_OVERRIDES}:${CLASSPATH}:$(mapr classpath 2>/dev/null)" >> "${ZEPPELIN_OUTFILE}"
 
-  $ZEPPELIN_RUNNER $JAVA_OPTS -cp $ZEPPELIN_CLASSPATH_OVERRIDES:$CLASSPATH $ZEPPELIN_MAIN >> "${ZEPPELIN_OUTFILE}"
+  $ZEPPELIN_RUNNER $JAVA_OPTS -cp $ZEPPELIN_CLASSPATH_OVERRIDES:$CLASSPATH:$(mapr classpath 2>/dev/null) $ZEPPELIN_MAIN >> "${ZEPPELIN_OUTFILE}"
 }
 
 function start() {
@@ -182,7 +187,7 @@ function start() {
 
   echo "ZEPPELIN_CLASSPATH: ${ZEPPELIN_CLASSPATH_OVERRIDES}:${CLASSPATH}" >> "${ZEPPELIN_OUTFILE}"
 
-  nohup nice -n $ZEPPELIN_NICENESS $ZEPPELIN_RUNNER $JAVA_OPTS -cp $ZEPPELIN_CLASSPATH_OVERRIDES:$CLASSPATH $ZEPPELIN_MAIN >> "${ZEPPELIN_OUTFILE}" 2>&1 < /dev/null &
+  nohup nice -n $ZEPPELIN_NICENESS $ZEPPELIN_RUNNER $JAVA_OPTS -cp $ZEPPELIN_CLASSPATH_OVERRIDES:$CLASSPATH:$(mapr classpath 2>/dev/null) $ZEPPELIN_MAIN >> "${ZEPPELIN_OUTFILE}" 2>&1 < /dev/null &
   pid=$!
   if [[ -z "${pid}" ]]; then
     action_msg "${ZEPPELIN_NAME} start" "${SET_ERROR}"
@@ -213,18 +218,6 @@ function stop() {
       action_msg "${ZEPPELIN_NAME} stop" "${SET_OK}"
     fi
   fi
-
-  # list all pid that used in remote interpreter and kill them
-  for f in ${ZEPPELIN_PID_DIR}/*.pid; do
-    if [[ ! -f ${f} ]]; then
-      continue;
-    fi
-
-    pid=$(cat ${f})
-    wait_for_zeppelin_to_die $pid 20
-    $(rm -f ${f})
-  done
-
 }
 
 function find_zeppelin_process() {

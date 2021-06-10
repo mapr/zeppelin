@@ -18,7 +18,6 @@
 package org.apache.zeppelin.pig;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.pig.PigServer;
 import org.apache.pig.impl.logicalLayer.FrontendException;
@@ -60,7 +59,7 @@ public class PigInterpreter extends BasePigInterpreter {
     }
     try {
       pigServer = new PigServer(execType);
-      for (Map.Entry entry : getProperty().entrySet()) {
+      for (Map.Entry entry : getProperties().entrySet()) {
         if (!entry.getKey().toString().startsWith("zeppelin.")) {
           pigServer.getPigContext().getProperties().setProperty(entry.getKey().toString(),
               entry.getValue().toString());
@@ -117,7 +116,7 @@ public class PigInterpreter extends BasePigInterpreter {
       }
       PigStats stats = PigStats.get();
       if (stats != null) {
-        String errorMsg = stats.getDisplayString();
+        String errorMsg = PigUtils.extactJobStats(stats);
         if (errorMsg != null) {
           LOGGER.error("Fail to run pig script, " + errorMsg);
           return new InterpreterResult(Code.ERROR, errorMsg);
@@ -135,7 +134,7 @@ public class PigInterpreter extends BasePigInterpreter {
     StringBuilder outputBuilder = new StringBuilder();
     PigStats stats = PigStats.get();
     if (stats != null && includeJobStats) {
-      String jobStats = stats.getDisplayString();
+      String jobStats = PigUtils.extactJobStats(stats);
       if (jobStats != null) {
         outputBuilder.append(jobStats);
       }

@@ -90,7 +90,7 @@ public class GetUserList {
   /**
    * function to extract users from LDAP
    */
-  public List<String> getUserList(JndiLdapRealm r, String searchText) {
+  public List<String> getUserList(JndiLdapRealm r, String searchText, int numUsersToFetch) {
     List<String> userList = new ArrayList<>();
     String userDnTemplate = r.getUserDnTemplate();
     String userDn[] = userDnTemplate.split(",", 2);
@@ -100,6 +100,7 @@ public class GetUserList {
     try {
       LdapContext ctx = CF.getSystemLdapContext();
       SearchControls constraints = new SearchControls();
+      constraints.setCountLimit(numUsersToFetch);
       constraints.setSearchScope(SearchControls.SUBTREE_SCOPE);
       String[] attrIDs = {userDnPrefix};
       constraints.setReturningAttributes(attrIDs);
@@ -122,7 +123,7 @@ public class GetUserList {
   /**
    * function to extract users from Zeppelin LdapRealm
    */
-  public List<String> getUserList(LdapRealm r, String searchText) {
+  public List<String> getUserList(LdapRealm r, String searchText, int numUsersToFetch) {
     List<String> userList = new ArrayList<>();
     if (LOG.isDebugEnabled()) {
       LOG.debug("SearchText: " + searchText);
@@ -135,11 +136,12 @@ public class GetUserList {
       LdapContext ctx = CF.getSystemLdapContext();
       SearchControls constraints = new SearchControls();
       constraints.setSearchScope(SearchControls.SUBTREE_SCOPE);
+      constraints.setCountLimit(numUsersToFetch);
       String[] attrIDs = {userAttribute};
       constraints.setReturningAttributes(attrIDs);
       NamingEnumeration result = ctx.search(userSearchRealm, "(&(objectclass=" + 
             userObjectClass + ")(" 
-            + userAttribute + "=" + searchText + "))", constraints);
+            + userAttribute + "=*" + searchText + "*))", constraints);
       while (result.hasMore()) {
         Attributes attrs = ((SearchResult) result.next()).getAttributes();
         if (attrs.get(userAttribute) != null) {
@@ -186,11 +188,12 @@ public class GetUserList {
   }
   
 
-  public List<String> getUserList(ActiveDirectoryGroupRealm r, String searchText) {
+  public List<String> getUserList(ActiveDirectoryGroupRealm r, String searchText,
+      int numUsersToFetch) {
     List<String> userList = new ArrayList<>();
     try {
       LdapContext ctx = r.getLdapContextFactory().getSystemLdapContext();
-      userList = r.searchForUserName(searchText, ctx);
+      userList = r.searchForUserName(searchText, ctx, numUsersToFetch);
     } catch (Exception e) {
       LOG.error("Error retrieving User list from ActiveDirectory Realm", e);
     }
@@ -202,6 +205,7 @@ public class GetUserList {
    */
   public List<String> getUserList(JdbcRealm obj) {
     List<String> userlist = new ArrayList<>();
+    Connection con = null;
     PreparedStatement ps = null;
     ResultSet rs = null;
     DataSource dataSource = null;
@@ -231,7 +235,7 @@ public class GetUserList {
         return userlist;
       }
 
-      userquery = "select ? from ?";
+      userquery = String.format("SELECT %s FROM %s", username, tablename);
 
     } catch (IllegalAccessException e) {
       LOG.error("Error while accessing dataSource for JDBC Realm", e);
@@ -239,10 +243,8 @@ public class GetUserList {
     }
 
     try {
-      Connection con = dataSource.getConnection();
+      con = dataSource.getConnection();
       ps = con.prepareStatement(userquery);
-      ps.setString(1, username);
-      ps.setString(2, tablename);
       rs = ps.executeQuery();
       while (rs.next()) {
         userlist.add(rs.getString(1).trim());
@@ -252,6 +254,7 @@ public class GetUserList {
     } finally {
       JdbcUtils.closeResultSet(rs);
       JdbcUtils.closeStatement(ps);
+      JdbcUtils.closeConnection(con);
     }
     return userlist;
   }

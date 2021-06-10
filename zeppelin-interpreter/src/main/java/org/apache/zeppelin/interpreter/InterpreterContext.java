@@ -17,6 +17,8 @@
 
 package org.apache.zeppelin.interpreter;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +36,7 @@ import org.apache.zeppelin.resource.ResourcePool;
 public class InterpreterContext {
   private static final ThreadLocal<InterpreterContext> threadIC = new ThreadLocal<>();
 
-  public final InterpreterOutput out;
+  public InterpreterOutput out;
 
   public static InterpreterContext get() {
     return threadIC.get();
@@ -48,21 +50,71 @@ public class InterpreterContext {
     threadIC.remove();
   }
 
-  private final String noteId;
-  private final String replName;
-  private final String paragraphTitle;
-  private final String paragraphId;
-  private final String paragraphText;
+  private String noteId;
+  private String replName;
+  private String paragraphTitle;
+  private String paragraphId;
+  private String paragraphText;
   private AuthenticationInfo authenticationInfo;
-  private final Map<String, Object> config;
-  private GUI gui;
+  private Map<String, Object> config = new HashMap<>();
+  private GUI gui = new GUI();
+  private GUI noteGui = new GUI();
   private AngularObjectRegistry angularObjectRegistry;
   private ResourcePool resourcePool;
-  private List<InterpreterContextRunner> runners;
+  private List<InterpreterContextRunner> runners = new ArrayList<>();
   private String className;
   private RemoteEventClientWrapper client;
   private RemoteWorksController remoteWorksController;
-  private final Map<String, Integer> progressMap;
+  private Map<String, Integer> progressMap;
+
+  /**
+   * Builder class for InterpreterContext
+   */
+  public static class Builder {
+    private InterpreterContext context = new InterpreterContext();
+
+    public Builder setNoteId(String noteId) {
+      context.noteId = noteId;
+      return this;
+    }
+
+    public Builder setParagraphId(String paragraphId) {
+      context.paragraphId = paragraphId;
+      return this;
+    }
+
+    public Builder setEventClient(RemoteEventClientWrapper client) {
+      context.client = client;
+      return this;
+    }
+
+    public Builder setInterpreterClassName(String intpClassName) {
+      context.className = intpClassName;
+      return this;
+    }
+
+    public Builder setReplName(String replName) {
+      context.replName = replName;
+      return this;
+    }
+
+    public Builder setInterpreterOut(InterpreterOutput out) {
+      context.out = out;
+      return this;
+    }
+
+    public InterpreterContext build() {
+      return context;
+    }
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
+  private InterpreterContext() {
+
+  }
 
   // visible for testing
   public InterpreterContext(String noteId,
@@ -73,13 +125,14 @@ public class InterpreterContext {
                             AuthenticationInfo authenticationInfo,
                             Map<String, Object> config,
                             GUI gui,
+                            GUI noteGui,
                             AngularObjectRegistry angularObjectRegistry,
                             ResourcePool resourcePool,
                             List<InterpreterContextRunner> runners,
                             InterpreterOutput out
                             ) {
     this(noteId, paragraphId, replName, paragraphTitle, paragraphText, authenticationInfo,
-        config, gui, angularObjectRegistry, resourcePool, runners, out, null, null);
+        config, gui, noteGui, angularObjectRegistry, resourcePool, runners, out, null, null);
   }
 
   public InterpreterContext(String noteId,
@@ -90,6 +143,7 @@ public class InterpreterContext {
                             AuthenticationInfo authenticationInfo,
                             Map<String, Object> config,
                             GUI gui,
+                            GUI noteGui,
                             AngularObjectRegistry angularObjectRegistry,
                             ResourcePool resourcePool,
                             List<InterpreterContextRunner> runners,
@@ -105,6 +159,7 @@ public class InterpreterContext {
     this.authenticationInfo = authenticationInfo;
     this.config = config;
     this.gui = gui;
+    this.noteGui = noteGui;
     this.angularObjectRegistry = angularObjectRegistry;
     this.resourcePool = resourcePool;
     this.runners = runners;
@@ -121,6 +176,7 @@ public class InterpreterContext {
                             AuthenticationInfo authenticationInfo,
                             Map<String, Object> config,
                             GUI gui,
+                            GUI noteGui,
                             AngularObjectRegistry angularObjectRegistry,
                             ResourcePool resourcePool,
                             List<InterpreterContextRunner> contextRunners,
@@ -129,7 +185,7 @@ public class InterpreterContext {
                             RemoteInterpreterEventClient eventClient,
                             Map<String, Integer> progressMap) {
     this(noteId, paragraphId, replName, paragraphTitle, paragraphText, authenticationInfo,
-        config, gui, angularObjectRegistry, resourcePool, contextRunners, output,
+        config, gui, noteGui, angularObjectRegistry, resourcePool, contextRunners, output,
         remoteWorksController, progressMap);
     this.client = new RemoteEventClient(eventClient);
   }
@@ -144,6 +200,10 @@ public class InterpreterContext {
 
   public String getParagraphId() {
     return paragraphId;
+  }
+
+  public void setParagraphId(String paragraphId) {
+    this.paragraphId = paragraphId;
   }
 
   public String getParagraphText() {
@@ -164,6 +224,10 @@ public class InterpreterContext {
 
   public GUI getGui() {
     return gui;
+  }
+
+  public GUI getNoteGui() {
+    return noteGui;
   }
 
   public AngularObjectRegistry getAngularObjectRegistry() {
@@ -188,6 +252,10 @@ public class InterpreterContext {
 
   public RemoteEventClientWrapper getClient() {
     return client;
+  }
+
+  public void setClient(RemoteEventClientWrapper client) {
+    this.client = client;
   }
 
   public RemoteWorksController getRemoteWorksController() {

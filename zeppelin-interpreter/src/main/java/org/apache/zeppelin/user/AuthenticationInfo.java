@@ -20,13 +20,14 @@ package org.apache.zeppelin.user;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import com.google.gson.Gson;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.zeppelin.common.JsonSerializable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.gson.Gson;
 
 /***
  *
@@ -56,10 +57,7 @@ public class AuthenticationInfo implements JsonSerializable {
   public AuthenticationInfo(String user, String roles, String ticket) {
     this.user = user;
     this.ticket = ticket;
-    if (StringUtils.isNotBlank(roles) && roles.length() > 2) {
-      String[] r = roles.substring(1, roles.length() - 1).split(",");
-      this.roles = Arrays.asList(r);
-    }
+    this.roles = gson.fromJson(roles, ArrayList.class);
   }
 
   public String getUser() {
@@ -76,6 +74,10 @@ public class AuthenticationInfo implements JsonSerializable {
 
   public void setRoles(List<String> roles) {
     this.roles = roles;
+  }
+
+  public void setRoles(String roles) {
+    this.roles = gson.fromJson(roles, ArrayList.class);
   }
 
   public List<String> getUsersAndRoles() {
@@ -120,6 +122,7 @@ public class AuthenticationInfo implements JsonSerializable {
         || StringUtils.isEmpty(this.getUser());
   }
 
+  @Override
   public String toJson() {
     return gson.toJson(this);
   }

@@ -16,7 +16,6 @@
  */
 package org.apache.zeppelin.helium;
 
-import org.apache.thrift.TException;
 import org.apache.zeppelin.interpreter.*;
 import org.apache.zeppelin.interpreter.remote.RemoteAngularObjectRegistry;
 import org.apache.zeppelin.interpreter.remote.RemoteInterpreterProcess;
@@ -79,8 +78,8 @@ public class HeliumApplicationFactory implements ApplicationEventListener, Noteb
     public void run() {
       try {
         // get interpreter process
-        Interpreter intp = paragraph.getRepl(paragraph.getRequiredReplName());
-        InterpreterGroup intpGroup = intp.getInterpreterGroup();
+        Interpreter intp = paragraph.getBindedInterpreter();
+        ManagedInterpreterGroup intpGroup = (ManagedInterpreterGroup) intp.getInterpreterGroup();
         RemoteInterpreterProcess intpProcess = intpGroup.getRemoteInterpreterProcess();
         if (intpProcess == null) {
           throw new ApplicationException("Target interpreter process is not running");
@@ -105,38 +104,33 @@ public class HeliumApplicationFactory implements ApplicationEventListener, Noteb
     private void load(RemoteInterpreterProcess intpProcess, ApplicationState appState)
         throws Exception {
 
-      RemoteInterpreterService.Client client = null;
-
       synchronized (appState) {
         if (appState.getStatus() == ApplicationState.Status.LOADED) {
           // already loaded
           return;
         }
 
-        try {
-          appStatusChange(paragraph, appState.getId(), ApplicationState.Status.LOADING);
-          String pkgInfo = pkg.toJson();
-          String appId = appState.getId();
+        appStatusChange(paragraph, appState.getId(), ApplicationState.Status.LOADING);
+        final String pkgInfo = pkg.toJson();
+        final String appId = appState.getId();
 
-          client = intpProcess.getClient();
-          RemoteApplicationResult ret = client.loadApplication(
-              appId,
-              pkgInfo,
-              paragraph.getNote().getId(),
-              paragraph.getId());
-
-          if (ret.isSuccess()) {
-            appStatusChange(paragraph, appState.getId(), ApplicationState.Status.LOADED);
-          } else {
-            throw new ApplicationException(ret.getMsg());
-          }
-        } catch (TException e) {
-          intpProcess.releaseBrokenClient(client);
-          throw e;
-        } finally {
-          if (client != null) {
-            intpProcess.releaseClient(client);
-          }
+        RemoteApplicationResult ret = intpProcess.callRemoteFunction(
+            new RemoteInterpreterProcess.RemoteFunction<RemoteApplicationResult>() {
+              @Override
+              public RemoteApplicationResult call(RemoteInterpreterService.Client client)
+                  throws Exception {
+                return client.loadApplication(
+                    appId,
+                    pkgInfo,
+                    paragraph.getNote().getId(),
+                    paragraph.getId());
+              }
+            }
+        );
+        if (ret.isSuccess()) {
+          appStatusChange(paragraph, appState.getId(), ApplicationState.Status.LOADED);
+        } else {
+          throw new ApplicationException(ret.getMsg());
         }
       }
     }
@@ -199,44 +193,39 @@ public class HeliumApplicationFactory implements ApplicationEventListener, Noteb
       }
     }
 
-    private void unload(ApplicationState appsToUnload) throws ApplicationException {
+    private void unload(final ApplicationState appsToUnload) throws ApplicationException {
       synchronized (appsToUnload) {
         if (appsToUnload.getStatus() != ApplicationState.Status.LOADED) {
           throw new ApplicationException(
               "Can't unload application status " + appsToUnload.getStatus());
         }
         appStatusChange(paragraph, appsToUnload.getId(), ApplicationState.Status.UNLOADING);
-        Interpreter intp = paragraph.getCurrentRepl();
-        if (intp == null) {
-          throw new ApplicationException("No interpreter found");
+        Interpreter intp = null;
+        try {
+          intp = paragraph.getBindedInterpreter();
+        } catch (InterpreterException e) {
+          throw new ApplicationException("No interpreter found", e);
         }
 
         RemoteInterpreterProcess intpProcess =
-            intp.getInterpreterGroup().getRemoteInterpreterProcess();
+            ((ManagedInterpreterGroup) intp.getInterpreterGroup()).getRemoteInterpreterProcess();
         if (intpProcess == null) {
           throw new ApplicationException("Target interpreter process is not running");
         }
 
-        RemoteInterpreterService.Client client;
-        try {
-          client = intpProcess.getClient();
-        } catch (Exception e) {
-          throw new ApplicationException(e);
-        }
-
-        try {
-          RemoteApplicationResult ret = client.unloadApplication(appsToUnload.getId());
-
-          if (ret.isSuccess()) {
-            appStatusChange(paragraph, appsToUnload.getId(), ApplicationState.Status.UNLOADED);
-          } else {
-            throw new ApplicationException(ret.getMsg());
-          }
-        } catch (TException e) {
-          intpProcess.releaseBrokenClient(client);
-          throw new ApplicationException(e);
-        } finally {
-          intpProcess.releaseClient(client);
+        RemoteApplicationResult ret = intpProcess.callRemoteFunction(
+            new RemoteInterpreterProcess.RemoteFunction<RemoteApplicationResult>() {
+              @Override
+              public RemoteApplicationResult call(RemoteInterpreterService.Client client)
+                  throws Exception {
+                return client.unloadApplication(appsToUnload.getId());
+              }
+            }
+        );
+        if (ret.isSuccess()) {
+          appStatusChange(paragraph, appsToUnload.getId(), ApplicationState.Status.UNLOADED);
+        } else {
+          throw new ApplicationException(ret.getMsg());
         }
       }
     }
@@ -286,46 +275,38 @@ public class HeliumApplicationFactory implements ApplicationEventListener, Noteb
       }
     }
 
-    private void run(ApplicationState app) throws ApplicationException {
+    private void run(final ApplicationState app) throws ApplicationException {
       synchronized (app) {
         if (app.getStatus() != ApplicationState.Status.LOADED) {
           throw new ApplicationException(
               "Can't run application status " + app.getStatus());
         }
 
-        Interpreter intp = paragraph.getCurrentRepl();
-        if (intp == null) {
-          throw new ApplicationException("No interpreter found");
+        Interpreter intp = null;
+        try {
+          intp = paragraph.getBindedInterpreter();
+        } catch (InterpreterException e) {
+          throw new ApplicationException("No interpreter found", e);
         }
 
         RemoteInterpreterProcess intpProcess =
-            intp.getInterpreterGroup().getRemoteInterpreterProcess();
+            ((ManagedInterpreterGroup) intp.getInterpreterGroup()).getRemoteInterpreterProcess();
         if (intpProcess == null) {
           throw new ApplicationException("Target interpreter process is not running");
         }
-        RemoteInterpreterService.Client client = null;
-        try {
-          client = intpProcess.getClient();
-        } catch (Exception e) {
-          throw new ApplicationException(e);
-        }
-
-        try {
-          RemoteApplicationResult ret = client.runApplication(app.getId());
-
-          if (ret.isSuccess()) {
-            // success
-          } else {
-            throw new ApplicationException(ret.getMsg());
-          }
-        } catch (TException e) {
-          intpProcess.releaseBrokenClient(client);
-          client = null;
-          throw new ApplicationException(e);
-        } finally {
-          if (client != null) {
-            intpProcess.releaseClient(client);
-          }
+        RemoteApplicationResult ret = intpProcess.callRemoteFunction(
+            new RemoteInterpreterProcess.RemoteFunction<RemoteApplicationResult>() {
+              @Override
+              public RemoteApplicationResult call(RemoteInterpreterService.Client client)
+                  throws Exception {
+                return client.runApplication(app.getId());
+              }
+            }
+        );
+        if (ret.isSuccess()) {
+          // success
+        } else {
+          throw new ApplicationException(ret.getMsg());
         }
       }
     }
@@ -440,7 +421,13 @@ public class HeliumApplicationFactory implements ApplicationEventListener, Noteb
   @Override
   public void onUnbindInterpreter(Note note, InterpreterSetting setting) {
     for (Paragraph p : note.getParagraphs()) {
-      Interpreter currentInterpreter = p.getCurrentRepl();
+      Interpreter currentInterpreter = null;
+      try {
+        currentInterpreter = p.getBindedInterpreter();
+      } catch (InterpreterNotFoundException e) {
+        logger.warn("Not interpreter found", e);
+        return;
+      }
       List<InterpreterInfo> infos = setting.getInterpreterInfos();
       for (InterpreterInfo info : infos) {
         if (currentInterpreter != null &&

@@ -39,6 +39,8 @@ bin=$(cd "${bin}">/dev/null; pwd)
 
 . "${bin}/common.sh"
 
+export ZEPPELIN_PID_DIR="${MAPR_HOME}/pid"
+
 if [ "$1" == "--version" ] || [ "$1" == "-v" ]; then
     getZeppelinVersion
 fi
@@ -73,6 +75,10 @@ addJarInDir "${ZEPPELIN_HOME}/zeppelin-web/target/lib"
 
 ZEPPELIN_CLASSPATH="$CLASSPATH:$ZEPPELIN_CLASSPATH"
 
+if [[ -n "${HADOOP_CONF_DIR}" ]] && [[ -d "${HADOOP_CONF_DIR}" ]]; then
+  ZEPPELIN_CLASSPATH+=":${HADOOP_CONF_DIR}"
+fi
+
 if [[ ! -d "${ZEPPELIN_LOG_DIR}" ]]; then
   echo "Log dir doesn't exist, create ${ZEPPELIN_LOG_DIR}"
   $(mkdir -p "${ZEPPELIN_LOG_DIR}")
@@ -83,4 +89,4 @@ if [[ ! -d "${ZEPPELIN_PID_DIR}" ]]; then
   $(mkdir -p "${ZEPPELIN_PID_DIR}")
 fi
 
-exec $ZEPPELIN_RUNNER $JAVA_OPTS -cp $ZEPPELIN_CLASSPATH_OVERRIDES:${ZEPPELIN_CLASSPATH} $ZEPPELIN_SERVER "$@"
+exec $ZEPPELIN_RUNNER $JAVA_OPTS -cp $ZEPPELIN_CLASSPATH_OVERRIDES:${ZEPPELIN_CLASSPATH}:$(mapr classpath 2>/dev/null) $ZEPPELIN_SERVER "$@"

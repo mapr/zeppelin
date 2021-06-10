@@ -22,22 +22,24 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <artifactId>zeppelin</artifactId>
+        <artifactId>interpreter-parent</artifactId>
         <groupId>org.apache.zeppelin</groupId>
-        <version>0.8.0-SNAPSHOT</version>
+        <version>0.8.2-mapr-1912-r2</version>
+        <relativePath>../interpreter-parent</relativePath>
     </parent>
 
     <groupId>org.apache.zeppelin</groupId>
     <artifactId>zeppelin-pig</artifactId>
     <packaging>jar</packaging>
-    <version>0.8.0-SNAPSHOT</version>
+    <version>0.8.2-mapr-1912-r2</version>
     <name>Zeppelin: Apache Pig Interpreter</name>
     <description>Zeppelin interpreter for Apache Pig</description>
     <url>http://zeppelin.apache.org</url>
 
     <properties>
-        <pig.version>0.17.0</pig.version>
-        <hadoop.version>2.6.0</hadoop.version>
+        <interpreter.name>pig</interpreter.name>
+        <pig.version>0.16.0-mapr-1912</pig.version>
+        <hadoop.version>2.7.0-mapr-1808</hadoop.version>
         <tez.version>0.7.0</tez.version>
         <pig.spark.version>1.6.3</pig.spark.version>
         <pig.scala.version>2.10</pig.scala.version>
@@ -96,8 +98,10 @@
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-client</artifactId>
             <version>${hadoop.version}</version>
+            <scope>provided</scope>
         </dependency>
 
+        <!--
         <dependency>
             <groupId>org.apache.tez</groupId>
             <artifactId>tez-api</artifactId>
@@ -109,13 +113,17 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        -->
 
+        <!--
         <dependency>
             <groupId>org.apache.tez</groupId>
             <artifactId>tez-common</artifactId>
             <version>${tez.version}</version>
         </dependency>
+        -->
 
+        <!--
         <dependency>
             <groupId>org.apache.tez</groupId>
             <artifactId>tez-dag</artifactId>
@@ -127,31 +135,41 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        -->
 
+        <!--
         <dependency>
             <groupId>org.apache.tez</groupId>
             <artifactId>tez-runtime-library</artifactId>
             <version>${tez.version}</version>
         </dependency>
+        -->
 
+        <!--
         <dependency>
             <groupId>org.apache.tez</groupId>
             <artifactId>tez-runtime-internals</artifactId>
             <version>${tez.version}</version>
         </dependency>
+        -->
 
+        <!--
         <dependency>
             <groupId>org.apache.tez</groupId>
             <artifactId>tez-mapreduce</artifactId>
             <version>${tez.version}</version>
         </dependency>
+         -->
 
+        <!--
         <dependency>
             <groupId>org.apache.tez</groupId>
             <artifactId>tez-yarn-timeline-history-with-acls</artifactId>
             <version>${tez.version}</version>
         </dependency>
+        -->
 
+        <!--
         <dependency>
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-core_${pig.scala.version}</artifactId>
@@ -162,6 +180,7 @@
             <artifactId>spark-yarn_${pig.scala.version}</artifactId>
             <version>${pig.spark.version}</version>
         </dependency>
+        -->
 
         <dependency>
             <groupId>junit</groupId>
@@ -175,58 +194,13 @@
         <plugins>
             <plugin>
                 <artifactId>maven-enforcer-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>enforce</id>
-                        <phase>none</phase>
-                    </execution>
-                </executions>
             </plugin>
-
             <plugin>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy-dependencies</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.directory}/../../interpreter/pig
-                            </outputDirectory>
-                            <overWriteReleases>false</overWriteReleases>
-                            <overWriteSnapshots>false</overWriteSnapshots>
-                            <overWriteIfNewer>true</overWriteIfNewer>
-                            <includeScope>runtime</includeScope>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>copy-artifact</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.directory}/../../interpreter/pig
-                            </outputDirectory>
-                            <overWriteReleases>false</overWriteReleases>
-                            <overWriteSnapshots>false</overWriteSnapshots>
-                            <overWriteIfNewer>true</overWriteIfNewer>
-                            <includeScope>runtime</includeScope>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>${project.groupId}</groupId>
-                                    <artifactId>${project.artifactId}</artifactId>
-                                    <version>${project.version}</version>
-                                    <type>${project.packaging}</type>
-                                </artifactItem>
-                            </artifactItems>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
-
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+            </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>

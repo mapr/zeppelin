@@ -17,12 +17,18 @@ package org.apache.zeppelin.jdbc;
 import static java.lang.String.format;
 import static org.apache.zeppelin.jdbc.JDBCInterpreter.DEFAULT_DRIVER;
 import static org.apache.zeppelin.jdbc.JDBCInterpreter.DEFAULT_PASSWORD;
+import static org.apache.zeppelin.jdbc.JDBCInterpreter.DEFAULT_STATEMENT_PRECODE;
 import static org.apache.zeppelin.jdbc.JDBCInterpreter.DEFAULT_USER;
 import static org.apache.zeppelin.jdbc.JDBCInterpreter.DEFAULT_URL;
 import static org.apache.zeppelin.jdbc.JDBCInterpreter.DEFAULT_PRECODE;
 import static org.apache.zeppelin.jdbc.JDBCInterpreter.PRECODE_KEY_TEMPLATE;
 import static org.apache.zeppelin.jdbc.JDBCInterpreter.COMMON_MAX_LINE;
 import static org.junit.Assert.*;
+
+import org.junit.Before;
+import org.junit.Test;
+import static org.apache.zeppelin.jdbc.JDBCInterpreter.STATEMENT_PRECODE_KEY_TEMPLATE;
+
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -37,6 +43,7 @@ import java.util.Properties;
 
 import org.apache.zeppelin.completer.CompletionType;
 import org.apache.zeppelin.interpreter.InterpreterContext;
+import org.apache.zeppelin.interpreter.InterpreterException;
 import org.apache.zeppelin.interpreter.InterpreterResult;
 import org.apache.zeppelin.interpreter.thrift.InterpreterCompletion;
 import org.apache.zeppelin.scheduler.FIFOScheduler;
@@ -90,8 +97,8 @@ public class JDBCInterpreterTest extends BasicJDBCTestCaseAdapter {
     PreparedStatement insertStatement = connection.prepareStatement("insert into test_table(id, name) values ('a', 'a_name'),('b', 'b_name'),('c', ?);");
     insertStatement.setString(1, null);
     insertStatement.execute();
-    interpreterContext = new InterpreterContext("", "1", null, "", "", new AuthenticationInfo("testUser"), null, null, null, null,
-        null, null);
+    interpreterContext = new InterpreterContext("", "1", null, "", "",
+        new AuthenticationInfo("testUser"), null, null, null,null, null, null, null);
   }
 
 
@@ -174,6 +181,27 @@ public class JDBCInterpreterTest extends BasicJDBCTestCaseAdapter {
   }
 
   @Test
+  public void testColumnAliasQuery() throws IOException {
+    Properties properties = new Properties();
+    properties.setProperty("common.max_count", "1000");
+    properties.setProperty("common.max_retry", "3");
+    properties.setProperty("default.driver", "org.h2.Driver");
+    properties.setProperty("default.url", getJdbcConnection());
+    properties.setProperty("default.user", "");
+    properties.setProperty("default.password", "");
+    JDBCInterpreter t = new JDBCInterpreter(properties);
+    t.open();
+
+    String sqlQuery = "select NAME as SOME_OTHER_NAME from test_table limit 1";
+
+    InterpreterResult interpreterResult = t.interpret(sqlQuery, interpreterContext);
+
+    assertEquals(InterpreterResult.Code.SUCCESS, interpreterResult.code());
+    assertEquals(InterpreterResult.Type.TABLE, interpreterResult.message().get(0).getType());
+    assertEquals("SOME_OTHER_NAME\na_name\n", interpreterResult.message().get(0).getData());
+  }
+
+  @Test
   public void testSplitSqlQuery() throws SQLException, IOException {
     String sqlQuery = "insert into test_table(id, name) values ('a', ';\"');" +
         "select * from test_table;" +
@@ -182,13 +210,16 @@ public class JDBCInterpreterTest extends BasicJDBCTestCaseAdapter {
         "select '\n', ';';" +
         "select replace('A\\;B', '\\', 'text');" +
         "select '\\', ';';" +
-        "select '''', ';'";
+        "select '''', ';';" +
+        "select /*+ scan */ * from test_table;" +
+        "--singleLineComment\nselect * from test_table";
+
 
     Properties properties = new Properties();
     JDBCInterpreter t = new JDBCInterpreter(properties);
     t.open();
     List<String> multipleSqlArray = t.splitSqlQueries(sqlQuery);
-    assertEquals(8, multipleSqlArray.size());
+    assertEquals(10, multipleSqlArray.size());
     assertEquals("insert into test_table(id, name) values ('a', ';\"')", multipleSqlArray.get(0));
     assertEquals("select * from test_table", multipleSqlArray.get(1));
     assertEquals("select * from test_table WHERE ID = \";'\"", multipleSqlArray.get(2));
@@ -197,6 +228,8 @@ public class JDBCInterpreterTest extends BasicJDBCTestCaseAdapter {
     assertEquals("select replace('A\\;B', '\\', 'text')", multipleSqlArray.get(5));
     assertEquals("select '\\', ';'", multipleSqlArray.get(6));
     assertEquals("select '''', ';'", multipleSqlArray.get(7));
+    assertEquals("select /*+ scan */ * from test_table", multipleSqlArray.get(8));
+    assertEquals("--singleLineComment\nselect * from test_table", multipleSqlArray.get(9));
   }
 
   @Test
@@ -349,7 +382,7 @@ public class JDBCInterpreterTest extends BasicJDBCTestCaseAdapter {
   }
 
   @Test
-  public void testAutoCompletion() throws SQLException, IOException {
+  public void testAutoCompletion() throws SQLException, IOException, InterpreterException {
     Properties properties = new Properties();
     properties.setProperty("common.max_count", "1000");
     properties.setProperty("common.max_retry", "3");
@@ -417,7 +450,7 @@ public class JDBCInterpreterTest extends BasicJDBCTestCaseAdapter {
     // user1 runs jdbc1
     jdbc1.open();
     InterpreterContext ctx1 = new InterpreterContext("", "1", "jdbc1", "", "", user1Credential,
-      null, null, null, null, null, null);
+      null, null, null, null, null, null, null);
     jdbc1.interpret("", ctx1);
 
     JDBCUserConfigurations user1JDBC1Conf = jdbc1.getJDBCConfiguration("user1");
@@ -428,7 +461,7 @@ public class JDBCInterpreterTest extends BasicJDBCTestCaseAdapter {
     // user1 runs jdbc2
     jdbc2.open();
     InterpreterContext ctx2 = new InterpreterContext("", "1", "jdbc2", "", "", user1Credential,
-      null, null, null, null, null, null);
+      null, null, null, null, null, null, null);
     jdbc2.interpret("", ctx2);
 
     JDBCUserConfigurations user1JDBC2Conf = jdbc2.getJDBCConfiguration("user1");
@@ -439,7 +472,7 @@ public class JDBCInterpreterTest extends BasicJDBCTestCaseAdapter {
     // user2 runs jdbc1
     jdbc1.open();
     InterpreterContext ctx3 = new InterpreterContext("", "1", "jdbc1", "", "", user2Credential,
-      null, null, null, null, null, null);
+      null, null, null, null, null, null, null);
     jdbc1.interpret("", ctx3);
 
     JDBCUserConfigurations user2JDBC1Conf = jdbc1.getJDBCConfiguration("user2");
@@ -450,7 +483,7 @@ public class JDBCInterpreterTest extends BasicJDBCTestCaseAdapter {
     // user2 runs jdbc2
     jdbc2.open();
     InterpreterContext ctx4 = new InterpreterContext("", "1", "jdbc2", "", "", user2Credential,
-      null, null, null, null, null, null);
+      null, null, null, null, null, null, null);
     jdbc2.interpret("", ctx4);
 
     JDBCUserConfigurations user2JDBC2Conf = jdbc2.getJDBCConfiguration("user2");
@@ -523,7 +556,67 @@ public class JDBCInterpreterTest extends BasicJDBCTestCaseAdapter {
   }
 
   @Test
-  public void testExcludingComments() throws SQLException, IOException {
+  public void testStatementPrecode() throws SQLException, IOException {
+    Properties properties = new Properties();
+    properties.setProperty("default.driver", "org.h2.Driver");
+    properties.setProperty("default.url", getJdbcConnection());
+    properties.setProperty("default.user", "");
+    properties.setProperty("default.password", "");
+    properties.setProperty(DEFAULT_STATEMENT_PRECODE, "set @v='statement'");
+    JDBCInterpreter jdbcInterpreter = new JDBCInterpreter(properties);
+    jdbcInterpreter.open();
+
+    String sqlQuery = "select @v";
+
+    InterpreterResult interpreterResult = jdbcInterpreter.interpret(sqlQuery, interpreterContext);
+
+    assertEquals(InterpreterResult.Code.SUCCESS, interpreterResult.code());
+    assertEquals(InterpreterResult.Type.TABLE, interpreterResult.message().get(0).getType());
+    assertEquals("@V\nstatement\n", interpreterResult.message().get(0).getData());
+  }
+
+  @Test
+  public void testIncorrectStatementPrecode() throws SQLException, IOException {
+    Properties properties = new Properties();
+    properties.setProperty("default.driver", "org.h2.Driver");
+    properties.setProperty("default.url", getJdbcConnection());
+    properties.setProperty("default.user", "");
+    properties.setProperty("default.password", "");
+    properties.setProperty(DEFAULT_STATEMENT_PRECODE, "set incorrect");
+    JDBCInterpreter jdbcInterpreter = new JDBCInterpreter(properties);
+    jdbcInterpreter.open();
+
+    String sqlQuery = "select 1";
+
+    InterpreterResult interpreterResult = jdbcInterpreter.interpret(sqlQuery, interpreterContext);
+
+    assertEquals(InterpreterResult.Code.ERROR, interpreterResult.code());
+    assertEquals(InterpreterResult.Type.TEXT, interpreterResult.message().get(0).getType());
+  }
+
+  @Test
+  public void testStatementPrecodeWithAnotherPrefix() throws SQLException, IOException {
+    Properties properties = new Properties();
+    properties.setProperty("anotherPrefix.driver", "org.h2.Driver");
+    properties.setProperty("anotherPrefix.url", getJdbcConnection());
+    properties.setProperty("anotherPrefix.user", "");
+    properties.setProperty("anotherPrefix.password", "");
+    properties.setProperty(String.format(STATEMENT_PRECODE_KEY_TEMPLATE, "anotherPrefix"),
+            "set @v='statementAnotherPrefix'");
+    JDBCInterpreter jdbcInterpreter = new JDBCInterpreter(properties);
+    jdbcInterpreter.open();
+
+    String sqlQuery = "(anotherPrefix) select @v";
+
+    InterpreterResult interpreterResult = jdbcInterpreter.interpret(sqlQuery, interpreterContext);
+
+    assertEquals(InterpreterResult.Code.SUCCESS, interpreterResult.code());
+    assertEquals(InterpreterResult.Type.TABLE, interpreterResult.message().get(0).getType());
+    assertEquals("@V\nstatementAnotherPrefix\n", interpreterResult.message().get(0).getData());
+  }
+
+  @Test
+  public void testSplitSqlQueryWithComments() throws SQLException, IOException {
     Properties properties = new Properties();
     properties.setProperty("common.max_count", "1000");
     properties.setProperty("common.max_retry", "3");

@@ -22,6 +22,8 @@ import java.util.Date;
 import java.util.Map;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.zeppelin.interpreter.InterpreterResult;
+import org.apache.zeppelin.interpreter.InterpreterResult.Code;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,6 +43,7 @@ public abstract class Job {
   /**
    * Job status.
    *
+   * UNKNOWN - Job is not found in remote
    * READY - Job is not running, ready to run.
    * PENDING - Job is submitted to scheduler. but not running yet
    * RUNNING - Job is running.
@@ -48,8 +51,8 @@ public abstract class Job {
    * ERROR - Job finished run. with error
    * ABORT - Job finished by abort
    */
-  public static enum Status {
-    READY, PENDING, RUNNING, FINISHED, ERROR, ABORT;
+  public enum Status {
+    UNKNOWN, READY, PENDING, RUNNING, FINISHED, ERROR, ABORT;
 
     public boolean isReady() {
       return this == READY;
@@ -62,6 +65,10 @@ public abstract class Job {
     public boolean isPending() {
       return this == PENDING;
     }
+
+    public boolean isCompleted() {
+      return this == FINISHED || this == ERROR || this == ABORT;
+    }
   }
 
   private String jobName;
@@ -70,14 +77,14 @@ public abstract class Job {
   Date dateCreated;
   Date dateStarted;
   Date dateFinished;
-  Status status;
+  volatile Status status;
 
   static Logger LOGGER = LoggerFactory.getLogger(Job.class);
 
   transient boolean aborted = false;
 
-  private String errorMessage;
-  private transient Throwable exception;
+  private volatile String errorMessage;
+  private transient volatile Throwable exception;
   private transient JobListener listener;
   private long progressUpdateIntervalMs;
 
@@ -198,7 +205,7 @@ public abstract class Job {
   }
 
   private synchronized void completeWithError(Throwable error) {
-    setResult(error.getMessage());
+    setResult(new InterpreterResult(Code.ERROR, getStack(error)));
     setException(error);
     dateFinished = new Date();
   }

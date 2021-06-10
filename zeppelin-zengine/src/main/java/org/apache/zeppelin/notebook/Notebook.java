@@ -17,8 +17,11 @@
 
 package org.apache.zeppelin.notebook;
 
+import com.google.common.base.Preconditions;
+import com.google.common.base.Predicate;
+import com.google.common.collect.FluentIterable;
+import com.google.common.collect.Sets;
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -30,15 +33,26 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-
-import com.google.common.base.Preconditions;
-import com.google.common.base.Predicate;
-import com.google.common.collect.FluentIterable;
-import com.google.common.collect.Sets;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.stream.JsonReader;
-import org.apache.zeppelin.interpreter.*;
+import org.apache.zeppelin.conf.ZeppelinConfiguration;
+import org.apache.zeppelin.conf.ZeppelinConfiguration.ConfVars;
+import org.apache.zeppelin.display.AngularObject;
+import org.apache.zeppelin.display.AngularObjectRegistry;
+import org.apache.zeppelin.interpreter.InterpreterException;
+import org.apache.zeppelin.interpreter.InterpreterFactory;
+import org.apache.zeppelin.interpreter.InterpreterGroup;
+import org.apache.zeppelin.interpreter.InterpreterResult;
+import org.apache.zeppelin.interpreter.InterpreterSetting;
+import org.apache.zeppelin.interpreter.InterpreterSettingManager;
+import org.apache.zeppelin.interpreter.remote.RemoteAngularObjectRegistry;
+import org.apache.zeppelin.notebook.repo.NotebookRepo;
+import org.apache.zeppelin.notebook.repo.NotebookRepoSync;
+import org.apache.zeppelin.notebook.repo.NotebookRepoWithVersionControl;
+import org.apache.zeppelin.notebook.repo.NotebookRepoWithVersionControl.Revision;
+import org.apache.zeppelin.scheduler.Job;
+import org.apache.zeppelin.scheduler.SchedulerFactory;
+import org.apache.zeppelin.search.SearchService;
+import org.apache.zeppelin.user.AuthenticationInfo;
+import org.apache.zeppelin.user.Credentials;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.CronTrigger;
 import org.quartz.JobBuilder;
@@ -51,21 +65,6 @@ import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import org.apache.zeppelin.conf.ZeppelinConfiguration;
-import org.apache.zeppelin.conf.ZeppelinConfiguration.ConfVars;
-import org.apache.zeppelin.display.AngularObject;
-import org.apache.zeppelin.display.AngularObjectRegistry;
-import org.apache.zeppelin.interpreter.remote.RemoteAngularObjectRegistry;
-import org.apache.zeppelin.notebook.repo.NotebookRepo;
-import org.apache.zeppelin.notebook.repo.NotebookRepo.Revision;
-import org.apache.zeppelin.notebook.repo.NotebookRepoSync;
-import org.apache.zeppelin.resource.ResourcePoolUtils;
-import org.apache.zeppelin.scheduler.Job;
-import org.apache.zeppelin.scheduler.SchedulerFactory;
-import org.apache.zeppelin.search.SearchService;
-import org.apache.zeppelin.user.AuthenticationInfo;
-import org.apache.zeppelin.user.Credentials;
 
 /**
  * Collection of Notes.
@@ -85,8 +84,9 @@ public class Notebook implements NoteEventListener {
   private final FolderView folders = new FolderView();
   private ZeppelinConfiguration conf;
   private StdSchedulerFactory quertzSchedFact;
-  private org.quartz.Scheduler quartzSched;
+  org.quartz.Scheduler quartzSched;
   private JobListenerFactory jobListenerFactory;
+
   private NotebookRepo notebookRepo;
   private SearchService noteSearchService;
   private NotebookAuthorization notebookAuthorization;
@@ -140,7 +140,7 @@ public class Notebook implements NoteEventListener {
     Preconditions.checkNotNull(subject, "AuthenticationInfo should not be null");
     Note note;
     if (conf.getBoolean(ConfVars.ZEPPELIN_NOTEBOOK_AUTO_INTERPRETER_BINDING)) {
-      note = createNote(interpreterSettingManager.getDefaultInterpreterSettingList(), subject);
+      note = createNote(interpreterSettingManager.getInterpreterSettingIds(), subject);
     } else {
       note = createNote(null, subject);
     }
@@ -204,13 +204,15 @@ public class Notebook implements NoteEventListener {
       Note oldNote = Note.fromJson(sourceJson);
       convertFromSingleResultToMultipleResultsFormat(oldNote);
       newNote = createNote(subject);
-      if (noteName != null)
+      if (noteName != null) {
         newNote.setName(noteName);
-      else
+      } else {
         newNote.setName(oldNote.getName());
+      }
+      newNote.setCronSupported(getConf());
       List<Paragraph> paragraphs = oldNote.getParagraphs();
       for (Paragraph p : paragraphs) {
-        newNote.addCloneParagraph(p);
+        newNote.addCloneParagraph(p, subject);
       }
 
       notebookAuthorization.setNewNotePermissions(newNote.getId(), subject);
@@ -244,13 +246,14 @@ public class Notebook implements NoteEventListener {
     } else {
       newNote.setName("Note " + newNote.getId());
     }
+    newNote.setCronSupported(getConf());
     // Copy the interpreter bindings
     List<String> boundInterpreterSettingsIds = getBindedInterpreterSettingsIds(sourceNote.getId());
     bindInterpretersToNote(subject.getUser(), newNote.getId(), boundInterpreterSettingsIds);
 
     List<Paragraph> paragraphs = sourceNote.getParagraphs();
     for (Paragraph p : paragraphs) {
-      newNote.addCloneParagraph(p);
+      newNote.addCloneParagraph(p, subject);
     }
 
     noteSearchService.addIndexDoc(newNote);
@@ -270,8 +273,8 @@ public class Notebook implements NoteEventListener {
         }
       }
 
-      interpreterSettingManager.setInterpreters(user, note.getId(), interpreterSettingIds);
-      // comment out while note.getNoteReplLoader().setInterpreters(...) do the same
+      interpreterSettingManager.setInterpreterBinding(user, note.getId(), interpreterSettingIds);
+      // comment out while note.getNoteReplLoader().setInterpreterBinding(...) do the same
       // replFactory.putNoteInterpreterSettingBinding(id, interpreterSettingIds);
     }
   }
@@ -279,7 +282,7 @@ public class Notebook implements NoteEventListener {
   List<String> getBindedInterpreterSettingsIds(String id) {
     Note note = getNote(id);
     if (note != null) {
-      return interpreterSettingManager.getInterpreters(note.getId());
+      return interpreterSettingManager.getInterpreterBinding(note.getId());
     } else {
       return new LinkedList<>();
     }
@@ -313,9 +316,10 @@ public class Notebook implements NoteEventListener {
   }
 
   public void moveNoteToTrash(String noteId) {
-    for (InterpreterSetting interpreterSetting : interpreterSettingManager
-        .getInterpreterSettings(noteId)) {
-      interpreterSettingManager.removeInterpretersForNote(interpreterSetting, "", noteId);
+    try {
+      interpreterSettingManager.setInterpreterBinding("", noteId, new ArrayList<String>());
+    } catch (IOException e) {
+      e.printStackTrace();
     }
   }
 
@@ -338,43 +342,45 @@ public class Notebook implements NoteEventListener {
 
     // remove from all interpreter instance's angular object registry
     for (InterpreterSetting settings : interpreterSettingManager.get()) {
-      AngularObjectRegistry registry =
-          settings.getInterpreterGroup(subject.getUser(), id).getAngularObjectRegistry();
-      if (registry instanceof RemoteAngularObjectRegistry) {
-        // remove paragraph scope object
-        for (Paragraph p : note.getParagraphs()) {
-          ((RemoteAngularObjectRegistry) registry).removeAllAndNotifyRemoteProcess(id, p.getId());
+      InterpreterGroup interpreterGroup = settings.getInterpreterGroup(subject.getUser(), id);
+      if (interpreterGroup != null) {
+        AngularObjectRegistry registry = interpreterGroup.getAngularObjectRegistry();
+        if (registry instanceof RemoteAngularObjectRegistry) {
+          // remove paragraph scope object
+          for (Paragraph p : note.getParagraphs()) {
+            ((RemoteAngularObjectRegistry) registry).removeAllAndNotifyRemoteProcess(id, p.getId());
 
-          // remove app scope object
-          List<ApplicationState> appStates = p.getAllApplicationStates();
-          if (appStates != null) {
-            for (ApplicationState app : appStates) {
-              ((RemoteAngularObjectRegistry) registry)
-                  .removeAllAndNotifyRemoteProcess(id, app.getId());
+            // remove app scope object
+            List<ApplicationState> appStates = p.getAllApplicationStates();
+            if (appStates != null) {
+              for (ApplicationState app : appStates) {
+                ((RemoteAngularObjectRegistry) registry)
+                    .removeAllAndNotifyRemoteProcess(id, app.getId());
+              }
             }
           }
-        }
-        // remove note scope object
-        ((RemoteAngularObjectRegistry) registry).removeAllAndNotifyRemoteProcess(id, null);
-      } else {
-        // remove paragraph scope object
-        for (Paragraph p : note.getParagraphs()) {
-          registry.removeAll(id, p.getId());
+          // remove note scope object
+          ((RemoteAngularObjectRegistry) registry).removeAllAndNotifyRemoteProcess(id, null);
+        } else {
+          // remove paragraph scope object
+          for (Paragraph p : note.getParagraphs()) {
+            registry.removeAll(id, p.getId());
 
-          // remove app scope object
-          List<ApplicationState> appStates = p.getAllApplicationStates();
-          if (appStates != null) {
-            for (ApplicationState app : appStates) {
-              registry.removeAll(id, app.getId());
+            // remove app scope object
+            List<ApplicationState> appStates = p.getAllApplicationStates();
+            if (appStates != null) {
+              for (ApplicationState app : appStates) {
+                registry.removeAll(id, app.getId());
+              }
             }
           }
+          // remove note scope object
+          registry.removeAll(id, null);
         }
-        // remove note scope object
-        registry.removeAll(id, null);
       }
     }
 
-    ResourcePoolUtils.removeResourcesBelongsToNote(id);
+    interpreterSettingManager.removeResourcesBelongsToNote(id);
 
     fireNoteRemoveEvent(note);
 
@@ -387,22 +393,40 @@ public class Notebook implements NoteEventListener {
 
   public Revision checkpointNote(String noteId, String checkpointMessage,
       AuthenticationInfo subject) throws IOException {
-    return notebookRepo.checkpoint(noteId, checkpointMessage, subject);
+    if (((NotebookRepoSync) notebookRepo).isRevisionSupportedInDefaultRepo()) {
+      return ((NotebookRepoWithVersionControl) notebookRepo)
+          .checkpoint(noteId, checkpointMessage, subject);
+    } else {
+      return null;
+
+    }
   }
 
-  public List<Revision> listRevisionHistory(String noteId,
-      AuthenticationInfo subject) {
-    return notebookRepo.revisionHistory(noteId, subject);
+  public List<Revision> listRevisionHistory(String noteId, AuthenticationInfo subject) {
+    if (((NotebookRepoSync) notebookRepo).isRevisionSupportedInDefaultRepo()) {
+      return ((NotebookRepoWithVersionControl) notebookRepo).revisionHistory(noteId, subject);
+    } else {
+      return null;
+    }
   }
 
   public Note setNoteRevision(String noteId, String revisionId, AuthenticationInfo subject)
       throws IOException {
-    return notebookRepo.setNoteRevision(noteId, revisionId, subject);
+    if (((NotebookRepoSync) notebookRepo).isRevisionSupportedInDefaultRepo()) {
+      return ((NotebookRepoWithVersionControl) notebookRepo)
+          .setNoteRevision(noteId, revisionId, subject);
+    } else {
+      return null;
+    }
   }
-  
+
   public Note getNoteByRevision(String noteId, String revisionId, AuthenticationInfo subject)
       throws IOException {
-    return notebookRepo.get(noteId, revisionId, subject);
+    if (((NotebookRepoSync) notebookRepo).isRevisionSupportedInDefaultRepo()) {
+      return ((NotebookRepoWithVersionControl) notebookRepo).get(noteId, revisionId, subject);
+    } else {
+      return null;
+    }
   }
 
   public void convertFromSingleResultToMultipleResultsFormat(Note note) {
@@ -449,6 +473,25 @@ public class Notebook implements NoteEventListener {
             }
             config.put("results", results);
           }
+        } else if (ret == null && p.getConfig() != null) {
+          //ZEPPELIN-3063 Notebook loses formatting when importing from 0.6.x
+          if (p.getConfig().get("graph") != null && p.getConfig().get("graph") instanceof Map
+            && !((Map) p.getConfig().get("graph")).get("mode").equals("table")) {
+            Map<String, Object> config = p.getConfig();
+            Object graph = config.remove("graph");
+            Object apps = config.remove("apps");
+            Object helium = config.remove("helium");
+
+            List<Object> results = new LinkedList<>();
+
+            HashMap<Object, Object> res = new HashMap<>();
+            res.put("graph", graph);
+            res.put("apps", apps);
+            res.put("helium", helium);
+            results.add(res);
+
+            config.put("results", results);
+          }
         }
       } catch (Exception e) {
         logger.error("Conversion failure", e);
@@ -479,6 +522,7 @@ public class Notebook implements NoteEventListener {
 
     note.setJobListenerFactory(jobListenerFactory);
     note.setNotebookRepo(notebookRepo);
+    note.setCronSupported(getConf());
 
     Map<String, SnapshotAngularObject> angularObjectSnapshot = new HashMap<>();
 
@@ -522,7 +566,7 @@ public class Notebook implements NoteEventListener {
       List<InterpreterSetting> settings = interpreterSettingManager.get();
       for (InterpreterSetting setting : settings) {
         InterpreterGroup intpGroup = setting.getInterpreterGroup(subject.getUser(), note.getId());
-        if (intpGroup.getId().equals(snapshot.getIntpGroupId())) {
+        if (intpGroup != null && intpGroup.getId().equals(snapshot.getIntpGroupId())) {
           AngularObjectRegistry registry = intpGroup.getAngularObjectRegistry();
           String noteId = snapshot.getAngularObject().getNoteId();
           String paragraphId = snapshot.getAngularObject().getParagraphId();
@@ -606,6 +650,11 @@ public class Notebook implements NoteEventListener {
 
   public List<Note> getNotesUnderFolder(String folderId) {
     return folders.getFolder(folderId).getNotesRecursively();
+  }
+
+  public List<Note> getNotesUnderFolder(String folderId,
+      Set<String> userAndRoles) {
+    return folders.getFolder(folderId).getNotesRecursively(userAndRoles, notebookAuthorization);
   }
 
   public List<Note> getAllNotes() {
@@ -829,7 +878,7 @@ public class Notebook implements NoteEventListener {
 
         // get data for the job manager.
         Map<String, Object> paragraphItem = getParagraphForJobManagerItem(paragraph);
-        lastRunningUnixTime = getUnixTimeLastRunParagraph(paragraph);
+        lastRunningUnixTime = Math.max(getUnixTimeLastRunParagraph(paragraph), lastRunningUnixTime);
 
         // is update note for last server update time.
         if (lastRunningUnixTime > lastUpdateServerUnixTime) {
@@ -873,21 +922,30 @@ public class Notebook implements NoteEventListener {
 
       String noteId = context.getJobDetail().getJobDataMap().getString("noteId");
       Note note = notebook.getNote(noteId);
-      note.runAll();
 
-      while (!note.isTerminated()) {
-        try {
-          Thread.sleep(1000);
-        } catch (InterruptedException e) {
-          logger.error(e.toString(), e);
-        }
+      if (note.isRunningOrPending()) {
+        logger.warn("execution of the cron job is skipped because there is a running or pending " +
+            "paragraph (note id: {})", noteId);
+        return;
       }
 
+      if (!note.isCronSupported(notebook.getConf())) {
+        logger.warn("execution of the cron job is skipped cron is not enabled from " +
+            "Zeppelin server");
+        return;
+      }
+
+      note.runAll();
+
       boolean releaseResource = false;
+      String cronExecutingUser = null;
       try {
         Map<String, Object> config = note.getConfig();
-        if (config != null && config.containsKey("releaseresource")) {
-          releaseResource = (boolean) note.getConfig().get("releaseresource");
+        if (config != null) {
+          if (config.containsKey("releaseresource")) {
+            releaseResource = (boolean) config.get("releaseresource");
+          }
+          cronExecutingUser = (String) config.get("cronExecutingUser");
         }
       } catch (ClassCastException e) {
         logger.error(e.getMessage(), e);
@@ -895,7 +953,12 @@ public class Notebook implements NoteEventListener {
       if (releaseResource) {
         for (InterpreterSetting setting : notebook.getInterpreterSettingManager()
             .getInterpreterSettings(note.getId())) {
-          notebook.getInterpreterSettingManager().restart(setting.getId());
+          try {
+            notebook.getInterpreterSettingManager().restart(setting.getId(), noteId,
+                    cronExecutingUser != null ? cronExecutingUser : "anonymous");
+          } catch (InterpreterException e) {
+            logger.error("Fail to restart interpreter: " + setting.getId(), e);
+          }
         }
       }
     }
@@ -906,11 +969,17 @@ public class Notebook implements NoteEventListener {
     synchronized (notes) {
 
       Note note = notes.get(id);
-      if (note == null) {
+      if (note == null || note.isTrash()) {
         return;
       }
       Map<String, Object> config = note.getConfig();
       if (config == null) {
+        return;
+      }
+
+      if (!note.isCronSupported(getConf())) {
+        logger.warn("execution of the cron job is skipped cron is not enabled from " +
+            "Zeppelin server");
         return;
       }
 
@@ -948,7 +1017,7 @@ public class Notebook implements NoteEventListener {
     }
   }
 
-  private void removeCron(String id) {
+  public void removeCron(String id) {
     try {
       quartzSched.deleteJob(new JobKey(id, "note"));
     } catch (SchedulerException e) {
@@ -996,6 +1065,16 @@ public class Notebook implements NoteEventListener {
   private void fireUnbindInterpreter(Note note, InterpreterSetting setting) {
     for (NotebookEventListener listener : notebookEventListeners) {
       listener.onUnbindInterpreter(note, setting);
+    }
+  }
+
+  public Boolean isRevisionSupported() {
+    if (notebookRepo instanceof NotebookRepoSync) {
+      return ((NotebookRepoSync) notebookRepo).isRevisionSupportedInDefaultRepo();
+    } else if (notebookRepo instanceof NotebookRepoWithVersionControl) {
+      return true;
+    } else {
+      return false;
     }
   }
 

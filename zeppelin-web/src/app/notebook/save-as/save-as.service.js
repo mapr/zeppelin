@@ -12,40 +12,45 @@
  * limitations under the License.
  */
 
-angular.module('zeppelinWebApp').service('saveAsService', SaveAsService)
+angular.module('zeppelinWebApp').service('saveAsService', SaveAsService);
 
-function SaveAsService (browserDetectService) {
-  'ngInject'
+function SaveAsService(browserDetectService) {
+  'ngInject';
 
-  this.saveAs = function (content, filename, extension) {
-    let BOM = '\uFEFF'
+  this.saveAs = function(content, filename, extension) {
+    let BOM = '\uFEFF';
     if (browserDetectService.detectIE()) {
-      angular.element('body').append('<iframe id="SaveAsId" style="display: none"></iframe>')
-      let frameSaveAs = angular.element('body > iframe#SaveAsId')[0].contentWindow
-      content = BOM + content
-      frameSaveAs.document.open('text/json', 'replace')
-      frameSaveAs.document.write(content)
-      frameSaveAs.document.close()
-      frameSaveAs.focus()
-      let t1 = Date.now()
-      frameSaveAs.document.execCommand('SaveAs', false, filename + '.' + extension)
-      let t2 = Date.now()
+      angular.element('body').append('<iframe id="SaveAsId" style="display: none"></iframe>');
+      let frameSaveAs = angular.element('body > iframe#SaveAsId')[0].contentWindow;
+      content = BOM + content;
+      frameSaveAs.document.open('text/json', 'replace');
+      frameSaveAs.document.write(content);
+      frameSaveAs.document.close();
+      frameSaveAs.focus();
+      let t1 = Date.now();
+      frameSaveAs.document.execCommand('SaveAs', false, filename + '.' + extension);
+      let t2 = Date.now();
 
       // This means, this version of IE dosen't support auto download of a file with extension provided in param
       // falling back to ".txt"
       if (t1 === t2) {
-        frameSaveAs.document.execCommand('SaveAs', true, filename + '.txt')
+        frameSaveAs.document.execCommand('SaveAs', true, filename + '.txt');
       }
-      angular.element('body > iframe#SaveAsId').remove()
+      angular.element('body > iframe#SaveAsId').remove();
     } else {
-      content = 'data:image/svg;charset=utf-8,' + BOM + encodeURIComponent(content)
-      angular.element('body').append('<a id="SaveAsId"></a>')
-      let saveAsElement = angular.element('body > a#SaveAsId')
-      saveAsElement.attr('href', content)
-      saveAsElement.attr('download', filename + '.' + extension)
-      saveAsElement.attr('target', '_blank')
-      saveAsElement[0].click()
-      saveAsElement.remove()
+      const fileName = filename + '.' + extension;
+      let binaryData = [];
+      binaryData.push(BOM);
+      binaryData.push(content);
+      let blob = new Blob(binaryData, {type: 'octet/stream'});
+      const url = window.URL.createObjectURL(blob);
+      let a = document.createElement('a');
+      document.body.appendChild(a);
+      a.style = 'display: none';
+      a.href = url;
+      a.download = fileName;
+      a.click();
+      window.URL.revokeObjectURL(url);
     }
-  }
+  };
 }

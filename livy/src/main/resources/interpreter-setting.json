@@ -15,9 +15,23 @@
       "zeppelin.livy.session.create_timeout": {
         "envName": "ZEPPELIN_LIVY_SESSION_CREATE_TIMEOUT",
         "propertyName": "zeppelin.livy.session.create_timeout",
-        "defaultValue": "120",
+        "defaultValue": "180",
         "description": "Livy Server create session timeout (seconds).",
         "type": "number"
+      },
+      "livy.spark.yarn.dist.archives": {
+        "envName": "ZEPPELIN_SPARK_YARN_DIST_ARCHIVES",
+        "propertyName": "livy.spark.yarn.dist.archives",
+        "defaultValue": "",
+        "description": "Sets additional archives for spark",
+        "type": "string"
+      },
+      "livy.spark.yarn.appMasterEnv.PYSPARK_PYTHON": {
+        "envName": "PYSPARK_PYTHON",
+        "propertyName": "livy.spark.yarn.appMasterEnv.PYSPARK_PYTHON",
+        "defaultValue": "python",
+        "description": "Sets default python interpreter for PySpark",
+        "type": "string"
       },
       "livy.spark.driver.cores": {
         "propertyName": "livy.spark.driver.cores",
@@ -97,6 +111,12 @@
         "description": "The interval for checking paragraph execution status",
         "type": "number"
       },
+      "zeppelin.livy.maxLogLines": {
+        "propertyName": "zeppelin.livy.maxLogLines",
+        "defaultValue": "1000",
+        "description": "Max number of lines of logs",
+        "type": "number"
+      },
       "livy.spark.jars.packages": {
         "propertyName": "livy.spark.jars.packages",
         "defaultValue": "",
@@ -105,8 +125,14 @@
       },
       "zeppelin.livy.displayAppInfo": {
         "propertyName": "zeppelin.livy.displayAppInfo",
-        "defaultValue": "true",
+        "defaultValue": true,
         "description": "Whether display app info",
+        "type": "checkbox"
+      },
+      "zeppelin.livy.restart_dead_session": {
+        "propertyName": "zeppelin.livy.restart_dead_session",
+        "defaultValue": false,
+        "description": "Whether restart a dead session",
         "type": "checkbox"
       }
     },
@@ -121,7 +147,9 @@
     },
     "editor": {
       "language": "scala",
-      "editOnDblClick": false
+      "editOnDblClick": false,
+      "completionKey": "TAB",
+      "completionSupport": true
     }
   },
   {
@@ -160,7 +188,9 @@
     },
     "editor": {
       "language": "sql",
-      "editOnDblClick": false
+      "editOnDblClick": false,
+      "completionKey": "TAB",
+      "completionSupport": true
     }
   },
   {
@@ -180,27 +210,9 @@
     },
     "editor": {
       "language": "python",
-      "editOnDblClick": false
-    }
-  },
-  {
-    "group": "livy",
-    "name": "pyspark3",
-    "className": "org.apache.zeppelin.livy.LivyPySpark3Interpreter",
-    "properties": {
-    },
-    "option": {
-      "remote": true,
-      "port": -1,
-      "perNote": "shared",
-      "perUser": "scoped",
-      "isExistingProcess": false,
-      "setPermission": false,
-      "users": []
-    },
-    "editor": {
-      "language": "python",
-      "editOnDblClick": false
+      "editOnDblClick": false,
+      "completionKey": "TAB",
+      "completionSupport": true
     }
   },
   {
@@ -220,7 +232,25 @@
     },
     "editor": {
       "language": "r",
-      "editOnDblClick": false
+      "editOnDblClick": false,
+      "completionKey": "TAB",
+      "completionSupport": true
+    }
+  },
+  {
+    "group": "livy",
+    "name": "shared",
+    "className": "org.apache.zeppelin.livy.LivySharedInterpreter",
+    "properties": {
+    },
+    "option": {
+      "remote": true,
+      "port": -1,
+      "perNote": "shared",
+      "perUser": "scoped",
+      "isExistingProcess": false,
+      "setPermission": false,
+      "users": []
     }
   }
 ]

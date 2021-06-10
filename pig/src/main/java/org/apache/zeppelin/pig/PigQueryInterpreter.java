@@ -55,7 +55,7 @@ public class PigQueryInterpreter extends BasePigInterpreter {
   }
 
   @Override
-  public void open() {
+  public void open() throws InterpreterException {
     pigServer = getPigInterpreter().getPigServer();
     maxResult = Integer.parseInt(getProperty(MAX_RESULTS));
   }
@@ -141,7 +141,7 @@ public class PigQueryInterpreter extends BasePigInterpreter {
       }
       PigStats stats = PigStats.get();
       if (stats != null) {
-        String errorMsg = stats.getDisplayString();
+        String errorMsg = PigUtils.extactJobStats(stats);
         if (errorMsg != null) {
           return new InterpreterResult(Code.ERROR, errorMsg);
         }
@@ -159,7 +159,7 @@ public class PigQueryInterpreter extends BasePigInterpreter {
     return this.pigServer;
   }
 
-  private PigInterpreter getPigInterpreter() {
+  private PigInterpreter getPigInterpreter() throws InterpreterException {
     LazyOpenInterpreter lazy = null;
     PigInterpreter pig = null;
     Interpreter p = getInterpreterInTheSameSessionByClassName(PigInterpreter.class.getName());

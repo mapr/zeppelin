@@ -141,6 +141,24 @@ limitations under the License.
           </a>
         </li>
         <li>
+          <a ng-click="runAllToThis(paragraph)" ng-hide="$first">
+            <span class="icon-action-redo shortcut-icon"
+                  style="position: relative; transform: rotate(-90deg); left: -4px;">
+            </span>
+            <span class="shortcut-keys">Ctrl+Shift+Enter</span>
+            Run all above
+          </a>
+        </li>
+        <li>
+          <a ng-click="runAllFromThis(paragraph)" ng-hide="$last">
+            <span class="icon-action-undo shortcut-icon"
+                  style="position: relative; transform: rotate(-90deg); left: -4px;">
+            </span>
+            <span class="shortcut-keys">Ctrl+Shift+Enter</span>
+             Run all below
+          </a>
+        </li>
+        <li>
           <a ng-click="copyParagraph(getEditorValue())"><span class="fa fa-copy shortcut-icon"></span>
             <span class="shortcut-keys">Ctrl+Shift+C</span>
             Clone paragraph
@@ -191,7 +209,7 @@ limitations under the License.
         </li>
         <li>
           <!-- remove paragraph -->
-          <a ng-click="removeParagraph(paragraph)" ng-hide="$last"><span class="fa fa-times shortcut-icon"></span>
+          <a ng-click="removeParagraph(paragraph)" ng-if="note.paragraphs.length > 1"><span class="fa fa-times shortcut-icon"></span>
             <span class="shortcut-keys">Ctrl+{{ isMac ? 'Option' : 'Alt'}}+D</span>
             Remove
           </a>

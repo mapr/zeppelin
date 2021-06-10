@@ -28,6 +28,8 @@ import org.apache.zeppelin.interpreter.remote.RemoteEventClientWrapper;
 import org.apache.zeppelin.resource.Resource;
 import org.apache.zeppelin.resource.ResourcePool;
 import org.apache.zeppelin.resource.ResourceSet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -40,11 +42,13 @@ import java.util.Map;
  */
 public abstract class BaseZeppelinContext {
 
+  private static final Logger LOGGER = LoggerFactory.getLogger(BaseZeppelinContext.class);
 
   protected InterpreterContext interpreterContext;
   protected int maxResult;
   protected InterpreterHookRegistry hooks;
   protected GUI gui;
+  protected GUI noteGui;
 
   private static RemoteEventClientWrapper eventClient;
 
@@ -86,44 +90,116 @@ public abstract class BaseZeppelinContext {
   @Deprecated
   @ZeppelinApi
   public Object input(String name, Object defaultValue) {
-    return textbox(name, defaultValue.toString());
+    return textbox(name, defaultValue.toString(), false);
   }
 
   @ZeppelinApi
   public Object textbox(String name) {
-    return textbox(name, "");
+    return textbox(name, "", false);
   }
 
   @ZeppelinApi
   public Object textbox(String name, String defaultValue) {
-    return gui.textbox(name, defaultValue);
-  }
-
-  public Object select(String name, Object defaultValue, ParamOption[] paramOptions) {
-    return gui.select(name, defaultValue, paramOptions);
+    return textbox(name, defaultValue, false);
   }
 
   @ZeppelinApi
   public Collection<Object> checkbox(String name, ParamOption[] options) {
+    return checkbox(name, options, false);
+  }
+
+  @ZeppelinApi
+  public Collection<Object> checkbox(String name, List<Object> defaultChecked,
+                                     ParamOption[] options) {
+    return checkbox(name, defaultChecked, options, false);
+  }
+
+  @ZeppelinApi
+  public Object select(String name, Object defaultValue, ParamOption[] paramOptions) {
+    return select(name, defaultValue, paramOptions, false);
+  }
+
+  @ZeppelinApi
+  public Object noteTextbox(String name) {
+    return textbox(name, "");
+  }
+
+  @ZeppelinApi
+  public Object noteTextbox(String name, String defaultValue) {
+    return textbox(name, defaultValue, true);
+  }
+
+  @ZeppelinApi
+  public Collection<Object> noteCheckbox(String name, ParamOption[] options) {
+    return checkbox(name, options, true);
+  }
+
+  @ZeppelinApi
+  public Collection<Object> noteCheckbox(String name, List<Object> defaultChecked,
+                                         ParamOption[] options) {
+    return checkbox(name, defaultChecked, options, true);
+  }
+
+  @ZeppelinApi
+  public Object noteSelect(String name, Object defaultValue, ParamOption[] paramOptions) {
+    return select(name, defaultValue, paramOptions, true);
+  }
+
+
+  private Object select(String name, Object defaultValue, ParamOption[] paramOptions,
+                       boolean noteForm) {
+    if (noteForm) {
+      return noteGui.select(name, defaultValue, paramOptions);
+    } else {
+      return gui.select(name, defaultValue, paramOptions);
+    }
+  }
+
+  private Object textbox(String name, String defaultValue, boolean noteForm) {
+    if (noteForm) {
+      return noteGui.textbox(name, defaultValue);
+    } else {
+      return gui.textbox(name, defaultValue);
+    }
+  }
+
+  private Collection<Object> checkbox(String name, ParamOption[] options,
+                                     boolean noteForm) {
     List<Object> defaultValues = new LinkedList<>();
     for (ParamOption option : options) {
       defaultValues.add(option.getValue());
     }
-    return checkbox(name, defaultValues, options);
+    if (noteForm) {
+      return noteGui.checkbox(name, defaultValues, options);
+    } else {
+      return gui.checkbox(name, defaultValues, options);
+    }
   }
 
-  @ZeppelinApi
-  public Collection<Object> checkbox(String name,
-                                     List<Object> defaultValues,
-                                     ParamOption[] options) {
-    return gui.checkbox(name, defaultValues, options);
+  private Collection<Object> checkbox(String name, List<Object> defaultChecked,
+                                      ParamOption[] options, boolean noteForm) {
+    if (noteForm) {
+      return noteGui.checkbox(name, defaultChecked, options);
+    } else {
+      return gui.checkbox(name, defaultChecked, options);
+    }
   }
 
   public void setGui(GUI o) {
     this.gui = o;
   }
 
-  private void restartInterpreter() {
+  public GUI getGui() {
+    return gui;
+  }
+
+
+  public GUI getNoteGui() {
+    return noteGui;
+  }
+
+  public void setNoteGui(GUI noteGui) {
+    this.noteGui = noteGui;
   }
 
   public InterpreterContext getInterpreterContext() {
@@ -154,21 +230,22 @@ public abstract class BaseZeppelinContext {
    * @param o object
    * @param maxResult maximum number of rows to display
    */
-
   @ZeppelinApi
   public void show(Object o, int maxResult) {
     try {
       if (isSupportedObject(o)) {
         interpreterContext.out.write(showData(o));
       } else {
+        interpreterContext.out.write("ZeppelinContext doesn't support to show type: "
+            + o.getClass().getCanonicalName() + "\n");
         interpreterContext.out.write(o.toString());
       }
     } catch (IOException e) {
-      throw new InterpreterException(e);
+      throw new RuntimeException(e);
     }
   }
 
-  private boolean isSupportedObject(Object obj) {
+  protected boolean isSupportedObject(Object obj) {
     for (Class supportedClass : getSupportedClasses()) {
       if (supportedClass.isInstance(obj)) {
         return true;
@@ -225,14 +302,14 @@ public abstract class BaseZeppelinContext {
   public void run(String noteId, String paragraphId, InterpreterContext context,
                   boolean checkCurrentParagraph) {
     if (paragraphId.equals(context.getParagraphId()) && checkCurrentParagraph) {
-      throw new InterpreterException("Can not run current Paragraph");
+      throw new RuntimeException("Can not run current Paragraph");
     }
 
     List<InterpreterContextRunner> runners =
         getInterpreterContextRunner(noteId, paragraphId, context);
 
     if (runners.size() <= 0) {
-      throw new InterpreterException("Paragraph " + paragraphId + " not found " + runners.size());
+      throw new RuntimeException("Paragraph " + paragraphId + " not found " + runners.size());
     }
 
     for (InterpreterContextRunner r : runners) {
@@ -251,13 +328,14 @@ public abstract class BaseZeppelinContext {
     List<InterpreterContextRunner> runners = getInterpreterContextRunner(noteId, context);
 
     if (runners.size() <= 0) {
-      throw new InterpreterException("Note " + noteId + " not found " + runners.size());
+      throw new RuntimeException("Note " + noteId + " not found " + runners.size());
     }
 
     for (InterpreterContextRunner r : runners) {
       if (r.getNoteId().equals(runningNoteId) && r.getParagraphId().equals(runningParagraphId)) {
         continue;
       }
+      LOGGER.debug("Run Paragraph: " + r.getParagraphId() + " of Note: " + r.getNoteId());
       r.run();
     }
   }
@@ -342,12 +420,12 @@ public abstract class BaseZeppelinContext {
                   boolean checkCurrentParagraph) {
     List<InterpreterContextRunner> runners = getInterpreterContextRunner(noteId, context);
     if (idx >= runners.size()) {
-      throw new InterpreterException("Index out of bound");
+      throw new RuntimeException("Index out of bound");
     }
 
     InterpreterContextRunner runner = runners.get(idx);
     if (runner.getParagraphId().equals(context.getParagraphId()) && checkCurrentParagraph) {
-      throw new InterpreterException("Can not run current Paragraph: " + runner.getParagraphId());
+      throw new RuntimeException("Can not run current Paragraph: " + runner.getParagraphId());
     }
 
     runner.run();
@@ -373,7 +451,7 @@ public abstract class BaseZeppelinContext {
         Integer idx = (Integer) idOrIdx;
         run(noteId, idx, context);
       } else {
-        throw new InterpreterException("Paragraph " + idOrIdx + " not found");
+        throw new RuntimeException("Paragraph " + idOrIdx + " not found");
       }
     }
   }
@@ -661,15 +739,10 @@ public abstract class BaseZeppelinContext {
    * Get the interpreter class name from name entered in paragraph
    * @param replName if replName is a valid className, return that instead.
    */
-  public String getClassNameFromReplName(String replName) {
-    for (String name : getInterpreterClassMap().keySet()) {
-      if (replName.equals(name)) {
-        return replName;
-      }
-    }
-
-    if (replName.contains("spark.")) {
-      replName = replName.replace("spark.", "");
+  private String getClassNameFromReplName(String replName) {
+    String[] splits = replName.split(".");
+    if (splits.length > 1) {
+      replName = splits[splits.length - 1];
     }
     return getInterpreterClassMap().get(replName);
   }
@@ -681,10 +754,9 @@ public abstract class BaseZeppelinContext {
    * @param replName Name of the interpreter
    */
   @Experimental
-  public void registerHook(String event, String cmd, String replName) {
-    String noteId = interpreterContext.getNoteId();
+  public void registerHook(String event, String cmd, String replName) throws InvalidHookException {
     String className = getClassNameFromReplName(replName);
-    hooks.register(noteId, className, event, cmd);
+    hooks.register(null, className, event, cmd);
   }
 
   /**
@@ -693,43 +765,42 @@ public abstract class BaseZeppelinContext {
    * @param cmd The code to be executed by the interpreter on given event
    */
   @Experimental
-  public void registerHook(String event, String cmd) {
-    String className = interpreterContext.getClassName();
-    registerHook(event, cmd, className);
+  public void registerHook(String event, String cmd) throws InvalidHookException {
+    String replClassName = interpreterContext.getClassName();
+    hooks.register(null, replClassName, event, cmd);
   }
 
   /**
-   * Get the hook code
-   * @param event The type of event to hook to (pre_exec, post_exec)
-   * @param replName Name of the interpreter
+   *
+   * @param event
+   * @param cmd
+   * @param noteId
+   * @throws InvalidHookException
    */
   @Experimental
-  public String getHook(String event, String replName) {
-    String noteId = interpreterContext.getNoteId();
+  public void registerNoteHook(String event, String cmd, String noteId)
+      throws InvalidHookException {
+    String replClassName = interpreterContext.getClassName();
+    hooks.register(noteId, replClassName, event, cmd);
+  }
+
+  @Experimental
+  public void registerNoteHook(String event, String cmd, String noteId, String replName)
+      throws InvalidHookException {
     String className = getClassNameFromReplName(replName);
-    return hooks.get(noteId, className, event);
+    hooks.register(noteId, className, event, cmd);
   }
 
   /**
-   * getHook() wrapper for current repl
-   * @param event The type of event to hook to (pre_exec, post_exec)
-   */
-  @Experimental
-  public String getHook(String event) {
-    String className = interpreterContext.getClassName();
-    return getHook(event, className);
-  }
-
-  /**
-   * Unbind code from given hook event
+   * Unbind code from given hook event and given repl
+   *
    * @param event The type of event to hook to (pre_exec, post_exec)
    * @param replName Name of the interpreter
    */
   @Experimental
   public void unregisterHook(String event, String replName) {
-    String noteId = interpreterContext.getNoteId();
     String className = getClassNameFromReplName(replName);
-    hooks.unregister(noteId, className, event);
+    hooks.unregister(null, className, event);
   }
 
   /**
@@ -738,9 +809,34 @@ public abstract class BaseZeppelinContext {
    */
   @Experimental
   public void unregisterHook(String event) {
-    String className = interpreterContext.getClassName();
-    unregisterHook(event, className);
+    unregisterHook(event, interpreterContext.getReplName());
   }
+
+  /**
+   * Unbind code from given hook event and given note
+   *
+   * @param noteId  The id of note
+   * @param event The type of event to hook to (pre_exec, post_exec)
+   */
+  @Experimental
+  public void unregisterNoteHook(String noteId, String event) {
+    String className = interpreterContext.getClassName();
+    hooks.unregister(noteId, className, event);
+  }
+
+
+  /**
+   * Unbind code from given hook event, given note and given repl
+   * @param noteId  The id of note
+   * @param event The type of event to hook to (pre_exec, post_exec)
+   * @param replName Name of the interpreter
+   */
+  @Experimental
+  public void unregisterNoteHook(String noteId, String event, String replName) {
+    String className = getClassNameFromReplName(replName);
+    hooks.unregister(noteId, className, event);
+  }
+
 
   /**
    * Add object into resource pool
@@ -814,8 +910,7 @@ public abstract class BaseZeppelinContext {
    */
   @ZeppelinApi
   public void setEventClient(RemoteEventClientWrapper eventClient) {
-    if (BaseZeppelinContext.eventClient == null) {
-      BaseZeppelinContext.eventClient = eventClient;
-    }
+    BaseZeppelinContext.eventClient = eventClient;
   }
+
 }

@@ -17,29 +17,56 @@
 
 package org.apache.zeppelin.interpreter.remote;
 
-import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.net.URL;
-import java.nio.ByteBuffer;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.thrift.TException;
 import org.apache.thrift.server.TThreadPoolServer;
 import org.apache.thrift.transport.TServerSocket;
 import org.apache.thrift.transport.TTransportException;
 import org.apache.zeppelin.dep.DependencyResolver;
-import org.apache.zeppelin.display.*;
-import org.apache.zeppelin.helium.*;
-import org.apache.zeppelin.interpreter.*;
-import org.apache.zeppelin.interpreter.InterpreterHookRegistry.HookType;
+import org.apache.zeppelin.display.AngularObject;
+import org.apache.zeppelin.display.AngularObjectRegistry;
+import org.apache.zeppelin.display.AngularObjectRegistryListener;
+import org.apache.zeppelin.display.GUI;
+import org.apache.zeppelin.helium.Application;
+import org.apache.zeppelin.helium.ApplicationContext;
+import org.apache.zeppelin.helium.ApplicationException;
+import org.apache.zeppelin.helium.ApplicationLoader;
+import org.apache.zeppelin.helium.HeliumAppAngularObjectRegistry;
+import org.apache.zeppelin.helium.HeliumPackage;
+import org.apache.zeppelin.interpreter.Constants;
+import org.apache.zeppelin.interpreter.Interpreter;
+import org.apache.zeppelin.interpreter.InterpreterContext;
+import org.apache.zeppelin.interpreter.InterpreterContextRunner;
+import org.apache.zeppelin.interpreter.InterpreterException;
+import org.apache.zeppelin.interpreter.InterpreterGroup;
 import org.apache.zeppelin.interpreter.InterpreterHookListener;
+import org.apache.zeppelin.interpreter.InterpreterHookRegistry;
+import org.apache.zeppelin.interpreter.InterpreterHookRegistry.HookType;
+import org.apache.zeppelin.interpreter.InterpreterOutput;
+import org.apache.zeppelin.interpreter.InterpreterOutputListener;
+import org.apache.zeppelin.interpreter.InterpreterResult;
 import org.apache.zeppelin.interpreter.InterpreterResult.Code;
-import org.apache.zeppelin.interpreter.thrift.*;
-import org.apache.zeppelin.resource.*;
+import org.apache.zeppelin.interpreter.InterpreterResultMessage;
+import org.apache.zeppelin.interpreter.InterpreterResultMessageOutput;
+import org.apache.zeppelin.interpreter.LazyOpenInterpreter;
+import org.apache.zeppelin.interpreter.RemoteWorksController;
+import org.apache.zeppelin.interpreter.RemoteZeppelinServerResource;
+import org.apache.zeppelin.interpreter.thrift.CallbackInfo;
+import org.apache.zeppelin.interpreter.thrift.InterpreterCompletion;
+import org.apache.zeppelin.interpreter.thrift.RemoteApplicationResult;
+import org.apache.zeppelin.interpreter.thrift.RemoteInterpreterContext;
+import org.apache.zeppelin.interpreter.thrift.RemoteInterpreterEvent;
+import org.apache.zeppelin.interpreter.thrift.RemoteInterpreterResult;
+import org.apache.zeppelin.interpreter.thrift.RemoteInterpreterResultMessage;
+import org.apache.zeppelin.interpreter.thrift.RemoteInterpreterService;
+import org.apache.zeppelin.interpreter.thrift.ZeppelinServerResourceParagraphRunner;
+import org.apache.zeppelin.resource.DistributedResourcePool;
+import org.apache.zeppelin.resource.Resource;
+import org.apache.zeppelin.resource.ResourcePool;
+import org.apache.zeppelin.resource.ResourceSet;
+import org.apache.zeppelin.resource.WellKnownResourceName;
 import org.apache.zeppelin.scheduler.Job;
 import org.apache.zeppelin.scheduler.Job.Status;
 import org.apache.zeppelin.scheduler.JobListener;
@@ -49,17 +76,32 @@ import org.apache.zeppelin.user.AuthenticationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.nio.ByteBuffer;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * Entry point for Interpreter process.
  * Accepting thrift connections from ZeppelinServer.
  */
-public class RemoteInterpreterServer
-  extends Thread
-  implements RemoteInterpreterService.Iface, AngularObjectRegistryListener {
-  Logger logger = LoggerFactory.getLogger(RemoteInterpreterServer.class);
+public class RemoteInterpreterServer extends Thread
+    implements RemoteInterpreterService.Iface, AngularObjectRegistryListener {
+
+  private static Logger logger = LoggerFactory.getLogger(RemoteInterpreterServer.class);
+
 
   InterpreterGroup interpreterGroup;
   AngularObjectRegistry angularObjectRegistry;
@@ -70,6 +112,9 @@ public class RemoteInterpreterServer
   Gson gson = new Gson();
 
   RemoteInterpreterService.Processor<RemoteInterpreterServer> processor;
+  private String callbackHost;
+  private int callbackPort;
+  private String host;
   private int port;
   private TThreadPoolServer server;
 
@@ -87,28 +132,92 @@ public class RemoteInterpreterServer
   // Hold information for manual progress update
   private ConcurrentMap<String, Integer> progressMap = new ConcurrentHashMap<>();
 
-  public RemoteInterpreterServer(int port) throws TTransportException {
-    this.port = port;
+  private boolean isTest;
+
+  public RemoteInterpreterServer(String callbackHost, int callbackPort, String portRange)
+      throws IOException, TTransportException {
+    this(callbackHost, callbackPort, portRange, false);
+  }
+
+  public RemoteInterpreterServer(String callbackHost, int callbackPort, String portRange,
+                                 boolean isTest) throws TTransportException, IOException {
+    if (null != callbackHost) {
+      this.callbackHost = callbackHost;
+      this.callbackPort = callbackPort;
+    } else {
+      // DevInterpreter
+      this.port = callbackPort;
+    }
+    this.isTest = isTest;
 
     processor = new RemoteInterpreterService.Processor<>(this);
-    TServerSocket serverTransport = new TServerSocket(port);
+    TServerSocket serverTransport;
+    if (null == callbackHost) {
+      // Dev Interpreter
+      serverTransport = new TServerSocket(callbackPort);
+    } else {
+      serverTransport = RemoteInterpreterUtils.createTServerSocket(portRange);
+      this.port = serverTransport.getServerSocket().getLocalPort();
+      this.host = RemoteInterpreterUtils.findAvailableHostAddress();
+      logger.info("Launching ThriftServer at " + this.host + ":" + this.port);
+    }
     server = new TThreadPoolServer(
         new TThreadPoolServer.Args(serverTransport).processor(processor));
+    logger.info("Starting remote interpreter server on port {}", port);
     remoteWorksResponsePool = Collections.synchronizedMap(new HashMap<String, Object>());
     remoteWorksController = new ZeppelinRemoteWorksController(this, remoteWorksResponsePool);
   }
 
   @Override
   public void run() {
+    if (null != callbackHost && !isTest) {
+      new Thread(new Runnable() {
+        boolean interrupted = false;
+        @Override
+        public void run() {
+          while (!interrupted && !server.isServing()) {
+            try {
+              Thread.sleep(1000);
+            } catch (InterruptedException e) {
+              interrupted = true;
+            }
+          }
+
+          if (!interrupted) {
+            CallbackInfo callbackInfo = new CallbackInfo(host, port);
+            try {
+              RemoteInterpreterUtils
+                  .registerInterpreter(callbackHost, callbackPort, callbackInfo);
+            } catch (TException e) {
+              logger.error("Error while registering interpreter: {}", callbackInfo, e);
+              try {
+                shutdown();
+              } catch (TException e1) {
+                logger.warn("Exception occurs while shutting down", e1);
+              }
+            }
+          }
+        }
+      }).start();
+    }
     logger.info("Starting remote interpreter server on port {}", port);
     server.serve();
   }
 
   @Override
   public void shutdown() throws TException {
+    logger.info("Shutting down...");
     eventClient.waitForEventQueueBecomesEmpty(DEFAULT_SHUTDOWN_TIMEOUT);
     if (interpreterGroup != null) {
-      interpreterGroup.close();
+      for (List<Interpreter> session : interpreterGroup.values()) {
+        for (Interpreter interpreter : session) {
+          try {
+            interpreter.close();
+          } catch (InterpreterException e) {
+            logger.warn("Fail to close interpreter", e);
+          }
+        }
+      }
     }
 
     server.stop();
@@ -146,25 +255,34 @@ public class RemoteInterpreterServer
 
 
   public static void main(String[] args)
-      throws TTransportException, InterruptedException {
-
+      throws TTransportException, InterruptedException, IOException {
+    Class klass = RemoteInterpreterServer.class;
+    URL location = klass.getResource('/' + klass.getName().replace('.', '/') + ".class");
+    logger.info("URL:" + location);
+    String callbackHost = null;
     int port = Constants.ZEPPELIN_INTERPRETER_DEFAUlT_PORT;
+    String portRange = ":";
     if (args.length > 0) {
-      port = Integer.parseInt(args[0]);
+      callbackHost = args[0];
+      port = Integer.parseInt(args[1]);
+      if (args.length > 2) {
+        portRange = args[2];
+      }
     }
-    RemoteInterpreterServer remoteInterpreterServer = new RemoteInterpreterServer(port);
+    RemoteInterpreterServer remoteInterpreterServer =
+        new RemoteInterpreterServer(callbackHost, port, portRange);
     remoteInterpreterServer.start();
     remoteInterpreterServer.join();
     System.exit(0);
   }
 
   @Override
-  public void createInterpreter(String interpreterGroupId, String sessionKey, String
+  public void createInterpreter(String interpreterGroupId, String sessionId, String
       className, Map<String, String> properties, String userName) throws TException {
     if (interpreterGroup == null) {
       interpreterGroup = new InterpreterGroup(interpreterGroupId);
       angularObjectRegistry = new AngularObjectRegistry(interpreterGroup.getId(), this);
-      hookRegistry = new InterpreterHookRegistry(interpreterGroup.getId());
+      hookRegistry = new InterpreterHookRegistry();
       resourcePool = new DistributedResourcePool(interpreterGroup.getId(), eventClient);
       interpreterGroup.setInterpreterHookRegistry(hookRegistry);
       interpreterGroup.setAngularObjectRegistry(angularObjectRegistry);
@@ -190,20 +308,11 @@ public class RemoteInterpreterServer
           replClass.getConstructor(new Class[] {Properties.class});
       Interpreter repl = constructor.newInstance(p);
       repl.setClassloaderUrls(new URL[]{});
-
-      synchronized (interpreterGroup) {
-        List<Interpreter> interpreters = interpreterGroup.get(sessionKey);
-        if (interpreters == null) {
-          interpreters = new LinkedList<>();
-          interpreterGroup.put(sessionKey, interpreters);
-        }
-
-        interpreters.add(new LazyOpenInterpreter(repl));
-      }
-
       logger.info("Instantiate interpreter {}", className);
       repl.setInterpreterGroup(interpreterGroup);
       repl.setUserName(userName);
+
+      interpreterGroup.addInterpreterToSession(new LazyOpenInterpreter(repl), sessionId);
     } catch (ClassNotFoundException | NoSuchMethodException | SecurityException
         | InstantiationException | IllegalAccessException
         | IllegalArgumentException | InvocationTargetException e) {
@@ -228,22 +337,20 @@ public class RemoteInterpreterServer
     for (Object key : properties.keySet()) {
       if (!RemoteInterpreterUtils.isEnvString((String) key)) {
         String value = properties.getProperty((String) key);
-        if (value == null || value.isEmpty()) {
-          System.clearProperty((String) key);
-        } else {
+        if (!StringUtils.isBlank(value)) {
           System.setProperty((String) key, properties.getProperty((String) key));
         }
       }
     }
   }
 
-  protected Interpreter getInterpreter(String sessionKey, String className) throws TException {
+  protected Interpreter getInterpreter(String sessionId, String className) throws TException {
     if (interpreterGroup == null) {
       throw new TException(
           new InterpreterException("Interpreter instance " + className + " not created"));
     }
     synchronized (interpreterGroup) {
-      List<Interpreter> interpreters = interpreterGroup.get(sessionKey);
+      List<Interpreter> interpreters = interpreterGroup.get(sessionId);
       if (interpreters == null) {
         throw new TException(
             new InterpreterException("Interpreter " + className + " not initialized"));
@@ -259,19 +366,24 @@ public class RemoteInterpreterServer
   }
 
   @Override
-  public void open(String noteId, String className) throws TException {
-    Interpreter intp = getInterpreter(noteId, className);
-    intp.open();
+  public void open(String sessionId, String className) throws TException {
+    logger.info(String.format("Open Interpreter %s for session %s ", className, sessionId));
+    Interpreter intp = getInterpreter(sessionId, className);
+    try {
+      intp.open();
+    } catch (InterpreterException e) {
+      throw new TException("Fail to open interpreter", e);
+    }
   }
 
   @Override
-  public void close(String sessionKey, String className) throws TException {
+  public void close(String sessionId, String className) throws TException {
     // unload all applications
     for (String appId : runningApplications.keySet()) {
       RunningApplication appInfo = runningApplications.get(appId);
 
       // see NoteInterpreterLoader.SHARED_SESSION
-      if (appInfo.noteId.equals(sessionKey) || sessionKey.equals("shared_session")) {
+      if (appInfo.noteId.equals(sessionId) || sessionId.equals("shared_session")) {
         try {
           logger.info("Unload App {} ", appInfo.pkg.getName());
           appInfo.app.unload();
@@ -286,14 +398,18 @@ public class RemoteInterpreterServer
     // close interpreters
     List<Interpreter> interpreters;
     synchronized (interpreterGroup) {
-      interpreters = interpreterGroup.get(sessionKey);
+      interpreters = interpreterGroup.get(sessionId);
     }
     if (interpreters != null) {
       Iterator<Interpreter> it = interpreters.iterator();
       while (it.hasNext()) {
         Interpreter inp = it.next();
         if (inp.getClassName().equals(className)) {
-          inp.close();
+          try {
+            inp.close();
+          } catch (InterpreterException e) {
+            logger.warn("Fail to close interpreter", e);
+          }
           it.remove();
           break;
         }
@@ -322,7 +438,6 @@ public class RemoteInterpreterServer
         intp,
         st,
         context);
-
     scheduler.submit(job);
 
     while (!job.isTerminated()) {
@@ -337,20 +452,15 @@ public class RemoteInterpreterServer
 
     progressMap.remove(interpreterContext.getParagraphId());
 
-    InterpreterResult result;
-    if (job.getStatus() == Status.ERROR) {
-      result = new InterpreterResult(Code.ERROR, Job.getStack(job.getException()));
-    } else {
-      result = (InterpreterResult) job.getReturn();
-
-      // in case of job abort in PENDING status, result can be null
-      if (result == null) {
-        result = new InterpreterResult(Code.KEEP_PREVIOUS_RESULT);
-      }
+    InterpreterResult  result = (InterpreterResult) job.getReturn();
+    // in case of job abort in PENDING status, result can be null
+    if (result == null) {
+      result = new InterpreterResult(Code.KEEP_PREVIOUS_RESULT);
     }
     return convert(result,
         context.getConfig(),
-        context.getGui());
+        context.getGui(),
+        context.getNoteGui());
   }
 
   @Override
@@ -406,7 +516,12 @@ public class RemoteInterpreterServer
     }
   }
 
-  class InterpretJob extends Job {
+
+
+  /**
+   * TODO(jl): Need to extract this class from RemoteInterpreterServer to test it
+   */
+  public static class InterpretJob extends Job {
 
     private Interpreter interpreter;
     private String script;
@@ -450,8 +565,8 @@ public class RemoteInterpreterServer
       InterpreterHookListener hookListener = new InterpreterHookListener() {
         @Override
         public void onPreExecute(String script) {
-          String cmdDev = interpreter.getHook(noteId, HookType.PRE_EXEC_DEV);
-          String cmdUser = interpreter.getHook(noteId, HookType.PRE_EXEC);
+          String cmdDev = interpreter.getHook(noteId, HookType.PRE_EXEC_DEV.getName());
+          String cmdUser = interpreter.getHook(noteId, HookType.PRE_EXEC.getName());
 
           // User defined hook should be executed before dev hook
           List<String> cmds = Arrays.asList(cmdDev, cmdUser);
@@ -466,8 +581,8 @@ public class RemoteInterpreterServer
 
         @Override
         public void onPostExecute(String script) {
-          String cmdDev = interpreter.getHook(noteId, HookType.POST_EXEC_DEV);
-          String cmdUser = interpreter.getHook(noteId, HookType.POST_EXEC);
+          String cmdDev = interpreter.getHook(noteId, HookType.POST_EXEC_DEV.getName());
+          String cmdUser = interpreter.getHook(noteId, HookType.POST_EXEC.getName());
 
           // User defined hook should be executed after dev hook
           List<String> cmds = Arrays.asList(cmdUser, cmdDev);
@@ -485,7 +600,9 @@ public class RemoteInterpreterServer
     }
 
     @Override
-    protected Object jobRun() throws Throwable {
+    // TODO(jl): need to redesign this class
+    public Object jobRun() throws Throwable {
+      ClassLoader currentThreadContextClassloader = Thread.currentThread().getContextClassLoader();
       try {
         InterpreterContext.set(context);
 
@@ -502,9 +619,16 @@ public class RemoteInterpreterServer
 
         if (result == null || result.code() == Code.SUCCESS) {
           // Add hooks to script from registry.
-          // Global scope first, followed by notebook scope
-          processInterpreterHooks(null);
+          // note scope first, followed by global scope.
+          // Here's the code after hooking:
+          //     global_pre_hook
+          //     note_pre_hook
+          //     script
+          //     note_post_hook
+          //     global_post_hook
           processInterpreterHooks(context.getNoteId());
+          processInterpreterHooks(null);
+          logger.debug("Script after hooks: " + script);
           result = interpreter.interpret(script, context);
         }
 
@@ -513,6 +637,13 @@ public class RemoteInterpreterServer
         List<InterpreterResultMessage> resultMessages = context.out.toInterpreterResultMessage();
         resultMessages.addAll(result.message());
 
+        for (InterpreterResultMessage msg : resultMessages) {
+          if (msg.getType() == InterpreterResult.Type.IMG) {
+            logger.debug("InterpreterResultMessage: IMAGE_DATA");
+          } else {
+            logger.debug("InterpreterResultMessage: " + msg.toString());
+          }
+        }
         // put result into resource pool
         if (resultMessages.size() > 0) {
           int lastMessageIndex = resultMessages.size() - 1;
@@ -527,6 +658,7 @@ public class RemoteInterpreterServer
         }
         return new InterpreterResult(result.code(), resultMessages);
       } finally {
+        Thread.currentThread().setContextClassLoader(currentThreadContextClassloader);
         InterpreterContext.remove();
       }
     }
@@ -554,37 +686,56 @@ public class RemoteInterpreterServer
     if (job != null) {
       job.setStatus(Status.ABORT);
     } else {
-      intp.cancel(convert(interpreterContext, null));
+      try {
+        intp.cancel(convert(interpreterContext, null));
+      } catch (InterpreterException e) {
+        throw new TException("Fail to cancel", e);
+      }
     }
   }
 
   @Override
-  public int getProgress(String noteId, String className,
+  public int getProgress(String sessionId, String className,
                          RemoteInterpreterContext interpreterContext)
       throws TException {
     Integer manuallyProvidedProgress = progressMap.get(interpreterContext.getParagraphId());
     if (manuallyProvidedProgress != null) {
       return manuallyProvidedProgress;
     } else {
-      Interpreter intp = getInterpreter(noteId, className);
-      return intp.getProgress(convert(interpreterContext, null));
+      Interpreter intp = getInterpreter(sessionId, className);
+      if (intp == null) {
+        throw new TException("No interpreter {} existed for session {}".format(
+            className, sessionId));
+      }
+      try {
+        return intp.getProgress(convert(interpreterContext, null));
+      } catch (InterpreterException e) {
+        throw new TException("Fail to getProgress", e);
+      }
     }
   }
 
 
   @Override
-  public String getFormType(String noteId, String className) throws TException {
-    Interpreter intp = getInterpreter(noteId, className);
-    return intp.getFormType().toString();
+  public String getFormType(String sessionId, String className) throws TException {
+    Interpreter intp = getInterpreter(sessionId, className);
+    try {
+      return intp.getFormType().toString();
+    } catch (InterpreterException e) {
+      throw new TException(e);
+    }
   }
 
   @Override
-  public List<InterpreterCompletion> completion(String noteId,
+  public List<InterpreterCompletion> completion(String sessionId,
       String className, String buf, int cursor, RemoteInterpreterContext remoteInterpreterContext)
       throws TException {
-    Interpreter intp = getInterpreter(noteId, className);
-    List completion = intp.completion(buf, cursor, convert(remoteInterpreterContext, null));
-    return completion;
+    Interpreter intp = getInterpreter(sessionId, className);
+    try {
+      return intp.completion(buf, cursor, convert(remoteInterpreterContext, null));
+    } catch (InterpreterException e) {
+      throw new TException("Fail to get completion", e);
+    }
   }
 
   private InterpreterContext convert(RemoteInterpreterContext ric) {
@@ -611,6 +762,7 @@ public class RemoteInterpreterServer
         (Map<String, Object>) gson.fromJson(ric.getConfig(),
             new TypeToken<Map<String, Object>>() {}.getType()),
         GUI.fromJson(ric.getGui()),
+        GUI.fromJson(ric.getNoteGui()),
         interpreterGroup.getAngularObjectRegistry(),
         interpreterGroup.getResourcePool(),
         contextRunners, output, remoteWorksController, eventClient, progressMap);
@@ -742,7 +894,7 @@ public class RemoteInterpreterServer
   }
 
   private RemoteInterpreterResult convert(InterpreterResult result,
-      Map<String, Object> config, GUI gui) {
+      Map<String, Object> config, GUI gui, GUI noteGui) {
 
     List<RemoteInterpreterResultMessage> msg = new LinkedList<>();
     for (InterpreterResultMessage m : result.message()) {
@@ -755,20 +907,21 @@ public class RemoteInterpreterServer
         result.code().name(),
         msg,
         gson.toJson(config),
-        gui.toJson());
+        gui.toJson(),
+        noteGui.toJson());
   }
 
   @Override
-  public String getStatus(String sessionKey, String jobId)
+  public String getStatus(String sessionId, String jobId)
       throws TException {
     if (interpreterGroup == null) {
-      return "Unknown";
+      return Status.UNKNOWN.name();
     }
 
     synchronized (interpreterGroup) {
-      List<Interpreter> interpreters = interpreterGroup.get(sessionKey);
+      List<Interpreter> interpreters = interpreterGroup.get(sessionId);
       if (interpreters == null) {
-        return "Unknown";
+        return Status.UNKNOWN.name();
       }
 
       for (Interpreter intp : interpreters) {
@@ -785,7 +938,7 @@ public class RemoteInterpreterServer
         }
       }
     }
-    return "Unknown";
+    return Status.UNKNOWN.name();
   }
 
 

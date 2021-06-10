@@ -132,7 +132,7 @@ Notebooks REST API supports the following operations: List, Create, Get, Delete,
       <td> sample JSON response </td>
       <td><pre>
 {
-  "status": "CREATED",
+  "status": "OK",
   "message": "",
   "body": "2AZPHY918"
 }</pre></td>
@@ -344,7 +344,7 @@ Notebooks REST API supports the following operations: List, Create, Get, Delete,
       <td> sample JSON response </td>
       <td><pre>
 {
-  "status": "CREATED",
+  "status": "OK",
   "message": "",
   "body": "2AZPHY918"
 }</pre></td>
@@ -455,7 +455,7 @@ Notebooks REST API supports the following operations: List, Create, Get, Delete,
       <td>sample JSON response</td>
       <td><pre>
 {
-  "status": "CREATED",
+  "status": "OK",
   "message": "",
   "body": "2AZPHY918"
 }</pre></td>
@@ -636,7 +636,7 @@ Notebooks REST API supports the following operations: List, Create, Get, Delete,
       <td> sample JSON response </td>
       <td><pre>
 {
-  "status": "CREATED",
+  "status": "OK",
   "message": "",
   "body": "20151218-100330\_1754029574"
 }</pre></td>
@@ -748,6 +748,59 @@ Notebooks REST API supports the following operations: List, Create, Get, Delete,
       "finished":"Tue Nov 24 14:21:40 KST 2015",
       "started":"Tue Nov 24 14:21:39 KST 2015"
     }
+}</pre></td>
+    </tr>
+  </table>
+
+<br/>
+
+### Update paragraph
+  <table class="table-configuration">
+    <col width="200">
+    <tr>
+      <td>Description</td>
+      <td>This ```PUT``` method update paragraph contents using given id, e.g. <code>{"text": "hello"}</code>
+      </td>
+    </tr>
+    <tr>
+      <td>URL</td>
+      <td>```http://[zeppelin-server]:[zeppelin-port]/api/notebook/[noteId]/paragraph/[paragraphId]```</td>
+    </tr>
+    <tr>
+      <td>Success code</td>
+      <td>200</td>
+    </tr>
+    <tr>
+      <td>Bad Request code</td>
+      <td>400</td>
+    </tr>
+    <tr>
+      <td>Forbidden code</td>
+      <td>403</td>
+    </tr>
+    <tr>
+      <td>Not Found code</td>
+      <td>404</td>
+    </tr>
+    <tr>
+      <td>Fail code</td>
+      <td>500</td>
+    </tr>
+    <tr>
+      <td>sample JSON input</td>
+      <td><pre>
+{
+  "title": "Hello world",
+  "text": "println(\"hello world\")"
+}</pre></td>
+    </tr>
+    <tr>
+      <td>sample JSON response</td>
+      <td><pre>
+{
+  "status": "OK",
+  "message": ""
+  }
 }</pre></td>
     </tr>
   </table>
@@ -1091,7 +1144,8 @@ Notebooks REST API supports the following operations: List, Create, Get, Delete,
     <col width="200">
     <tr>
       <td>Description</td>
-      <td>This ```POST``` method adds cron job by the given note id.
+      <td>This ```POST``` method adds cron job by the given note id. 
+          Default value of ```releaseResource``` is ```false```.
       </td>
     </tr>
     <tr>
@@ -1108,7 +1162,7 @@ Notebooks REST API supports the following operations: List, Create, Get, Delete,
     </tr>
     <tr>
       <td> sample JSON input </td>
-      <td><pre>{"cron": "cron expression of note"}</pre></td>
+      <td><pre>{"cron": "cron expression of note", "releaseResource": "false"}</pre></td>
     </tr>
     <tr>
       <td> sample JSON response </td>
@@ -1152,7 +1206,7 @@ Notebooks REST API supports the following operations: List, Create, Get, Delete,
     <tr>
       <td>Description</td>
       <td>This ```GET``` method gets cron job expression of given note id.
-          The body field of the returned JSON contains the cron expression.
+          The body field of the returned JSON contains the cron expression and ```releaseResource``` flag.
       </td>
     </tr>
     <tr>
@@ -1169,7 +1223,14 @@ Notebooks REST API supports the following operations: List, Create, Get, Delete,
     </tr>
     <tr>
       <td> sample JSON response </td>
-      <td><pre>{"status": "OK", "body": "* * * * * ?"}</pre></td>
+      <td><pre>
+{
+   "status": "OK", 
+   "body": {
+      "cron": "0 0/1 * * * ?", 
+      "releaseResource": true
+   }
+}</pre></td>
     </tr>
   </table>
 
@@ -1215,6 +1276,9 @@ Notebooks REST API supports the following operations: List, Create, Get, Delete,
       "owners":[  
          "user1"
       ],
+      "runners":[
+         "user2"
+      ],
       "writers":[  
          "user2"
       ]
@@ -1257,6 +1321,9 @@ Notebooks REST API supports the following operations: List, Create, Get, Delete,
     "user1"
   ],
   "owners": [
+    "user2"
+  ],
+  "runners":[
     "user2"
   ],
   "writers": [

@@ -27,6 +27,7 @@ if /I "%~1"=="-d" (
     set INTERPRETER_ID=%~n2
 )
 if /I "%~1"=="-p" set PORT=%~2
+if /I "%~1"=="-c" set CALLBACK_HOST=%~2
 if /I "%~1"=="-l" set LOCAL_INTERPRETER_REPO=%~2
 shift
 goto loop
@@ -66,7 +67,7 @@ if not exist "%ZEPPELIN_LOG_DIR%" (
 if /I "%INTERPRETER_ID%"=="spark" (
     if defined SPARK_HOME (
         set SPARK_SUBMIT=%SPARK_HOME%\bin\spark-submit.cmd
-        for %%d in ("%ZEPPELIN_HOME%\interpreter\spark\zeppelin-spark*.jar") do (
+        for %%d in ("%ZEPPELIN_HOME%\interpreter\spark\spark-interpreter*.jar") do (
             set SPARK_APP_JAR=%%d
         )
         set ZEPPELIN_CLASSPATH="!SPARK_APP_JAR!"
@@ -127,11 +128,11 @@ if not defined ZEPPELIN_CLASSPATH_OVERRIDES (
 if defined SPARK_SUBMIT (
     set JAVA_INTP_OPTS=%JAVA_INTP_OPTS% -Dzeppelin.log.file='%ZEPPELIN_LOGFILE%'
 
-    "%SPARK_SUBMIT%" --class %ZEPPELIN_SERVER% --jars %CLASSPATH% --driver-java-options "!JAVA_INTP_OPTS!" %SPARK_SUBMIT_OPTIONS% "%SPARK_APP_JAR%" %PORT%
+    "%SPARK_SUBMIT%" --class %ZEPPELIN_SERVER% --jars %CLASSPATH% --driver-java-options "!JAVA_INTP_OPTS!" %SPARK_SUBMIT_OPTIONS% "%SPARK_APP_JAR%" "%CALLBACK_HOST%" %PORT%
 ) else (
     set JAVA_INTP_OPTS=%JAVA_INTP_OPTS% -Dzeppelin.log.file="%ZEPPELIN_LOGFILE%"
 
-    "%ZEPPELIN_RUNNER%" !JAVA_INTP_OPTS! %ZEPPELIN_INTP_MEM% -cp %ZEPPELIN_CLASSPATH_OVERRIDES%;%CLASSPATH% %ZEPPELIN_SERVER% %PORT%
+    "%ZEPPELIN_RUNNER%" !JAVA_INTP_OPTS! %ZEPPELIN_INTP_MEM% -cp %ZEPPELIN_CLASSPATH_OVERRIDES%;%CLASSPATH% %ZEPPELIN_SERVER% "%CALLBACK_HOST%" %PORT%
 )
 
 exit /b

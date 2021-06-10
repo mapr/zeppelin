@@ -24,18 +24,18 @@
   <parent>
     <artifactId>zeppelin</artifactId>
     <groupId>org.apache.zeppelin</groupId>
-    <version>0.8.0-SNAPSHOT</version>
+    <version>0.8.2-mapr-1912-r2</version>
     <relativePath>..</relativePath>
   </parent>
 
   <artifactId>zeppelin-jupyter</artifactId>
   <packaging>jar</packaging>
-  <version>0.8.0-SNAPSHOT</version>
+  <version>0.8.2-mapr-1912-r2</version>
   <name>Zeppelin: Jupyter Support</name>
   <description>Jupyter support for Apache Zeppelin</description>
 
   <properties>
-    <pegdown.version>1.6.0</pegdown.version>
+    <zeppelin.version>${project.version}</zeppelin.version>
   </properties>
 
   <dependencies>
@@ -52,6 +52,7 @@
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
+      <version>15.0</version>
     </dependency>
 
     <dependency>
@@ -60,9 +61,9 @@
     </dependency>
 
     <dependency>
-      <groupId>org.pegdown</groupId>
-      <artifactId>pegdown</artifactId>
-      <version>${pegdown.version}</version>
+      <groupId>org.apache.zeppelin</groupId>
+      <artifactId>zeppelin-markdown</artifactId>
+      <version>${project.version}</version>
     </dependency>
 
     <!-- Test -->

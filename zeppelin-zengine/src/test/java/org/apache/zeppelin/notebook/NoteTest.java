@@ -23,6 +23,7 @@ import org.apache.zeppelin.display.AngularObject;
 import org.apache.zeppelin.display.ui.TextBox;
 import org.apache.zeppelin.interpreter.Interpreter;
 import org.apache.zeppelin.interpreter.InterpreterFactory;
+import org.apache.zeppelin.interpreter.InterpreterNotFoundException;
 import org.apache.zeppelin.interpreter.InterpreterResult;
 import org.apache.zeppelin.interpreter.InterpreterSettingManager;
 import org.apache.zeppelin.notebook.repo.NotebookRepo;
@@ -73,7 +74,7 @@ public class NoteTest {
   private AuthenticationInfo anonymous = new AuthenticationInfo("anonymous");
 
   @Test
-  public void runNormalTest() {
+  public void runNormalTest() throws InterpreterNotFoundException {
     when(interpreterFactory.getInterpreter(anyString(), anyString(), eq("spark"))).thenReturn(interpreter);
     when(interpreter.getScheduler()).thenReturn(scheduler);
 
@@ -87,7 +88,7 @@ public class NoteTest {
 
     ArgumentCaptor<Paragraph> pCaptor = ArgumentCaptor.forClass(Paragraph.class);
     verify(scheduler, only()).submit(pCaptor.capture());
-    verify(interpreterFactory, times(2)).getInterpreter(anyString(), anyString(), eq("spark"));
+    verify(interpreterFactory, times(1)).getInterpreter(anyString(), anyString(), eq("spark"));
 
     assertEquals("Paragraph text", pText, pCaptor.getValue().getText());
   }
@@ -101,7 +102,7 @@ public class NoteTest {
   }
 
   @Test
-  public void addParagraphWithLastReplNameTest() {
+  public void addParagraphWithLastReplNameTest() throws InterpreterNotFoundException {
     when(interpreterFactory.getInterpreter(anyString(), anyString(), eq("spark"))).thenReturn(interpreter);
 
     Note note = new Note(repo, interpreterFactory, interpreterSettingManager, jobListenerFactory, index, credentials, noteEventListener);
@@ -113,7 +114,7 @@ public class NoteTest {
   }
 
   @Test
-  public void insertParagraphWithLastReplNameTest() {
+  public void insertParagraphWithLastReplNameTest() throws InterpreterNotFoundException {
     when(interpreterFactory.getInterpreter(anyString(), anyString(), eq("spark"))).thenReturn(interpreter);
 
     Note note = new Note(repo, interpreterFactory, interpreterSettingManager, jobListenerFactory, index, credentials, noteEventListener);
@@ -125,7 +126,7 @@ public class NoteTest {
   }
 
   @Test
-  public void insertParagraphWithInvalidReplNameTest() {
+  public void insertParagraphWithInvalidReplNameTest() throws InterpreterNotFoundException {
     when(interpreterFactory.getInterpreter(anyString(), anyString(), eq("invalid"))).thenReturn(null);
 
     Note note = new Note(repo, interpreterFactory, interpreterSettingManager, jobListenerFactory, index, credentials, noteEventListener);
@@ -144,7 +145,7 @@ public class NoteTest {
   }
 
   @Test
-  public void clearAllParagraphOutputTest() {
+  public void clearAllParagraphOutputTest() throws InterpreterNotFoundException {
     when(interpreterFactory.getInterpreter(anyString(), anyString(), eq("md"))).thenReturn(interpreter);
     when(interpreter.getScheduler()).thenReturn(scheduler);
 
@@ -247,7 +248,6 @@ public class NoteTest {
     note.getInfo().put("info_1", "value_1");
     String pText = "%spark sc.version";
     Paragraph p = note.addNewParagraph(AuthenticationInfo.ANONYMOUS);
-    p.dateUpdated = new Date();
     p.setText(pText);
     p.setResult("1.6.2");
     p.settings.getForms().put("textbox_1", new TextBox("name", "default_name"));

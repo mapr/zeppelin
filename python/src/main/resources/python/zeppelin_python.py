@@ -24,6 +24,7 @@ import ast
 import traceback
 import warnings
 import signal
+import base64
 
 from io import BytesIO
 try:
@@ -60,29 +61,66 @@ class PyZeppelinContext(object):
     self._setup_matplotlib()
 
   def getInterpreterContext(self):
-    return self.z.getCurrentInterpreterContext()
+    return self.z.getInterpreterContext()
 
   def input(self, name, defaultValue=""):
-    return self.z.getGui().input(name, defaultValue)
+    return self.z.input(name, defaultValue)
+
+  def textbox(self, name, defaultValue=""):
+    return self.z.textbox(name, defaultValue)
+
+  def noteTextbox(self, name, defaultValue=""):
+    return self.z.noteTextbox(name, defaultValue)
 
   def select(self, name, options, defaultValue=""):
-    javaOptions = gateway.new_array(self.paramOption, len(options))
-    i = 0
-    for tuple in options:
-      javaOptions[i] = self.paramOption(tuple[0], tuple[1])
-      i += 1
-    return self.z.getGui().select(name, defaultValue, javaOptions)
+    return self.z.select(name, defaultValue, self.getParamOptions(options))
+
+  def noteSelect(self, name, options, defaultValue=""):
+    return self.z.noteSelect(name, defaultValue, self.getParamOptions(options))
 
   def checkbox(self, name, options, defaultChecked=[]):
+    return self.z.checkbox(name, self.getDefaultChecked(defaultChecked), self.getParamOptions(options))
+
+  def noteCheckbox(self, name, options, defaultChecked=[]):
+    return self.z.noteCheckbox(name, self.getDefaultChecked(defaultChecked), self.getParamOptions(options))
+
+  def registerHook(self, event, cmd, replName=None):
+    if replName is None:
+      self.z.registerHook(event, cmd)
+    else:
+      self.z.registerHook(event, cmd, replName)
+
+  def unregisterHook(self, event, replName=None):
+    if replName is None:
+      self.z.unregisterHook(event)
+    else:
+      self.z.unregisterHook(event, replName)
+
+  def registerNoteHook(self, event, cmd, noteId, replName=None):
+    if replName is None:
+      self.z.registerNoteHook(event, cmd, noteId)
+    else:
+      self.z.registerNoteHook(event, cmd, noteId, replName)
+
+  def unregisterNoteHook(self, event, noteId, replName=None):
+    if replName is None:
+      self.z.unregisterNoteHook(event, noteId)
+    else:
+      self.z.unregisterNoteHook(event, noteId, replName)
+
+  def getParamOptions(self, options):
     javaOptions = gateway.new_array(self.paramOption, len(options))
     i = 0
     for tuple in options:
       javaOptions[i] = self.paramOption(tuple[0], tuple[1])
       i += 1
-    javaDefaultCheck = self.javaList()
+    return javaOptions
+
+  def getDefaultChecked(self, defaultChecked):
+    javaDefaultChecked = self.javaList()
     for check in defaultChecked:
-      javaDefaultCheck.append(check)
-    return self.z.getGui().checkbox(name, javaDefaultCheck, javaOptions)
+      javaDefaultChecked.append(check)
+    return javaDefaultChecked
 
   def show(self, p, **kwargs):
     if hasattr(p, '__name__') and p.__name__ == "matplotlib.pyplot":
@@ -205,7 +243,7 @@ intp = gateway.entry_point
 intp.onPythonScriptInitialized(os.getpid())
 
 java_import(gateway.jvm, "org.apache.zeppelin.display.Input")
-z = __zeppelin__ = PyZeppelinContext(intp)
+z = __zeppelin__ = PyZeppelinContext(intp.getZeppelinContext())
 __zeppelin__._setup_matplotlib()
 
 _zcUserQueryNameSpace["__zeppelin__"] = __zeppelin__
@@ -261,8 +299,7 @@ while True :
         to_run_hooks = code.body[-nhooks:]
 
       to_run_exec, to_run_single = (code.body[:-(nhooks + 1)],
-                                    [code.body[-(nhooks + 1)]])
-
+                                   [code.body[-(nhooks + 1)]] if len(code.body) > nhooks else [])
       try:
         for node in to_run_exec:
           mod = ast.Module([node])

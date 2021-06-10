@@ -70,34 +70,51 @@ The interpreter can use all modules already installed (with pip, easy_install...
 
 - get the Conda Infomation: 
 
-    ```%python.conda info```
+    ```
+    %python.conda info
+    ```
     
 - list the Conda environments: 
 
-    ```%python.conda env list```
+    ```
+    %python.conda env list
+    ```
 
 - create a conda enviornment: 
-    ```%python.conda create --name [ENV NAME]```
+
+    ```
+    %python.conda create --name [ENV NAME]
+    ```
     
 - activate an environment (python interpreter will be restarted): 
 
-    ```%python.conda activate [ENV NAME]```
+    ```
+    %python.conda activate [ENV NAME]
+    ```
 
 - deactivate
 
-    ```%python.conda deactivate```
+    ```
+    %python.conda deactivate
+    ```
     
 - get installed package list inside the current environment
 
-    ```%python.conda list```
+    ```
+    %python.conda list
+    ```
     
 - install package
 
-    ```%python.conda install [PACKAGE NAME]```
+    ```
+    %python.conda install [PACKAGE NAME]
+    ```
   
 - uninstall package
   
-    ```%python.conda uninstall [PACKAGE NAME]```
+    ```
+    %python.conda uninstall [PACKAGE NAME]
+    ```
 
 ### Docker
 
@@ -171,7 +188,8 @@ If Zeppelin cannot find the matplotlib backend files (which should usually be fo
 then the backend will automatically be set to agg, and the (otherwise deprecated) instructions below can be used for more limited inline plotting.
 
 If you are unable to load the inline backend, use `z.show(plt)`:
- ```python
+
+```python
 %python
 import matplotlib.pyplot as plt
 plt.figure()
@@ -231,6 +249,71 @@ SELECT * FROM rates WHERE age < 40
 
 Otherwise it can be referred to as `%python.sql`
 
+
+## IPython Support
+
+IPython is more powerful than the default python interpreter with extra functionality. You can use IPython with Python2 or Python3 which depends on which python you set `zeppelin.python`.
+
+   **Pre-requests**
+   
+    - Jupyter `pip install jupyter`
+    - grpcio `pip install grpcio`
+    - protobuf `pip install protobuf`
+
+If you already install anaconda, then you just need to install `grpcio` as Jupyter is already included in anaconda. For grpcio version >= 1.12.0 you'll also need to install protobuf separately.
+
+In addition to all basic functions of the python interpreter, you can use all the IPython advanced features as you use it in Jupyter Notebook.
+
+e.g. 
+
+Use IPython magic
+
+```
+%python.ipython
+
+#python help
+range?
+
+#timeit
+%timeit range(100)
+```
+
+Use matplotlib 
+
+```
+%python.ipython
+
+
+%matplotlib inline
+import matplotlib.pyplot as plt
+
+print("hello world")
+data=[1,2,3,4]
+plt.figure()
+plt.plot(data)
+```
+
+We also make `ZeppelinContext` available in IPython Interpreter. You can use `ZeppelinContext` to create dynamic forms and display pandas DataFrame.
+
+e.g.
+
+Create dynamic form
+
+```
+z.input(name='my_name', defaultValue='hello')
+```
+
+Show pandas dataframe
+
+```
+import pandas as pd
+df = pd.DataFrame({'id':[1,2,3], 'name':['a','b','c']})
+z.show(df)
+
+```
+
+By default, we would use IPython in `%python.python` if IPython is available. Otherwise it would fall back to the original Python implementation.
+If you don't want to use IPython, then you can set `zeppelin.python.useIPython` as `false` in interpreter setting.
 
 ## Technical description
 
