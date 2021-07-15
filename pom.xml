@@ -1557,6 +1557,31 @@
     </profile>
 
     <profile>
+      <id>vendor-repo-mapr</id>
+      <activation>
+        <property>
+          <name>env.MAPR_MAVEN_REPO</name>
+        </property>
+      </activation>
+      <repositories>
+        <repository>
+          <id>mapr-maven-repo</id>
+          <url>${env.MAPR_MAVEN_REPO}</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+        </repository>
+        <repository>
+          <id>repository-mapr-com</id>
+          <url>http://repository.mapr.com/maven/</url>
+        </repository>
+      </repositories>
+    </profile>
+
+    <profile>
       <id>integration</id>
       <modules>
         <module>zeppelin-integration</module>
