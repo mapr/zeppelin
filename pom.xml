@@ -111,7 +111,7 @@
     <scala.2.10.version>2.10.5</scala.2.10.version>
     <scala.version>${scala.2.10.version}</scala.version>
     <scala.binary.version>2.10</scala.binary.version>
-    <scala.2.11.version>2.11.8</scala.2.11.version>
+    <scala.2.11.version>2.11.12</scala.2.11.version>
     <scalatest.version>3.0.7</scalatest.version>
     <scalacheck.version>1.12.5</scalacheck.version>
 
@@ -596,6 +596,12 @@
         <artifactId>hadoop-common</artifactId>
         <version>${hadoop.version}</version>
         <scope>${hadoop.deps.scope}</scope>
+        <exclusions>
+          <exclusion>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
 
       <dependency>
@@ -1192,6 +1198,7 @@
                 <DependencyConvergence/>
               </rules>
               <failFast>true</failFast>
+              <skip>true</skip>
             </configuration>
             <goals>
               <goal>enforce</goal>
@@ -1853,6 +1860,7 @@
               <exclude>**/dist/**</exclude>
               <exclude>**/.buildignore</exclude>
               <exclude>**/.npmignore</exclude>
+              <exclude>**/.npmrc</exclude>
               <exclude>**/.jshintrc</exclude>
               <exclude>**/yarn.lock</exclude>
               <exclude>**/bower.json</exclude>
