@@ -69,7 +69,7 @@
     <module>angular</module>
     <module>shell</module>
     <module>livy</module>
-    <module>hbase</module>
+    <!-- <module>hbase</module> -->
     <module>pig</module>
     <module>jdbc</module>
     <module>file</module>
@@ -1182,6 +1182,7 @@
                 <DependencyConvergence/>
               </rules>
               <failFast>true</failFast>
+              <skip>true</skip>
             </configuration>
             <goals>
               <goal>enforce</goal>
@@ -1843,6 +1844,7 @@
               <exclude>**/dist/**</exclude>
               <exclude>**/.buildignore</exclude>
               <exclude>**/.npmignore</exclude>
+              <exclude>**/.npmrc</exclude>
               <exclude>**/.jshintrc</exclude>
               <exclude>**/yarn.lock</exclude>
               <exclude>**/bower.json</exclude>
