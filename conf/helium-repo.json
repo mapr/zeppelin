@@ -1,18 +1,4 @@
-[{"spark-scala-2.11": {
-    "0.8.2": {
-      "type": "INTERPRETER",
-      "name": "spark-scala-2.11",
-      "version": "0.8.2",
-      "published": "2019-09-25T21:26:09-07:00",
-      "artifact": "spark-scala-2.11@0.8.2",
-      "description": "Zeppelin project",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "org.apache.zeppelin",
-      "artifactId": "spark-scala-2.11"
-    }
-  },
-"sogou-map-geo": {
+[{"sogou-map-geo": {
     "1.0.0": {
       "type": "VISUALIZATION",
       "name": "sogou-map-geo",
@@ -366,20 +352,6 @@
       "icon": "<i class='fa fa-globe'></i>"
     }
   },
-"sap": {
-    "0.8.2": {
-      "type": "INTERPRETER",
-      "name": "sap",
-      "version": "0.8.2",
-      "published": "2019-09-25T21:22:33-07:00",
-      "artifact": "sap@0.8.2",
-      "description": "Zeppelin SAP support",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "org.apache.zeppelin",
-      "artifactId": "sap"
-    }
-  },
 "geospark-zeppelin": {
     "0.0.1": {
       "type": "VISUALIZATION",
@@ -402,126 +374,6 @@
       "description": "Zeppelin visualization support for GeoSpark",
       "license": "BSD-2-Clause",
       "icon": "<i class='fa fa-globe'></i>"
-    }
-  },
-"spark-interpreter": {
-    "latest": {
-      "type": "INTERPRETER",
-      "name": "spark-interpreter",
-      "version": "0.9.0-preview1",
-      "published": "2020-03-23T02:39:13-07:00",
-      "artifact": "spark-interpreter@0.9.0-preview1",
-      "description": "Zeppelin spark support",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "org.apache.zeppelin",
-      "artifactId": "spark-interpreter"
-    }
-  },
-"snappydata-zeppelin": {
-    "latest": {
-      "type": "INTERPRETER",
-      "name": "snappydata-zeppelin",
-      "version": "0.7.3.6",
-      "published": "2019-09-03T07:49:48+00:00",
-      "artifact": "snappydata-zeppelin@0.7.3.6",
-      "description": "SnappyData distributed data store and execution engine",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "io.snappydata",
-      "artifactId": "snappydata-zeppelin"
-    },
-    "0.7.3.5": {
-      "type": "INTERPRETER",
-      "name": "snappydata-zeppelin",
-      "version": "0.7.3.5",
-      "published": "2019-05-24T11:28:01+00:00",
-      "artifact": "snappydata-zeppelin@0.7.3.5",
-      "description": "SnappyData distributed data store and execution engine",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "io.snappydata",
-      "artifactId": "snappydata-zeppelin"
-    }
-  },
-"spark1-shims": {
-    "latest": {
-      "type": "INTERPRETER",
-      "name": "spark1-shims",
-      "version": "0.8.2",
-      "published": "2019-09-26T04:24:06+00:00",
-      "artifact": "spark1-shims@0.8.2",
-      "description": "Zeppelin Spark Support",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "org.apache.zeppelin",
-      "artifactId": "spark1-shims"
-    },
-    "0.8.1": {
-      "type": "INTERPRETER",
-      "name": "spark1-shims",
-      "version": "0.8.1",
-      "published": "2019-01-17T03:12:47+00:00",
-      "artifact": "spark1-shims@0.8.1",
-      "description": "Zeppelin Spark Support",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "org.apache.zeppelin",
-      "artifactId": "spark1-shims"
-    }
-  },
-"spark2-shims": {
-    "0.8.2": {
-      "type": "INTERPRETER",
-      "name": "spark2-shims",
-      "version": "0.8.2",
-      "published": "2019-09-25T21:21:31-07:00",
-      "artifact": "spark2-shims@0.8.2",
-      "description": "Zeppelin Spark Support",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "org.apache.zeppelin",
-      "artifactId": "spark2-shims"
-    }
-  },
-"spark-scala-parent": {
-    "0.8.2": {
-      "type": "INTERPRETER",
-      "name": "spark-scala-parent",
-      "version": "0.8.2",
-      "published": "2019-09-25T21:24:19-07:00",
-      "artifact": "spark-scala-parent@0.8.2",
-      "description": "Zeppelin project",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "org.apache.zeppelin",
-      "artifactId": "spark-scala-parent"
-    }
-  },
-"spark-scala-2.10": {
-    "latest": {
-      "type": "INTERPRETER",
-      "name": "spark-scala-2.10",
-      "version": "0.8.2",
-      "published": "2019-09-26T04:25:03+00:00",
-      "artifact": "spark-scala-2.10@0.8.2",
-      "description": "Zeppelin project",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "org.apache.zeppelin",
-      "artifactId": "spark-scala-2.10"
-    },
-    "0.8.1": {
-      "type": "INTERPRETER",
-      "name": "spark-scala-2.10",
-      "version": "0.8.1",
-      "published": "2019-01-17T03:12:05+00:00",
-      "artifact": "spark-scala-2.10@0.8.1",
-      "description": "Zeppelin Spark Support",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "org.apache.zeppelin",
-      "artifactId": "spark-scala-2.10"
     }
   },
 "ultimate-column-chart-negative-values": {
@@ -804,32 +656,6 @@
       "icon": "<img width=\"21\" height=\"21\" class=\"icon icons8-Line-Chart\" src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAEaUlEQVRoQ+2af0xbVRTHz/vVH64gzFgt44eAmDBUhjYqmTHMKMlMiEuMGqZSulGCzMTNZNBtMRAWJsoSlkh0jHaAQ/zLsEVdzGJkLEM3Ya4zcTWDLZO2QzoLbmBL+9671zxcDaMIj9e+tJD2v6Y993w/53t773knJWCVvAiBo3JPSwvGcKm9aVfnSuWaBTGZW/oIgP4jTbvq4yBRrkDckSgbEJI+7shijmw9snsDTRL5ADgJk2A7tq25X24HI+5IubW2FWG8Q8kwXoamuWmfL5GmqG8R+Eo7jYf+kgsooiCGo7X7KSD3FhUUkA8m3zereXrGB6dtPyOv3/+9xdD44ooAKbPU4MK8RyFbt+4uvQLM8bNngEO4oKey2SYHTNARBwHAYYDrUpPwKr+GS53Qv1b0PChoJmSZEwNnkddJXKMnE5xScywW92+LYj5kx4DHCYDTUpPwSjaJTfvz3S3PPgcalTpkmS/P9CH/OPOVwpMoqyMRaVEM1lrvY5lZ6sezHr4L5I9JD3x3YQhIiszsNDZJdn1JRyLVa5m69272z3AnBZCslBRQ0DQ43G4YumLHaqWyrbW0/m2pji8VF9FTS0i2rdNcjHg4gTBSCe8pgvQrGOZAW9n+hqXEhPN5xEGCYso7zA8FWD5JrlNqPrRsIOFUV0psHERK1eSMiTsiZ3WFtWc7aIp4GWNcBJiwYQL6uys+Ov5/eWPSEWOXuYJnUXvimjX+dO0DlOf2rcCYx3MPQ9FtVuOBqoVgYg7kzrPMxfnN58TUbTg1+BMXQPyrCzkTcyBl7TX192o075cUbiTnV37oih1GXK4LR40f6Be8RyrNLRNAQLLc+17M+myqB/Jy02B+vybEBns21VVdyFLBAd0gwvArAER9QMdm3HwnRZf8yqYNT4SItY/+DpeGh2+Qw9o3Yv5mf9NSs4UE6H3p6UJYm5D4n94Ax8I3534AjucPthsad8c8iCBwR0/dFzOBwOvZulQiTauFyakpsI9eB5bnHRZDY/qKOLWCIk1d+6oBoNrPsnkKRjFKk2Tv4bcadq6oe0TMobAitlYcJFKPulIqGamYmLvZpYItC6S8Y2cSzynqKJIoRhivJylygEe85dj25qhfpKJBBAgS1OcZmspcn5HFJCdowHnTDSNOF0dQZIfV0FgptZqRiBMPYq1tVSoVVSXPbKTmThKFrvTk+R8BYbSp23RQ8oAvXBjRvRbKcX+en5OTkpueEZKzz3YRu254ehWj2o/DFSQ1/s7IdOnudyZ7DF54Ug/BKfvchL9cG4HLvzmBdqyVqiPsONFba3vXHlu2bl2+/pHckKRfnxuAW9N/N3RVfFgXtiKJC4gGMX22r4rn0SfF+qeIuV3p1TEXDF62c4jEOXLNdcWwiQYRFqvuqeuZ9vpKU+/XzrbYDvc4THm9nFLFvPfp1oao/T4EbcsCEQKE5wU1Q5cgjAsAE6d4QIej6UTQrWWDiLE5Gt+Jg0Sj6ovlXF2OrJq/OcXaNpGi5x99qVCZXaMquwAAAABJRU5ErkJggg==\" >"
     }
   },
-"spark-shims": {
-    "latest": {
-      "type": "INTERPRETER",
-      "name": "spark-shims",
-      "version": "0.8.2",
-      "published": "2019-09-26T04:30:27+00:00",
-      "artifact": "spark-shims@0.8.2",
-      "description": "Zeppelin Spark Support",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "org.apache.zeppelin",
-      "artifactId": "spark-shims"
-    },
-    "0.8.1": {
-      "type": "INTERPRETER",
-      "name": "spark-shims",
-      "version": "0.8.1",
-      "published": "2019-01-17T03:12:35+00:00",
-      "artifact": "spark-shims@0.8.1",
-      "description": "Zeppelin Spark Support",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "org.apache.zeppelin",
-      "artifactId": "spark-shims"
-    }
-  },
 "volume-leaflet": {
     "1.0.1": {
       "type": "VISUALIZATION",
@@ -995,34 +821,6 @@
       "description": "The Ultimate Heatmap Chart for Apache Zeppelin using <a href src=\"http://www.highcharts.com/\">highcharts</a>",
       "license": "SEE LICENSE IN <LICENSE>",
       "icon": "<img width=\"21\" height=\"21\" class=\"icon icons8-Gantt-Chart\" src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAEHklEQVRoQ+1aXWgcVRT+dmbcmexmN5N2szW1abNJTahdI0TpQ6RJQKggNqCoCP3Blz70pSg0Gh8KBUGjKSh96YMvohRERaUVQUFIUxpQasCY/iQ22Wy3ZOtmNzvJ/mR2M7ORu0iImzk7q01/DHde5+y59zv3nO+bc+46sEEexwbBgRUgx0+fe12As8cOmMNMhx3G/LSd3b15X7jQ33tkkK21AqT39PeDglzT5fFWLVObSKd0h1fK5qrF1CJl4/V4pOxixjSMgqUfSRIcriq3uJBKGZQPp+wUJFF0ZLOLJmUTm9PchmG829975OQaIKp/a9fe7ifIYA4P/Y7mOhkvdbfQNldCCDbWw+tWLG0WMjrGpqPo2B0gfURiScxn9aIf6jlz9rx+M/rn+xwIP5G/c4SnVkmx8BphAfnfsJao1HapajVJeYlECi5ZgMf1EGljmgXs2bUZvlpr+mXvM3qepGfmOJc3YBQKcCtOcp3LI2P58anwe2vo980Pv/xkU+2mg807tonUr6+ENcjuKvh8NeQC49ci2N+xDYF6r6UN22RsPo2GOpX0wQhBNwz4a+ig/jj0S+7GdKR/DZC+gY9Pbq/f8tbRA/utQwng1BcjUP0+tO7aTm7i3NeXcOjZFrQ11d0fQeRASuLOT2RVQO7oW4unFk+tu/QZz1LrsUeb+pp3BmSKWy+OJhDXcuvS/L3QufWO/EzeCOWu/jFlrSOBhvq+V59/hgQyMhGFIApQq13kJj77YQLBtgC8qttaR7QMxkZDOHH4SdJHTEsV1T/w8GbS5vPvfsqFItH/Joiss6txKWjw15IL9J65hI7OIKn+8fg8hofGMHD06bvTIVbCWhzIqtjzE6m0seKpVRKpB6LY7eg3dDtRbHb8qodknHc+/RW72wJQiV4ikVjA9athHN7XSvrQ0lmYBRPtLfRcqyz92gliJQr2zdBMJWa2Nj5Vxt42WkfKCqJdY1UJ/Q7bTBpHp2bBRLPnRVpHxq/dhBaL4/gr7SRgcoqyXsXOgayKPT8RFgyeWiXlyGtkPWtkZ2ND377OPWQ/wgZriiSVnRJGZrXiYE12SpbUGYou4PzwrbKzsdszCRj5HIIBul2YDM8Yc3Pxsx+88fJrbKGVqzdWI61NO95+qj1IzilZsyMJArlJ5pBNCZn6i6JgCSSe1PHz9QQEkRxoIp3NI79UgEo0Z8yxpmVg6tqFgWPPda8Bci8EsZL7ka8GJzA5m0NH5+OkIF4c/A1abIYDsW117ViLn0hJkvHUYgFZj69fnlr/JrVkp/PEI1t81gIAQFGUYue2lF8iadHtdkHXdbArNquH6Qvzk8lkSR/JvAtJXUG5a0BNS8PUk5b0y4SlKC73+ylIauOy6G6028cyjG9PHev56B+CaPejB/39hvm/1l9zuh9+d3X4DAAAAABJRU5ErkJggg==\" >"
-    }
-  },
-"zeppelin-beam": {
-    "0.8.2": {
-      "type": "INTERPRETER",
-      "name": "zeppelin-beam",
-      "version": "0.8.2",
-      "published": "2019-09-25T21:28:02-07:00",
-      "artifact": "zeppelin-beam@0.8.2",
-      "description": "Zeppelin project",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "org.apache.zeppelin",
-      "artifactId": "zeppelin-beam"
-    }
-  },
-"zeppelin-ignite": {
-    "latest": {
-      "type": "INTERPRETER",
-      "name": "zeppelin-ignite",
-      "version": "0.6.0",
-      "published": "2016-06-27T23:22:33+00:00",
-      "artifact": "zeppelin-ignite@0.6.0",
-      "description": "Zeppelin: Apache Ignite interpreter",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "org.apache.zeppelin",
-      "artifactId": "zeppelin-ignite"
     }
   },
 "zeppelin-highcharts-scatterplot": {
@@ -2651,20 +2449,6 @@
       "spell": {"magic": "%json", "usage": "%json <JSON>"}
     }
   },
-"zeppelin-ignite_2.11": {
-    "latest": {
-      "type": "INTERPRETER",
-      "name": "zeppelin-ignite_2.11",
-      "version": "0.8.2",
-      "published": "2019-09-25T21:28:09-07:00",
-      "artifact": "zeppelin-ignite_2.11@0.8.2",
-      "description": "Zeppelin project",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "org.apache.zeppelin",
-      "artifactId": "zeppelin-ignite_2.11"
-    }
-  },
 "zeppelin-leaflet": {
     "1.0.2": {
       "type": "VISUALIZATION",
@@ -2725,20 +2509,6 @@
       "spell": {"magic": "%mathjax", "usage": "%mathjax <TEXT>"}
     }
   },
-"zeppelin-alluxio": {
-    "0.8.2": {
-      "type": "INTERPRETER",
-      "name": "zeppelin-alluxio",
-      "version": "0.8.2",
-      "published": "2019-09-25T21:28:40-07:00",
-      "artifact": "zeppelin-alluxio@0.8.2",
-      "description": "Zeppelin project",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "org.apache.zeppelin",
-      "artifactId": "zeppelin-alluxio"
-    }
-  },
 "zeppelin-number": {
     "1.0.0": {
       "type": "VISUALIZATION",
@@ -2761,48 +2531,6 @@
       "description": "Zeppelin plugin to visualize number",
       "license": "Apache-2.0",
       "icon": "<i style='margin-left: -5px;'>123</i>"
-    }
-  },
-"zeppelin-jdbc": {
-    "0.8.2": {
-      "type": "INTERPRETER",
-      "name": "zeppelin-jdbc",
-      "version": "0.8.2",
-      "published": "2019-09-25T21:30:34-07:00",
-      "artifact": "zeppelin-jdbc@0.8.2",
-      "description": "Zeppelin project",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "org.apache.zeppelin",
-      "artifactId": "zeppelin-jdbc"
-    }
-  },
-"zeppelin-kylin": {
-    "0.8.2": {
-      "type": "INTERPRETER",
-      "name": "zeppelin-kylin",
-      "version": "0.8.2",
-      "published": "2019-09-25T21:23:02-07:00",
-      "artifact": "zeppelin-kylin@0.8.2",
-      "description": "Zeppelin project",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "org.apache.zeppelin",
-      "artifactId": "zeppelin-kylin"
-    }
-  },
-"zeppelin-ignite_2.10": {
-    "latest": {
-      "type": "INTERPRETER",
-      "name": "zeppelin-ignite_2.10",
-      "version": "0.8.2",
-      "published": "2019-09-25T21:27:42-07:00",
-      "artifact": "zeppelin-ignite_2.10@0.8.2",
-      "description": "Zeppelin project",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "org.apache.zeppelin",
-      "artifactId": "zeppelin-ignite_2.10"
     }
   },
 "zeppelin-season-table": {
@@ -2895,74 +2623,6 @@
       "icon": "<i class=\"fa fa-question-circle\"></i>"
     }
   },
-"zeppelin-cassandra_2.11": {
-    "latest": {
-      "type": "INTERPRETER",
-      "name": "zeppelin-cassandra_2.11",
-      "version": "0.8.2",
-      "published": "2019-09-25T21:22:50-07:00",
-      "artifact": "zeppelin-cassandra_2.11@0.8.2",
-      "description": "Zeppelin cassandra support",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "org.apache.zeppelin",
-      "artifactId": "zeppelin-cassandra_2.11"
-    }
-  },
-"zeppelin-jupyter-interpreter": {
-    "latest": {
-      "type": "INTERPRETER",
-      "name": "zeppelin-jupyter-interpreter",
-      "version": "0.9.0-preview1",
-      "published": "2020-03-23T02:23:54-07:00",
-      "artifact": "zeppelin-jupyter-interpreter@0.9.0-preview1",
-      "description": "Zeppelin: Jupyter Interpreter",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "org.apache.zeppelin",
-      "artifactId": "zeppelin-jupyter-interpreter"
-    }
-  },
-"zeppelin-flink_2.11": {
-    "latest": {
-      "type": "INTERPRETER",
-      "name": "zeppelin-flink_2.11",
-      "version": "0.8.2",
-      "published": "2019-09-25T21:29:35-07:00",
-      "artifact": "zeppelin-flink_2.11@0.8.2",
-      "description": "Zeppelin flink support",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "org.apache.zeppelin",
-      "artifactId": "zeppelin-flink_2.11"
-    }
-  },
-"zeppelin-display": {
-    "latest": {
-      "type": "INTERPRETER",
-      "name": "zeppelin-display",
-      "version": "0.9.0-preview1",
-      "published": "2020-03-23T02:11:46-07:00",
-      "artifact": "zeppelin-display@0.9.0-preview1",
-      "description": "Zeppelin: Display system apis",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "org.apache.zeppelin",
-      "artifactId": "zeppelin-display"
-    },
-    "0.8.2": {
-      "type": "INTERPRETER",
-      "name": "zeppelin-display",
-      "version": "0.8.2",
-      "published": "2019-09-25T21:23:21-07:00",
-      "artifact": "zeppelin-display@0.8.2",
-      "description": "Zeppelin project",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "org.apache.zeppelin",
-      "artifactId": "zeppelin-display"
-    }
-  },
 "zeppelin-markdown-spell": {
     "latest": {
       "type": "SPELL",
@@ -2975,90 +2635,6 @@
       "license": "MIT",
       "icon": "<img width=\"21\" height=\"21\" class=\"icon icons8-Markdown\" src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAACe0lEQVRoQ+1ZsXLTQBDdtURBGtxkJqghfxDnD+LB0PIJ2INJHb4k1NiMwx9Ai804fxDzB6HxZIYCpQlFJC2zSi5IsmSdZOlyUU6VZny3u++93b21DqEhDzYEBxgguilpFDGK1MSASa2aiC1ttlmK7Mwnu+j7xwDQQYDd0rQo3EgA5wCwIMv6cNEdnCODaPn+GQC0FcZRpSs3sKx9fD4dfUXEN1VaVm2LiL6hMxv/ecBqhJxxmjEQUs1gHf4MkDpY3cTm41Fk2RvGDk1nNj4BgLc57H1Z9ob96BqZWkzxJV2/uYokjbfnk/aW758CwF4GmJ9XlnXgdgeu1kA4uO3vnzpPEE8B8VkMDNHlNdHB79eHiyRI7RQRAe78+NxvEU2iAQeIg4uX7zj1Vh5tgXCkialgpS60Ti1OK5E6XC9PfT9Mo7+W1RF1EV0jwGiniDMdnV3ZdjcaNAcbBbflefPlq/f7Wityy+zJsjccZNQC102/TCsts0fEULj9ihRJK+xoA8gLal1jyDqj0hrMxkAAwL0Ogq5IqbAlt1pzMUnnAeEAioBZB4JtlVbkZn6mBdcLv3JdAGJHMCQDJElGlhJJktLWbQbkxqI4N2IjiSQQ3h9TNhmkDIjNFcmiEAAKALlTNjnWhONQQuksl1Uokmq7EJBImgowRUDoo8h/Ku7aujMbh218jeixn/RRJALm9lUahJQisozc97pcRe47QFn/BogsU6rWoTMduSv/9FR5r8gPAfxqzifT8CO25y0erCpEl4Ft8y0CQHit4HkfeehDgBcVKV6rGU4nHlrJto/Ca4VavSk0boAoJFvKlVFEiiaFi4wiCsmWctUYRf4BU7yc5SpD5zUAAAAASUVORK5CYII=\" >",
       "spell": {"magic": "%markdown", "usage": "%markdown <TEXT>"}
-    }
-  },
-"zeppelin-livy": {
-    "0.8.2": {
-      "type": "INTERPRETER",
-      "name": "zeppelin-livy",
-      "version": "0.8.2",
-      "published": "2019-09-25T21:29:26-07:00",
-      "artifact": "zeppelin-livy@0.8.2",
-      "description": "Zeppelin project",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "org.apache.zeppelin",
-      "artifactId": "zeppelin-livy"
-    }
-  },
-"zeppelin-neo4j": {
-    "0.8.2": {
-      "type": "INTERPRETER",
-      "name": "zeppelin-neo4j",
-      "version": "0.8.2",
-      "published": "2019-09-25T21:25:29-07:00",
-      "artifact": "zeppelin-neo4j@0.8.2",
-      "description": "Zeppelin project",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "org.apache.zeppelin",
-      "artifactId": "zeppelin-neo4j"
-    }
-  },
-"zeppelin-bigquery": {
-    "0.8.2": {
-      "type": "INTERPRETER",
-      "name": "zeppelin-bigquery",
-      "version": "0.8.2",
-      "published": "2019-09-25T21:21:08-07:00",
-      "artifact": "zeppelin-bigquery@0.8.2",
-      "description": "Zeppelin project",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "org.apache.zeppelin",
-      "artifactId": "zeppelin-bigquery"
-    }
-  },
-"zeppelin-display_2.10": {
-    "latest": {
-      "type": "INTERPRETER",
-      "name": "zeppelin-display_2.10",
-      "version": "0.7.3",
-      "published": "2017-09-18T16:29:25+00:00",
-      "artifact": "zeppelin-display_2.10@0.7.3",
-      "description": "Zeppelin project",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "org.apache.zeppelin",
-      "artifactId": "zeppelin-display_2.10"
-    }
-  },
-"zeppelin-markdown": {
-    "0.8.2": {
-      "type": "INTERPRETER",
-      "name": "zeppelin-markdown",
-      "version": "0.8.2",
-      "published": "2019-09-25T21:22:08-07:00",
-      "artifact": "zeppelin-markdown@0.8.2",
-      "description": "Zeppelin project",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "org.apache.zeppelin",
-      "artifactId": "zeppelin-markdown"
-    }
-  },
-"zeppelin-file": {
-    "0.8.2": {
-      "type": "INTERPRETER",
-      "name": "zeppelin-file",
-      "version": "0.8.2",
-      "published": "2019-09-25T21:24:29-07:00",
-      "artifact": "zeppelin-file@0.8.2",
-      "description": "Zeppelin project",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "org.apache.zeppelin",
-      "artifactId": "zeppelin-file"
     }
   },
 "zeppelin-sigma-spell": {
@@ -3085,62 +2661,6 @@
       "icon": "<i class=\"fa fa-question-circle\"></i>"
     }
   },
-"zeppelin-flink": {
-    "latest": {
-      "type": "INTERPRETER",
-      "name": "zeppelin-flink",
-      "version": "0.9.0-preview1",
-      "published": "2020-03-23T02:14:53-07:00",
-      "artifact": "zeppelin-flink@0.9.0-preview1",
-      "description": "Zeppelin flink support",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "org.apache.zeppelin",
-      "artifactId": "zeppelin-flink"
-    }
-  },
-"zeppelin-postgresql": {
-    "latest": {
-      "type": "INTERPRETER",
-      "name": "zeppelin-postgresql",
-      "version": "0.7.3",
-      "published": "2017-09-18T16:33:12+00:00",
-      "artifact": "zeppelin-postgresql@0.7.3",
-      "description": "Zeppelin project",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "org.apache.zeppelin",
-      "artifactId": "zeppelin-postgresql"
-    }
-  },
-"zeppelin-elasticsearch": {
-    "0.8.2": {
-      "type": "INTERPRETER",
-      "name": "zeppelin-elasticsearch",
-      "version": "0.8.2",
-      "published": "2019-09-25T21:29:02-07:00",
-      "artifact": "zeppelin-elasticsearch@0.8.2",
-      "description": "Zeppelin project",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "org.apache.zeppelin",
-      "artifactId": "zeppelin-elasticsearch"
-    }
-  },
-"zeppelin-shell": {
-    "0.8.2": {
-      "type": "INTERPRETER",
-      "name": "zeppelin-shell",
-      "version": "0.8.2",
-      "published": "2019-09-25T21:23:42-07:00",
-      "artifact": "zeppelin-shell@0.8.2",
-      "description": "Zeppelin project",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "org.apache.zeppelin",
-      "artifactId": "zeppelin-shell"
-    }
-  },
 "zeppelin-plotly-bubble": {
     "0.0.1": {
       "type": "VISUALIZATION",
@@ -3163,62 +2683,6 @@
       "description": "Bubble chart of Plotly.js for Apache Zeppelin",
       "license": "MIT",
       "icon": "<i class='fa fa-heartbeat'></i>"
-    }
-  },
-"zeppelin-groovy": {
-    "0.8.2": {
-      "type": "INTERPRETER",
-      "name": "zeppelin-groovy",
-      "version": "0.8.2",
-      "published": "2019-09-25T21:21:52-07:00",
-      "artifact": "zeppelin-groovy@0.8.2",
-      "description": "Zeppelin project",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "org.apache.zeppelin",
-      "artifactId": "zeppelin-groovy"
-    }
-  },
-"zeppelin-python": {
-    "0.8.2": {
-      "type": "INTERPRETER",
-      "name": "zeppelin-python",
-      "version": "0.8.2",
-      "published": "2019-09-25T21:30:11-07:00",
-      "artifact": "zeppelin-python@0.8.2",
-      "description": "Zeppelin project",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "org.apache.zeppelin",
-      "artifactId": "zeppelin-python"
-    }
-  },
-"zeppelin-display_2.11": {
-    "latest": {
-      "type": "INTERPRETER",
-      "name": "zeppelin-display_2.11",
-      "version": "0.7.3",
-      "published": "2017-09-18T16:29:38+00:00",
-      "artifact": "zeppelin-display_2.11@0.7.3",
-      "description": "Zeppelin project",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "org.apache.zeppelin",
-      "artifactId": "zeppelin-display_2.11"
-    }
-  },
-"zeppelin-interpreter-parent": {
-    "latest": {
-      "type": "INTERPRETER",
-      "name": "zeppelin-interpreter-parent",
-      "version": "0.9.0-preview1",
-      "published": "2020-03-23T02:18:34-07:00",
-      "artifact": "zeppelin-interpreter-parent@0.9.0-preview1",
-      "description": "Zeppelin: Interpreter Parent",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "org.apache.zeppelin",
-      "artifactId": "zeppelin-interpreter-parent"
     }
   },
 "sogou-map-vis": {
@@ -4598,20 +4062,6 @@
       "icon": "<i class='fa fa-globe'></i>"
     }
   },
-"zeppelin-lens": {
-    "0.8.2": {
-      "type": "INTERPRETER",
-      "name": "zeppelin-lens",
-      "version": "0.8.2",
-      "published": "2019-09-25T21:30:46-07:00",
-      "artifact": "zeppelin-lens@0.8.2",
-      "description": "Zeppelin project",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "org.apache.zeppelin",
-      "artifactId": "zeppelin-lens"
-    }
-  },
 "zeppelin-bubblechart": {
     "0.0.1": {
       "type": "VISUALIZATION",
@@ -4721,46 +4171,6 @@
       }
     }
   },
-"zeppelin-solr": {
-    "latest": {
-      "type": "INTERPRETER",
-      "name": "zeppelin-solr",
-      "version": "0.1.6",
-      "published": "2020-01-09T07:19:24-08:00",
-      "artifact": "zeppelin-solr@0.1.6",
-      "description": "Zeppelin Solr support",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "com.lucidworks.zeppelin",
-      "artifactId": "zeppelin-solr"
-    },
-    "0.1.5": {
-      "type": "INTERPRETER",
-      "name": "zeppelin-solr",
-      "version": "0.1.5",
-      "published": "2019-04-10T07:49:04-07:00",
-      "artifact": "zeppelin-solr@0.1.5",
-      "description": "Zeppelin Solr support",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "com.lucidworks.zeppelin",
-      "artifactId": "zeppelin-solr"
-    }
-  },
-"zeppelin-cassandra_2.10": {
-    "latest": {
-      "type": "INTERPRETER",
-      "name": "zeppelin-cassandra_2.10",
-      "version": "0.8.2",
-      "published": "2019-09-25T21:24:04-07:00",
-      "artifact": "zeppelin-cassandra_2.10@0.8.2",
-      "description": "Zeppelin cassandra support",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "org.apache.zeppelin",
-      "artifactId": "zeppelin-cassandra_2.10"
-    }
-  },
 "zeppelin-highcharts-bubble": {
     "latest": {
       "type": "VISUALIZATION",
@@ -4773,58 +4183,5 @@
       "license": "SEE LICENSE IN <LICENSE>",
       "icon": "<svg id=\"Слой_1\" style=\"enable-background:new 0 0 512 512;\" version=\"1.1\" viewBox=\"0 0 512 512\" xml:space=\"preserve\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"><style type=\"text/css\"> .st0{fill:none;stroke:#FFFFFF;stroke-width:7;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st1{fill:#248139;stroke:#FFFFFF;stroke-width:10;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st2{fill:#F5BE40;stroke:#FFFFFF;stroke-width:10;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st3{fill:#32A9B8;stroke:#FFFFFF;stroke-width:10;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} .st4{fill:#CF3722;stroke:#FFFFFF;stroke-width:10;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;} </style><g><polyline class=\"st0\" points=\"33.9,54.6 33.9,485.6 473,485.6  \"/><circle class=\"st1\" cx=\"100.5\" cy=\"414.8\" r=\"35.7\"/><circle class=\"st2\" cx=\"186.4\" cy=\"293.1\" r=\"55.1\"/><circle class=\"st3\" cx=\"314.7\" cy=\"379.1\" r=\"32.2\"/><circle class=\"st4\" cx=\"322.7\" cy=\"141.9\" r=\"66\"/><circle class=\"st1\" cx=\"421\" cy=\"283\" r=\"40.7\"/><circle class=\"st3\" cx=\"123.7\" cy=\"152.1\" r=\"23.2\"/></g></svg>"
     }
-  },
-"zeppelin-zengine": {
-    "latest": {
-      "type": "INTERPRETER",
-      "name": "zeppelin-zengine",
-      "version": "0.9.0-preview1",
-      "published": "2020-03-23T02:32:36-07:00",
-      "artifact": "zeppelin-zengine@0.9.0-preview1",
-      "description": "Zeppelin Zengine",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "org.apache.zeppelin",
-      "artifactId": "zeppelin-zengine"
-    },
-    "0.8.2": {
-      "type": "INTERPRETER",
-      "name": "zeppelin-zengine",
-      "version": "0.8.2",
-      "published": "2019-09-25T21:27:36-07:00",
-      "artifact": "zeppelin-zengine@0.8.2",
-      "description": "Zeppelin Zengine",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "org.apache.zeppelin",
-      "artifactId": "zeppelin-zengine"
-    }
-  },
-"zeppelin-hbase": {
-    "0.8.2": {
-      "type": "INTERPRETER",
-      "name": "zeppelin-hbase",
-      "version": "0.8.2",
-      "published": "2019-09-25T21:29:14-07:00",
-      "artifact": "zeppelin-hbase@0.8.2",
-      "description": "Zeppelin project",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "org.apache.zeppelin",
-      "artifactId": "zeppelin-hbase"
-    }
-  },
-"zeppelin-viyadb": {
-    "latest": {
-      "type": "INTERPRETER",
-      "name": "zeppelin-viyadb",
-      "version": "0.7.3",
-      "published": "2017-09-25T18:44:57+00:00",
-      "artifact": "zeppelin-viyadb@0.7.3",
-      "description": "Zeppelin interpreter extension for ViyaDB",
-      "license": "Apache-2.0",
-      "icon": "<i class=\"fa fa-rocket\"></i>",
-      "groupId": "com.github.viyadb",
-      "artifactId": "zeppelin-viyadb"
-    }
-  }}]
+  }
+}]
