@@ -90,10 +90,6 @@ if [ -z "${PORT}" ] || [ -z "${INTERPRETER_DIR}" ]; then
     exit 1
 fi
 
-if [ -n "$CALLBACK_HOST" ] && [ -n "$HOST_IP" ]; then
-    CALLBACK_HOST="$HOST_IP"
-fi
-
 . "${bin}/common.sh"
 
 check_java_version
@@ -153,6 +149,9 @@ fi
 
 # set spark related env variables
 if [[ "${INTERPRETER_ID}" == "spark" ]]; then
+  if [ -n "$CALLBACK_HOST" ] && [ -n "$HOST_IP" ]; then
+      CALLBACK_HOST="$HOST_IP"
+  fi
 
   # run kinit
   if [[ -n "${ZEPPELIN_SERVER_KERBEROS_KEYTAB}" ]] && [[ -n "${ZEPPELIN_SERVER_KERBEROS_PRINCIPAL}" ]]; then

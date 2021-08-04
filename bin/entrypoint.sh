@@ -279,9 +279,9 @@ zeppelin_create_certificates() {
 }
 
 zeppelin_setup_callback_port_range() {
-    ZEPPELIN_INTERPRETER_CALLBACK_PORTRANGE=${ZEPPELIN_INTERPRETER_CALLBACK_PORTRANGE:-$(echo "$SPARK_PORT_RANGE" | sed 's/~/:/')}
+    ZEPPELIN_SERVER_RPC_PORTRANGE=${ZEPPELIN_SERVER_RPC_PORTRANGE:-$(echo "$SPARK_PORT_RANGE" | sed 's/~/:/')}
     cat >> "$ZEPPELIN_ENV_DSR" <<EOF
-export ZEPPELIN_INTERPRETER_CALLBACK_PORTRANGE="$ZEPPELIN_INTERPRETER_CALLBACK_PORTRANGE"
+export ZEPPELIN_SERVER_RPC_PORTRANGE="$ZEPPELIN_SERVER_RPC_PORTRANGE"
 
 EOF
 }
@@ -477,18 +477,6 @@ spark_setup() {
     spark_fix_log4j
     spark_configure_hive_site
     spark_configure_custom_envs
-
-    if [ -n "$HOST_IP" ]; then
-        spark_ports=$(echo "$SPARK_PORT_RANGE" | sed 's/~/\n/')
-        read -a ports <<< $(seq $spark_ports)
-        spark_set_property "spark.driver.bindAddress" "0.0.0.0"
-        spark_set_property "spark.driver.host" "${HOST_IP}"
-        spark_set_property "spark.driver.port" "${ports[0]}"
-        spark_set_property "spark.blockManager.port" "${ports[1]}"
-        spark_set_property "spark.ui.port" "${ports[2]}"
-    else
-      log_err "Can't configure Spark networking because \$HOST_IP is not set"
-    fi
 }
 
 
