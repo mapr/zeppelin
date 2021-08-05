@@ -13,9 +13,8 @@ RUN yum install -y git wget java-1.8.0-openjdk-devel which bzip2 && \
 
 RUN --mount=type=cache,id=mvncache,target=/root/.m2 --mount=type=cache,id=npmcache,target=/root/.npm --mount=type=ssh \
     mkdir -p -m 0700 ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts && \
-    git clone "$ZEPPELIN_GIT_REPO" zeppelin && \
+    git clone -q "$ZEPPELIN_GIT_REPO" --single-branch -b "$ZEPPELIN_GIT_TAG" zeppelin && \
     cd zeppelin && \
-    git checkout "$ZEPPELIN_GIT_TAG" && \
     mvn -B clean package -DskipTests -P 'scala-2.11,spark-mapr,build-distr,vendor-repo-mapr' && \
     ZEPPELIN_MAVEN_VERSION=$(mvn -B help:evaluate -Dexpression=project.version -q -DforceStdout) && \
     mv "./zeppelin-distribution/target/zeppelin-${ZEPPELIN_MAVEN_VERSION}/zeppelin-${ZEPPELIN_MAVEN_VERSION}" /zeppelin_build
