@@ -29,7 +29,7 @@ if [ "$$" = 1 ]; then
         done
     fi
 
-    if [ -z "$MAPT_TZ" ]; then
+    if [ -z "$MAPR_TZ" ]; then
         export MAPR_TZ="UTC"
     fi
 
