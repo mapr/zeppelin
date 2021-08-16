@@ -42,13 +42,6 @@
   <dependencies>
     <dependency>
       <groupId>org.apache.zeppelin</groupId>
-      <artifactId>zeppelin-interpreter</artifactId>
-      <version>${project.version}</version>
-      <scope>provided</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.zeppelin</groupId>
       <artifactId>zeppelin-jdbc</artifactId>
       <version>${project.version}</version>
       <scope>provided</scope>
@@ -85,6 +78,9 @@
       </plugin>
       <plugin>
         <artifactId>maven-resources-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <artifactId>maven-shade-plugin</artifactId>
       </plugin>
     </plugins>
   </build>
