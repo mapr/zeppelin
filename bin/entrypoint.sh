@@ -127,13 +127,13 @@ fi
 # Common functions
 #
 log_warn() {
-    echo "WARN: $@"
+    echo "WARNING: $@"
 }
-log_msg() {
-    echo "MSG: $@"
+log_info() {
+    echo "INFO: $@"
 }
 log_err() {
-    echo "ERR: $@"
+    echo "ERROR: $@"
 }
 
 # Sielent "hadoop fs" calls
@@ -410,20 +410,20 @@ setup_archive() {
         archive_remote="$archive_path"
         archive_local="${LOCAL_ARCHIVES_ZIPDIR}/${archive_filename}"
         if [ ! -e "$archive_local" ]; then
-            log_msg "Copying archive from MapR-FS: ${archive_remote} -> ${archive_local}"
+            log_info "Copying archive from MapR-FS: ${archive_remote} -> ${archive_local}"
             hadoop_fs_get "$archive_remote" "$archive_local"
         else
-            log_msg "Skip copying archive from MapR-FS as it already exists"
+            log_info "Skip copying archive from MapR-FS as it already exists"
         fi
     elif [ -e "$archive_path" ]; then
         archive_local="$archive_path"
         archive_remote="${REMOTE_ARCHIVES_DIR}/${archive_filename}"
         # Copy archive to MapR-FS
         if ! hadoop_fs_test_e "$archive_remote"; then
-            log_msg "Copying archive to MapR-FS: ${archive_local} -> ${archive_remote}"
+            log_info "Copying archive to MapR-FS: ${archive_local} -> ${archive_remote}"
             hadoop_fs_put "$archive_local" "$archive_remote"
         else
-            log_msg "Skip copying archive to MapR-FS as it already exists"
+            log_info "Skip copying archive to MapR-FS as it already exists"
         fi
     else
         log_err "Archive '${archive_path}' not found"
@@ -431,11 +431,11 @@ setup_archive() {
     fi
     local archive_extracted="${LOCAL_ARCHIVES_DIR}/${archive_filename}"
     if [ ! -e "$archive_extracted" ]; then
-        log_msg "Extracting archive locally"
+        log_info "Extracting archive locally"
         mkdir -p "$archive_extracted"
         unzip -qq "$archive_local" -d "$archive_extracted" || return 1
     else
-        log_msg "Skip extracting archive locally as it already exists"
+        log_info "Skip extracting archive locally as it already exists"
     fi
 
     out_archive_local="$archive_local"
@@ -446,12 +446,12 @@ setup_archive() {
 }
 
 spark_configure_python() {
-    log_msg "Setting up Python archive"
+    log_info "Setting up Python archive"
     setup_archive "$ZEPPELIN_ARCHIVE_PYTHON" || return 1
-    log_msg "Configuring Spark to use custom Python"
+    log_info "Configuring Spark to use custom Python"
     spark_append_property "spark.yarn.dist.archives" "maprfs://${out_archive_remote}"
     spark_set_property "spark.yarn.appMasterEnv.PYSPARK_PYTHON" "./${out_archive_filename}/bin/python"
-    log_msg "Configuring Zeppelin to use custom Python with Spark interpreter"
+    log_info "Configuring Zeppelin to use custom Python with Spark interpreter"
     cat >> "$ZEPPELIN_ENV_DSR" << EOF
 export ZEPPELIN_SPARK_YARN_DIST_ARCHIVES="maprfs://${out_archive_remote}"
 export PYSPARK_PYTHON='./${out_archive_filename}/bin/python'
@@ -470,9 +470,9 @@ spark_configure_custom_envs() {
     mkdir -p "$LOCAL_ARCHIVES_DIR" "$LOCAL_ARCHIVES_ZIPDIR"
 
     if [ -n "$ZEPPELIN_ARCHIVE_PYTHON" ]; then
-        spark_configure_python || log_msg "Using default Python"
+        spark_configure_python || log_info "Using default Python"
     else
-        log_msg "Using default Python"
+        log_info "Using default Python"
     fi
 
     if [ -n "$ZEPPELIN_ARCHIVE_PYTHON3" ]; then
