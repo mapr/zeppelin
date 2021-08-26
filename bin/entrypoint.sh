@@ -264,7 +264,8 @@ zeppelin_create_certificates() {
     if [ ! -e "$ZEPPELIN_SSL_KEYSTORE_PATH" ]; then
         echo "Creating 10 year self signed certificate for Zeppelin with subjectDN='CN=$CERTNAME'"
         mkdir -p $(dirname "$ZEPPELIN_SSL_KEYSTORE_PATH")
-        $KEYTOOL -genkeypair -sigalg SHA512withRSA -keyalg RSA -alias "$MAPR_CLUSTER" -dname "CN=$CERTNAME" -validity 3650 \
+        $KEYTOOL -nowarn \
+                 -genkeypair -sigalg SHA512withRSA -keyalg RSA -alias "$MAPR_CLUSTER" -dname "CN=$CERTNAME" -validity 3650 \
                  -storepass "$ZEPPELIN_SSL_KEYSTORE_PASSWORD" -keypass "$ZEPPELIN_SSL_KEYSTORE_PASSWORD" \
                  -keystore "$ZEPPELIN_SSL_KEYSTORE_PATH" -storetype "$ZEPPELIN_SSL_KEYSTORE_TYPE"
         if [ $? -ne 0 ]; then
