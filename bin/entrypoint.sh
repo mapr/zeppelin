@@ -208,6 +208,8 @@ livy_rsc_port_max=$(echo "$LIVY_RSC_PORT_RANGE" | cut -d '~' -f 2)
 livy_rsc_port_max_new=$(expr "$livy_rsc_port_max" + 10)
 LIVY_RSC_PORT_RANGE_NEW="${livy_rsc_port_min}~${livy_rsc_port_max_new}"
 
+ZEPPELIN_SERVER_RPC_PORTRANGE_DEFAULT="11000:11010"
+
 ZEPPELIN_ENV_SH="${ZEPPELIN_HOME}/conf/zeppelin-env.sh"
 ZEPPELIN_ENV_DSR="${ZEPPELIN_HOME}/conf/zeppelin-env-dsr.sh"
 
@@ -277,25 +279,36 @@ zeppelin_create_certificates() {
 }
 
 zeppelin_setup_server_rpc_portrange() {
-    if [ -n "$ZEPPELIN_SERVER_RPC_PORTRANGE" ]; then
+    if [ -n "$ZEPPELIN_SERVER_RPC_PORTRANGE" ] && echo "$ZEPPELIN_SERVER_RPC_PORTRANGE" | grep -q ':'; then
+        # Seems like it was set properly
+        return 0
+    fi
+
+    if  [ -n "$ZEPPELIN_SERVER_RPC_PORTRANGE" ]; then
         if echo "$ZEPPELIN_SERVER_RPC_PORTRANGE" | grep -q '[~-]'; then
             log_warn "Use ':' as a separator while specifying value for 'ZEPPELIN_SERVER_RPC_PORTRANGE'"
             export ZEPPELIN_SERVER_RPC_PORTRANGE=$(echo "$ZEPPELIN_SERVER_RPC_PORTRANGE" | sed 's/[~-]/:/')
+        else
+            log_err "'ZEPPELIN_SERVER_RPC_PORTRANGE' is configured improperly."
         fi
-        # No need to write this variable into "$ZEPPELIN_ENV_DSR" file like we do with "$SAPARK_PORT_RANGE",
-        # as vairables specified by '-e' argument would be available globally in container even after restart
-        # (in comparsion with variables that we explicitly set by entrypoint script, like "$SPARK_PORT_RANGE").
     elif [ -n "$SPARK_PORT_RANGE" ]; then
+        # Set it in a legacy way
         log_warn "'SPARK_PORT_RANGE' environment variable is deprecated. Use 'ZEPPELIN_SERVER_RPC_PORTRANGE' instead."
 
         SPARK_PORT_RANGE=$(echo "$SPARK_PORT_RANGE" | sed 's/[~-]/:/')
         export ZEPPELIN_SERVER_RPC_PORTRANGE="$SPARK_PORT_RANGE"
+    else
+        export ZEPPELIN_SERVER_RPC_PORTRANGE="$ZEPPELIN_SERVER_RPC_PORTRANGE_DEFAULT"
+    fi
 
-        cat >> "$ZEPPELIN_ENV_DSR" <<EOF
+    # Need to write this variable into "$ZEPPELIN_ENV_DSR" file
+    # as vairables specified by '-e' argument would be available globally in container
+    # even after restart of the container or after manual restart of zeppelin-daemon.sh process,
+    # but this does not work for wariables that we set/modify in this script.
+    cat >> "$ZEPPELIN_ENV_DSR" <<EOF
 export ZEPPELIN_SERVER_RPC_PORTRANGE="$ZEPPELIN_SERVER_RPC_PORTRANGE"
 
 EOF
-    fi
 }
 
 zeppelin_setup() {
