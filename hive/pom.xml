@@ -34,8 +34,8 @@
   <name>Zeppelin: JDBC Hive interpreter</name>
 
   <properties>
-    <!--library versions-->
     <interpreter.name>hive</interpreter.name>
+    <!--library versions-->
     <hive2.version>2.3.6-mapr-1912-r11</hive2.version>
   </properties>
 
