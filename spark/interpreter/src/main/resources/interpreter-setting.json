@@ -143,7 +143,7 @@
       "spark.webui.yarn.useProxy": {
         "envName": null,
         "propertyName": "",
-        "defaultValue": false,
+        "defaultValue": true,
         "description": "whether use yarn proxy url as spark weburl, e.g. http://localhost:8088/proxy/application_1583396598068_0004",
         "type": "checkbox"
       },
