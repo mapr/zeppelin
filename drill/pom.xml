@@ -34,9 +34,7 @@
   <name>Zeppelin: JDBC Drill interpreter</name>
 
   <properties>
-    <!--library versions-->
     <interpreter.name>drill</interpreter.name>
-    <simbadrill.version>1.6.0.1001</simbadrill.version>
   </properties>
 
   <dependencies>
@@ -47,25 +45,6 @@
       <scope>provided</scope>
     </dependency>
 
-    <dependency>
-      <groupId>com.mapr.drill</groupId>
-      <artifactId>DrillJDBC41</artifactId>
-      <version>${simbadrill.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>com.mapr.hadoop</groupId>
-          <artifactId>maprfs</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.apache.hadoop</groupId>
-          <artifactId>hadoop-auth</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.apache.hadoop</groupId>
-          <artifactId>hadoop-common</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
   </dependencies>
 
   <build>

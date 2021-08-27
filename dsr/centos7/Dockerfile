@@ -27,6 +27,8 @@ ARG MAPR_VERSION_CORE="6.1.1"
 ARG MAPR_VERSION_MEP="6.3.4"
 ARG MAPR_REPO_ROOT="https://package.mapr.com/releases"
 
+ARG DRILL_DRIVER_URL="http://package.mapr.com/tools/MapR-JDBC/MapR_Drill/MapRDrill_jdbc_v1.6.8.1011/MapRDrillJDBC-1.6.8.1011.zip"
+
 LABEL mapr.os=centos7 mapr.version=$MAPR_VERSION_CORE mapr.mep_version=$MAPR_VERSION_MEP
 
 ENV container docker
@@ -58,6 +60,12 @@ RUN rm /etc/yum.repos.d/mapr_*.repo && \
     rm -rf /var/lib/yum/history/* && \
     find /var/lib/yum/yumdb/ -name origin_url -exec rm {} \;
 
+RUN mkdir -p /opt/mapr/zeppelin/thirdparty/jdbc-mapr-drill && \
+    curl -sS -o /tmp/drill_jdbc.zip "$DRILL_DRIVER_URL" && \
+    unzip -q -d /tmp/drill_jdbc /tmp/drill_jdbc.zip && \
+    unzip -q -d "/opt/mapr/zeppelin/thirdparty/jdbc-mapr-drill" /tmp/drill_jdbc/*.zip && \
+    rm -rf /tmp/drill_jdbc /tmp/drill_jdbc.zip
+    
 EXPOSE 9995
 EXPOSE 10000-10010
 EXPOSE 11000-11010

@@ -214,7 +214,7 @@ if [[ "${INTERPRETER_ID}" == "spark" ]]; then
   cd "$spark_interpreter_cwd"
 
 elif [[ "${INTERPRETER_ID}" == "drill" ]]; then
-  ZEPPELIN_INTP_CLASSPATH+=":${ZEPPELIN_HOME}/interpreter/jdbc/*"
+  ZEPPELIN_INTP_CLASSPATH+=":${ZEPPELIN_HOME}/interpreter/jdbc/*:${MAPR_HOME}/zeppelin/thirdparty/jdbc-mapr-drill/*"
 
 elif [[ "${INTERPRETER_ID}" == "hive" ]]; then
   ZEPPELIN_INTP_CLASSPATH+=":${ZEPPELIN_HOME}/interpreter/jdbc/*:$(mapr classpath 2>/dev/null)"
@@ -296,9 +296,6 @@ if [[ -n "$ZEPPELIN_IMPERSONATE_USER" ]]; then
   fi
 fi
 
-if [[ "${INTERPRETER_ID}" != "spark" ]]; then
-  ZEPPELIN_INTP_CLASSPATH+=":$(mapr classpath 2>/dev/null)"
-fi
 
 if [[ -n "${SPARK_SUBMIT}" ]]; then
   IFS=' ' read -r -a SPARK_SUBMIT_OPTIONS_ARRAY <<< "${SPARK_SUBMIT_OPTIONS}"

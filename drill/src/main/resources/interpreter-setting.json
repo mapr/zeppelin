@@ -35,7 +35,7 @@
       "default.driver": {
         "envName": null,
         "propertyName": "default.driver",
-        "defaultValue": "com.mapr.drill.jdbc41.Driver",
+        "defaultValue": "com.mapr.drill.jdbc42.Driver",
         "description": "Drill JDBC Driver Name",
         "type": "string"
       },
