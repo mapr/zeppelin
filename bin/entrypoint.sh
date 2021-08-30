@@ -373,7 +373,7 @@ setup_spark_jars() {
     # Copy MapR-DB and Streaming jars into Spark
     JAR_WHILDCARDS="
         ${MAPR_HOME}/lib/kafka-clients-*-mapr-*.jar
-        ${MAPR_HOME}/lib/mapr-hbase-*-mapr-*.jar
+        ${MAPR_HOME}/lib/mapr-hbase-*.jar
         ${HBASE_HOME}/lib/hbase-*-mapr-*.jar
     "
     for jar_path in $JAR_WHILDCARDS; do
