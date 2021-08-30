@@ -45,9 +45,9 @@ RUN mkdir -p /opt/mapr/zeppelin && \
     echo "$ZEPPELIN_VERSION" > /opt/mapr/zeppelin/zeppelinversion
 
 RUN yum install -y git less nano patch vim && \
-    yum install -y gcc python-devel && \
-    curl -sS https://bootstrap.pypa.io/pip/2.7/get-pip.py | python && \
-    pip install matplotlib numpy pandas
+    yum install -y gcc gcc-c++ python3-devel python3-pip && \
+    pip3 install --upgrade pip && \
+    pip3 install matplotlib numpy pandas
 
 COPY --from=zeppelin_builder /zeppelin_build "/opt/mapr/zeppelin/zeppelin-$ZEPPELIN_VERSION"
 
@@ -63,9 +63,9 @@ RUN rm /etc/yum.repos.d/mapr_*.repo && \
 RUN mkdir -p /opt/mapr/zeppelin/thirdparty/jdbc-mapr-drill && \
     curl -sS -o /tmp/drill_jdbc.zip "$DRILL_DRIVER_URL" && \
     unzip -q -d /tmp/drill_jdbc /tmp/drill_jdbc.zip && \
-    unzip -q -d "/opt/mapr/zeppelin/thirdparty/jdbc-mapr-drill" /tmp/drill_jdbc/*.zip && \
+    unzip -q -d /opt/mapr/zeppelin/thirdparty/jdbc-mapr-drill /tmp/drill_jdbc/*.zip && \
     rm -rf /tmp/drill_jdbc /tmp/drill_jdbc.zip
-    
+
 EXPOSE 9995
 EXPOSE 10000-10010
 EXPOSE 11000-11010

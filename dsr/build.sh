@@ -48,8 +48,8 @@ else
     ZEPPELIN_GIT_REPO=${ZEPPELIN_GIT_REPO:-"git@github.com:mapr/private-zeppelin.git"}
     ZEPPELIN_GIT_TAG=${ZEPPELIN_GIT_TAG:-"branch-0.9.0-mapr"}
     # MAPR_REPO_ROOT=${MAPR_REPO_ROOT:-"http://dfaf.mip.storage.hpecorp.net/artifactory/prestage/releases-dev"}
-    # MAPR_MAVEN_REPO=${MAPR_MAVEN_REPO:-"http://df-mvn-dev.mip.storage.hpecorp.net/nexus/content/groups/public/"}
     MAPR_REPO_ROOT=${MAPR_REPO_ROOT:-"https://package.mapr.com/releases"}
+    # MAPR_MAVEN_REPO=${MAPR_MAVEN_REPO:-"http://df-mvn-dev.mip.storage.hpecorp.net/nexus/content/groups/public/"}
     MAPR_MAVEN_REPO=${MAPR_MAVEN_REPO:-"http://repository.mapr.com/maven/"}
 fi
 

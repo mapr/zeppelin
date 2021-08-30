@@ -29,7 +29,7 @@
       "livy.spark.yarn.appMasterEnv.PYSPARK_PYTHON": {
         "envName": "PYSPARK_PYTHON",
         "propertyName": "livy.spark.yarn.appMasterEnv.PYSPARK_PYTHON",
-        "defaultValue": "python",
+        "defaultValue": "python3",
         "description": "Sets default python interpreter for PySpark",
         "type": "string"
       },

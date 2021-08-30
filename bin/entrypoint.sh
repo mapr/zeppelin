@@ -460,7 +460,7 @@ setup_archive() {
 }
 
 spark_configure_python() {
-    log_info "Setting up Python archive"
+    log_info "Setting up Python archive for PySpark"
     setup_archive "$ZEPPELIN_ARCHIVE_PYTHON" || return 1
     log_info "Configuring Spark to use custom Python"
     spark_append_property "spark.yarn.dist.archives" "maprfs://${out_archive_remote}"
@@ -484,9 +484,9 @@ spark_configure_custom_envs() {
     mkdir -p "$LOCAL_ARCHIVES_DIR" "$LOCAL_ARCHIVES_ZIPDIR"
 
     if [ -n "$ZEPPELIN_ARCHIVE_PYTHON" ]; then
-        spark_configure_python || log_info "Using default Python"
+        spark_configure_python || log_info "Using default Python for PySpark"
     else
-        log_info "Using default Python"
+        log_info "Using default Python for PySpark"
     fi
 
     if [ -n "$ZEPPELIN_ARCHIVE_PYTHON3" ]; then

@@ -176,7 +176,7 @@
       "zeppelin.pyflink.python": {
         "envName": "zeppelin.pyflink.python",
         "propertyName": "zeppelin.pyflink.python",
-        "defaultValue": "python",
+        "defaultValue": "python3",
         "description": "Python executable for pyflink",
         "type": "string"
       },
