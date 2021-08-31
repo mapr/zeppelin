@@ -3,7 +3,6 @@
     {
       "text": "%md\n\n\n### [Apache Pig](http://pig.apache.org/) is a platform for analyzing large data sets that consists of a high-level language for expressing data analysis programs, coupled with infrastructure for evaluating these programs. The salient property of Pig programs is that their structure is amenable to substantial parallelization, which in turns enables them to handle very large data sets.\n\nPig\u0027s language layer currently consists of a textual language called Pig Latin, which has the following key properties:\n\n* Ease of programming. It is trivial to achieve parallel execution of simple, \"embarrassingly parallel\" data analysis tasks. Complex tasks comprised of multiple interrelated data transformations are explicitly encoded as data flow sequences, making them easy to write, understand, and maintain.\n* Optimization opportunities. The way in which tasks are encoded permits the system to optimize their execution automatically, allowing the user to focus on semantics rather than efficiency.\n* Extensibility. Users can create their own functions to do special-purpose processing.",
       "user": "anonymous",
-      "dateUpdated": "2021-08-31 18:34:32.807",
       "progress": 0,
       "config": {
         "editorSetting": {
@@ -37,15 +36,11 @@
       "progressUpdateIntervalMs": 500,
       "jobName": "paragraph_1630428416339_1103416838",
       "id": "paragraph_1630428416339_1103416838",
-      "dateCreated": "2021-08-31 16:46:56.339",
-      "dateStarted": "2021-08-31 18:34:32.807",
-      "dateFinished": "2021-08-31 18:34:32.813",
       "status": "FINISHED"
     },
     {
       "text": "%md\n\nThis pig tutorial use pig to do the same thing as spark tutorial. The default mode is mapreduce, you can also use other modes like local/tez_local/tez. For mapreduce mode, you need to have hadoop installed and export `HADOOP_CONF_DIR` in `zeppelin-env.sh`\n\nThe tutorial consists of 3 steps.\n\n* Use shell interpreter to download bank.csv and upload it to hdfs\n* use `%pig` to process the data\n* use `%pig.query` to query the data",
       "user": "anonymous",
-      "dateUpdated": "2021-08-31 18:34:34.030",
       "progress": 0,
       "config": {
         "editorSetting": {
@@ -79,15 +74,11 @@
       "progressUpdateIntervalMs": 500,
       "jobName": "paragraph_1630428415386_20222619",
       "id": "paragraph_1630428415386_20222619",
-      "dateCreated": "2021-08-31 16:46:55.386",
-      "dateStarted": "2021-08-31 18:34:34.030",
-      "dateFinished": "2021-08-31 18:34:34.051",
       "status": "FINISHED"
     },
     {
       "text": "%sh\n\ncd $(mktemp -d)\nwget https://s3.amazonaws.com/apache-zeppelin/tutorial/bank/bank.csv\nif ! hadoop fs -test -e bank.csv; then\n    hadoop fs -put bank.csv .\nelse\n    echo \"bank.csv already in your home directory in DFS\"\nfi",
       "user": "anonymous",
-      "dateUpdated": "2021-08-31 18:33:37.018",
       "progress": 0,
       "config": {
         "editorSetting": {
@@ -119,15 +110,11 @@
       "progressUpdateIntervalMs": 500,
       "jobName": "paragraph_1630428414509_1444289181",
       "id": "paragraph_1630428414509_1444289181",
-      "dateCreated": "2021-08-31 16:46:54.509",
-      "dateStarted": "2021-08-31 18:33:37.020",
-      "dateFinished": "2021-08-31 18:33:40.977",
       "status": "FINISHED"
     },
     {
       "text": "%pig\n\nbankText \u003d load \u0027bank.csv\u0027 using PigStorage(\u0027;\u0027);\nbank \u003d foreach bankText generate $0 as age, $1 as job, $2 as marital, $3 as education, $5 as balance; \nbank \u003d filter bank by age !\u003d \u0027\"age\"\u0027;\nbank \u003d foreach bank generate (int)age, REPLACE(job,\u0027\"\u0027,\u0027\u0027) as job, REPLACE(marital, \u0027\"\u0027, \u0027\u0027) as marital, (int)(REPLACE(balance, \u0027\"\u0027, \u0027\u0027)) as balance;\n\n-- The following statement is optional, it depends on whether your needs.\n-- store bank into \u0027clean_bank.csv\u0027 using PigStorage(\u0027;\u0027);",
-      "user": "mapr",
-      "dateUpdated": "2021-08-31 18:52:44.364",
+      "user": "anonymous",
       "progress": 0,
       "config": {
         "editorSetting": {
@@ -153,15 +140,11 @@
       "progressUpdateIntervalMs": 500,
       "jobName": "paragraph_1630428404605_541529728",
       "id": "paragraph_1630428404605_541529728",
-      "dateCreated": "2021-08-31 16:46:44.605",
-      "dateStarted": "2021-08-31 18:52:44.368",
-      "dateFinished": "2021-08-31 18:52:44.570",
       "status": "FINISHED"
     },
     {
       "text": "%pig.query\n\nbank_data \u003d filter bank by age \u003c 30;\nb \u003d group bank_data by age;\nforeach b generate group, COUNT($1);",
-      "user": "mapr",
-      "dateUpdated": "2021-08-31 18:52:24.844",
+      "user": "anonymous",
       "progress": 100,
       "config": {
         "editorSetting": {
@@ -243,15 +226,11 @@
       "progressUpdateIntervalMs": 500,
       "jobName": "paragraph_1630428430589_1260032796",
       "id": "paragraph_1630428430589_1260032796",
-      "dateCreated": "2021-08-31 16:47:10.589",
-      "dateStarted": "2021-08-31 18:49:07.378",
-      "dateFinished": "2021-08-31 18:49:32.476",
       "status": "FINISHED"
     },
     {
       "text": "%pig.query\n\nbank_data \u003d filter bank by age \u003c ${maxAge\u003d40};\nb \u003d group bank_data by age;\nforeach b generate group, COUNT($1) as count;",
-      "user": "mapr",
-      "dateUpdated": "2021-08-31 18:53:44.168",
+      "user": "anonymous",
       "progress": 100,
       "config": {
         "editorSetting": {
@@ -322,15 +301,11 @@
       "progressUpdateIntervalMs": 500,
       "jobName": "paragraph_1630428431970_1730006153",
       "id": "paragraph_1630428431970_1730006153",
-      "dateCreated": "2021-08-31 16:47:11.970",
-      "dateStarted": "2021-08-31 18:52:48.378",
-      "dateFinished": "2021-08-31 18:53:10.446",
       "status": "FINISHED"
     },
     {
       "text": "%pig.query\n\nbank_data \u003d filter bank by marital\u003d\u003d\u0027${marital\u003dsingle,single|divorced|married}\u0027;\nb \u003d group bank_data by age;\nforeach b generate group, COUNT($1) as count;",
-      "user": "mapr",
-      "dateUpdated": "2021-08-31 18:54:47.969",
+      "user": "anonymous",
       "progress": 100,
       "config": {
         "editorSetting": {
@@ -413,16 +388,13 @@
       "progressUpdateIntervalMs": 500,
       "jobName": "paragraph_1630428433522_1277791560",
       "id": "paragraph_1630428433522_1277791560",
-      "dateCreated": "2021-08-31 16:47:13.522",
-      "dateStarted": "2021-08-31 18:54:20.585",
-      "dateFinished": "2021-08-31 18:54:45.267",
       "status": "FINISHED"
     }
   ],
   "name": "Using Pig for querying data",
   "id": "2GGM5Z9UZ",
   "defaultInterpreterGroup": "pig",
-  "version": "0.9.0-mapr-SNAPSHOT",
+  "version": "0.9.0",
   "noteParams": {},
   "noteForms": {},
   "angularObjects": {},

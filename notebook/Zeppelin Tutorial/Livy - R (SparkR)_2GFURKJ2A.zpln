@@ -3,8 +3,7 @@
     {
       "title": "Hello R",
       "text": "%livy.sparkr\nfoo \u003c- TRUE\nprint(foo)\nbare \u003c- c(1, 2.5, 4)\nprint(bare)\ndouble \u003c- 15.0\nprint(double)",
-      "user": "mapr",
-      "dateUpdated": "2021-08-31 18:20:39.674",
+      "user": "anonymous",
       "progress": 0,
       "config": {
         "editorSetting": {
@@ -30,10 +29,6 @@
           {
             "type": "TEXT",
             "data": "[1] TRUE\n[1] 1.0 2.5 4.0\n[1] 15"
-          },
-          {
-            "type": "HTML",
-            "data": "\u003chr/\u003eSpark Application Id: application_1630430690829_0005\u003cbr/\u003eSpark WebUI: \u003ca href\u003d\"https://node1.cluster.com:8090/proxy/application_1630430690829_0005/\"\u003ehttps://node1.cluster.com:8090/proxy/application_1630430690829_0005/\u003c/a\u003e"
           }
         ]
       },
@@ -42,16 +37,12 @@
       "progressUpdateIntervalMs": 500,
       "jobName": "paragraph_1630426946024_546563826",
       "id": "paragraph_1630426946024_546563826",
-      "dateCreated": "2021-08-31 16:22:26.031",
-      "dateStarted": "2021-08-31 18:20:39.683",
-      "dateFinished": "2021-08-31 18:21:54.176",
       "status": "FINISHED"
     },
     {
       "title": "Load R Librairies",
       "text": "%livy.sparkr\nlibrary(data.table)\ndt \u003c- data.table(1:3)\nprint(dt)\nfor (i in 1:5) {\n  print(i*2)\n}\nprint(1:50)",
-      "user": "mapr",
-      "dateUpdated": "2021-08-31 18:21:54.271",
+      "user": "anonymous",
       "progress": 0,
       "config": {
         "editorSetting": {
@@ -77,10 +68,6 @@
           {
             "type": "TEXT",
             "data": "Attaching package: ‘data.table’\n\nThe following objects are masked from ‘package:SparkR’:\n\n    between, cube, first, hour, last, like, minute, month, quarter,\n    rollup, second, tables, year\n\n   V1\n1:  1\n2:  2\n3:  3\n[1] 2\n[1] 4\n[1] 6\n[1] 8\n[1] 10\n [1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25\n[26] 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50"
-          },
-          {
-            "type": "HTML",
-            "data": "\u003chr/\u003eSpark Application Id: application_1630430690829_0005\u003cbr/\u003eSpark WebUI: \u003ca href\u003d\"https://node1.cluster.com:8090/proxy/application_1630430690829_0005/\"\u003ehttps://node1.cluster.com:8090/proxy/application_1630430690829_0005/\u003c/a\u003e"
           }
         ]
       },
@@ -89,15 +76,11 @@
       "progressUpdateIntervalMs": 500,
       "jobName": "paragraph_1630426955521_148217836",
       "id": "paragraph_1630426955521_148217836",
-      "dateCreated": "2021-08-31 16:22:35.521",
-      "dateStarted": "2021-08-31 18:21:54.275",
-      "dateFinished": "2021-08-31 18:21:55.325",
       "status": "FINISHED"
     },
     {
       "text": "%md\n\n## Zeppelin SparkR Tutorial\n\n##### This is a live tutorial, you can run the code yourself. (Shift-Enter to Run)",
-      "user": "mapr",
-      "dateUpdated": "2021-08-31 18:22:26.220",
+      "user": "anonymous",
       "progress": 0,
       "config": {
         "editorSetting": {
@@ -132,16 +115,12 @@
       "progressUpdateIntervalMs": 500,
       "jobName": "paragraph_1630426972885_569495155",
       "id": "paragraph_1630426972885_569495155",
-      "dateCreated": "2021-08-31 16:22:52.885",
-      "dateStarted": "2021-08-31 18:22:26.219",
-      "dateFinished": "2021-08-31 18:22:26.230",
       "status": "FINISHED"
     },
     {
       "title": "Load Iris Dataset",
       "text": "%livy.sparkr\ncolnames(iris)\niris$Petal.Length\niris$Sepal.Length",
-      "user": "mapr",
-      "dateUpdated": "2021-08-31 18:21:55.484",
+      "user": "anonymous",
       "progress": 0,
       "config": {
         "editorSetting": {
@@ -167,10 +146,6 @@
           {
             "type": "TEXT",
             "data": "[1] 5.1 4.9 4.7 4.6 5.0 5.4 4.6 5.0 4.4 4.9 5.4 4.8 4.8 4.3 5.8 5.7 5.4 5.1\n [19] 5.7 5.1 5.4 5.1 4.6 5.1 4.8 5.0 5.0 5.2 5.2 4.7 4.8 5.4 5.2 5.5 4.9 5.0\n [37] 5.5 4.9 4.4 5.1 5.0 4.5 4.4 5.0 5.1 4.8 5.1 4.6 5.3 5.0 7.0 6.4 6.9 5.5\n [55] 6.5 5.7 6.3 4.9 6.6 5.2 5.0 5.9 6.0 6.1 5.6 6.7 5.6 5.8 6.2 5.6 5.9 6.1\n [73] 6.3 6.1 6.4 6.6 6.8 6.7 6.0 5.7 5.5 5.5 5.8 6.0 5.4 6.0 6.7 6.3 5.6 5.5\n [91] 5.5 6.1 5.8 5.0 5.6 5.7 5.7 6.2 5.1 5.7 6.3 5.8 7.1 6.3 6.5 7.6 4.9 7.3\n[109] 6.7 7.2 6.5 6.4 6.8 5.7 5.8 6.4 6.5 7.7 7.7 6.0 6.9 5.6 7.7 6.3 6.7 7.2\n[127] 6.2 6.1 6.4 7.2 7.4 7.9 6.4 6.3 6.1 7.7 6.3 6.4 6.0 6.9 6.7 6.9 5.8 6.8\n[145] 6.7 6.7 6.3 6.5 6.2 5.9"
-          },
-          {
-            "type": "HTML",
-            "data": "\u003chr/\u003eSpark Application Id: application_1630430690829_0005\u003cbr/\u003eSpark WebUI: \u003ca href\u003d\"https://node1.cluster.com:8090/proxy/application_1630430690829_0005/\"\u003ehttps://node1.cluster.com:8090/proxy/application_1630430690829_0005/\u003c/a\u003e"
           }
         ]
       },
@@ -179,16 +154,12 @@
       "progressUpdateIntervalMs": 500,
       "jobName": "paragraph_1630426976885_1153085069",
       "id": "paragraph_1630426976885_1153085069",
-      "dateCreated": "2021-08-31 16:22:56.885",
-      "dateStarted": "2021-08-31 18:21:55.487",
-      "dateFinished": "2021-08-31 18:21:57.533",
       "status": "FINISHED"
     },
     {
       "title": "TABLE Display",
       "text": "%livy.sparkr cat(\"%table name\\tsize\\nsmall\\t100\\nlarge\\t1000\")",
-      "user": "mapr",
-      "dateUpdated": "2021-08-31 18:22:17.388",
+      "user": "anonymous",
       "progress": 0,
       "config": {
         "editorSetting": {
@@ -243,10 +214,6 @@
           {
             "type": "TABLE",
             "data": "name\tsize\nsmall\t100\nlarge\t1000"
-          },
-          {
-            "type": "HTML",
-            "data": "\u003chr/\u003eSpark Application Id: application_1630430690829_0005\u003cbr/\u003eSpark WebUI: \u003ca href\u003d\"https://node1.cluster.com:8090/proxy/application_1630430690829_0005/\"\u003ehttps://node1.cluster.com:8090/proxy/application_1630430690829_0005/\u003c/a\u003e"
           }
         ]
       },
@@ -255,16 +222,12 @@
       "progressUpdateIntervalMs": 500,
       "jobName": "paragraph_1630426989686_410591954",
       "id": "paragraph_1630426989686_410591954",
-      "dateCreated": "2021-08-31 16:23:09.686",
-      "dateStarted": "2021-08-31 18:21:57.591",
-      "dateFinished": "2021-08-31 18:21:57.617",
       "status": "FINISHED"
     },
     {
       "title": "HTML Display",
       "text": "%livy.sparkr \n\ncat(\"%html \u003ch3\u003eHello HTML\u003c/h3\u003e\")\ncat(\"\u003cfont color\u003d\u0027blue\u0027\u003e\u003cspan class\u003d\u0027fa fa-bars\u0027\u003e Easy...\u003c/font\u003e\u003c/span\u003e\")\nfor (i in 1:10) {\n  cat(paste0(\"\u003ch4\u003e\", i, \" * 2 \u003d \", i*2, \"\u003c/h4\u003e\"))\n}",
-      "user": "mapr",
-      "dateUpdated": "2021-08-31 18:21:57.691",
+      "user": "anonymous",
       "progress": 0,
       "config": {
         "editorSetting": {
@@ -290,10 +253,6 @@
           {
             "type": "HTML",
             "data": "\u003ch3\u003eHello HTML\u003c/h3\u003e\u003cfont color\u003d\u0027blue\u0027\u003e\u003cspan class\u003d\u0027fa fa-bars\u0027\u003e Easy...\u003c/font\u003e\u003c/span\u003e\u003ch4\u003e1 * 2 \u003d 2\u003c/h4\u003e\u003ch4\u003e2 * 2 \u003d 4\u003c/h4\u003e\u003ch4\u003e3 * 2 \u003d 6\u003c/h4\u003e\u003ch4\u003e4 * 2 \u003d 8\u003c/h4\u003e\u003ch4\u003e5 * 2 \u003d 10\u003c/h4\u003e\u003ch4\u003e6 * 2 \u003d 12\u003c/h4\u003e\u003ch4\u003e7 * 2 \u003d 14\u003c/h4\u003e\u003ch4\u003e8 * 2 \u003d 16\u003c/h4\u003e\u003ch4\u003e9 * 2 \u003d 18\u003c/h4\u003e\u003ch4\u003e10 * 2 \u003d 20\u003c/h4\u003e"
-          },
-          {
-            "type": "HTML",
-            "data": "\u003chr/\u003eSpark Application Id: application_1630430690829_0005\u003cbr/\u003eSpark WebUI: \u003ca href\u003d\"https://node1.cluster.com:8090/proxy/application_1630430690829_0005/\"\u003ehttps://node1.cluster.com:8090/proxy/application_1630430690829_0005/\u003c/a\u003e"
           }
         ]
       },
@@ -302,15 +261,11 @@
       "progressUpdateIntervalMs": 500,
       "jobName": "paragraph_1630427005669_1909221711",
       "id": "paragraph_1630427005669_1909221711",
-      "dateCreated": "2021-08-31 16:23:25.669",
-      "dateStarted": "2021-08-31 18:21:57.694",
-      "dateFinished": "2021-08-31 18:21:58.720",
       "status": "FINISHED"
     },
     {
       "text": "%md\n---",
-      "user": "mapr",
-      "dateUpdated": "2021-08-31 18:22:29.210",
+      "user": "anonymous",
       "progress": 0,
       "config": {
         "editorSetting": {
@@ -345,16 +300,12 @@
       "progressUpdateIntervalMs": 500,
       "jobName": "paragraph_1630427104719_1896702644",
       "id": "paragraph_1630427104719_1896702644",
-      "dateCreated": "2021-08-31 16:25:04.720",
-      "dateStarted": "2021-08-31 18:22:29.202",
-      "dateFinished": "2021-08-31 18:22:29.222",
       "status": "FINISHED"
     },
     {
       "title": "GoogleVis: Bar Chart",
       "text": "%livy.sparkr\n\n# Workaround for Spark issue with googleVis: SPARK-23780\ndetach(\"package:SparkR\")\nlibrary(googleVis)\nsuppressPackageStartupMessages(library(SparkR))\n\ndf\u003ddata.frame(country\u003dc(\"US\", \"GB\", \"BR\"), \n              val1\u003dc(10,13,14), \n              val2\u003dc(23,12,32))\nBar \u003c- gvisBarChart(df)\ncat(\"%html \", Bar$html$chart)",
-      "user": "mapr",
-      "dateUpdated": "2021-08-31 18:21:58.896",
+      "user": "anonymous",
       "progress": 0,
       "config": {
         "editorSetting": {
@@ -384,10 +335,6 @@
           {
             "type": "HTML",
             "data": " \u003c!-- BarChart generated in R 3.6.0 by googleVis 0.6.10 package --\u003e\n\u003c!-- Tue Aug 31 18:21:59 2021 --\u003e\n\n\n\u003c!-- jsHeader --\u003e\n\u003cscript type\u003d\"text/javascript\"\u003e\n \n// jsData \nfunction gvisDataBarChartID171f125c92bc () {\nvar data \u003d new google.visualization.DataTable();\nvar datajson \u003d\n[\n [\n\"US\",\n10,\n23\n],\n[\n\"GB\",\n13,\n12\n],\n[\n\"BR\",\n14,\n32\n] \n];\ndata.addColumn(\u0027string\u0027,\u0027country\u0027);\ndata.addColumn(\u0027number\u0027,\u0027val1\u0027);\ndata.addColumn(\u0027number\u0027,\u0027val2\u0027);\ndata.addRows(datajson);\nreturn(data);\n}\n \n// jsDrawChart\nfunction drawChartBarChartID171f125c92bc() {\nvar data \u003d gvisDataBarChartID171f125c92bc();\nvar options \u003d {};\noptions[\"allowHtml\"] \u003d true;\n\n\n    var chart \u003d new google.visualization.BarChart(\n    document.getElementById(\u0027BarChartID171f125c92bc\u0027)\n    );\n    chart.draw(data,options);\n    \n\n}\n  \n \n// jsDisplayChart\n(function() {\nvar pkgs \u003d window.__gvisPackages \u003d window.__gvisPackages || [];\nvar callbacks \u003d window.__gvisCallbacks \u003d window.__gvisCallbacks || [];\nvar chartid \u003d \"corechart\";\n  \n// Manually see if chartid is in pkgs (not all browsers support Array.indexOf)\nvar i, newPackage \u003d true;\nfor (i \u003d 0; newPackage \u0026\u0026 i \u003c pkgs.length; i++) {\nif (pkgs[i] \u003d\u003d\u003d chartid)\nnewPackage \u003d false;\n}\nif (newPackage)\n  pkgs.push(chartid);\n  \n// Add the drawChart function to the global list of callbacks\ncallbacks.push(drawChartBarChartID171f125c92bc);\n})();\nfunction displayChartBarChartID171f125c92bc() {\n  var pkgs \u003d window.__gvisPackages \u003d window.__gvisPackages || [];\n  var callbacks \u003d window.__gvisCallbacks \u003d window.__gvisCallbacks || [];\n  window.clearTimeout(window.__gvisLoad);\n  // The timeout is set to 100 because otherwise the container div we are\n  // targeting might not be part of the document yet\n  window.__gvisLoad \u003d setTimeout(function() {\n  var pkgCount \u003d pkgs.length;\n  google.load(\"visualization\", \"1\", { packages:pkgs, callback: function() {\n  if (pkgCount !\u003d pkgs.length) {\n  // Race condition where another setTimeout call snuck in after us; if\n  // that call added a package, we must not shift its callback\n  return;\n}\nwhile (callbacks.length \u003e 0)\ncallbacks.shift()();\n} });\n}, 100);\n}\n \n// jsFooter\n\u003c/script\u003e\n \n\u003c!-- jsChart --\u003e  \n\u003cscript type\u003d\"text/javascript\" src\u003d\"https://www.google.com/jsapi?callback\u003ddisplayChartBarChartID171f125c92bc\"\u003e\u003c/script\u003e\n \n\u003c!-- divChart --\u003e\n  \n\u003cdiv id\u003d\"BarChartID171f125c92bc\" \n  style\u003d\"width: 500; height: automatic;\"\u003e\n\u003c/div\u003e"
-          },
-          {
-            "type": "HTML",
-            "data": "\u003chr/\u003eSpark Application Id: application_1630430690829_0005\u003cbr/\u003eSpark WebUI: \u003ca href\u003d\"https://node1.cluster.com:8090/proxy/application_1630430690829_0005/\"\u003ehttps://node1.cluster.com:8090/proxy/application_1630430690829_0005/\u003c/a\u003e"
           }
         ]
       },
@@ -396,16 +343,12 @@
       "progressUpdateIntervalMs": 500,
       "jobName": "paragraph_1630427144805_492074388",
       "id": "paragraph_1630427144805_492074388",
-      "dateCreated": "2021-08-31 16:25:44.805",
-      "dateStarted": "2021-08-31 18:21:58.899",
-      "dateFinished": "2021-08-31 18:21:59.933",
       "status": "FINISHED"
     },
     {
       "title": "GoogleVis: Candlestick Chart",
       "text": "%livy.sparkr\n\n# Workaround for Spark issue with googleVis: SPARK-23780\ndetach(\"package:SparkR\")\nlibrary(googleVis)\nsuppressPackageStartupMessages(library(SparkR))\n\nCandle \u003c- gvisCandlestickChart(OpenClose, \n                               options\u003dlist(legend\u003d\u0027none\u0027))\n\ncat(\"%html \", Candle$html$chart)",
-      "user": "mapr",
-      "dateUpdated": "2021-08-31 18:22:00.000",
+      "user": "anonymous",
       "progress": 0,
       "config": {
         "editorSetting": {
@@ -431,10 +374,6 @@
           {
             "type": "HTML",
             "data": " \u003c!-- CandlestickChart generated in R 3.6.0 by googleVis 0.6.10 package --\u003e\n\u003c!-- Tue Aug 31 18:22:00 2021 --\u003e\n\n\n\u003c!-- jsHeader --\u003e\n\u003cscript type\u003d\"text/javascript\"\u003e\n \n// jsData \nfunction gvisDataCandlestickChartID171f5886549 () {\nvar data \u003d new google.visualization.DataTable();\nvar datajson \u003d\n[\n [\n\"Mon\",\n20,\n28,\n38,\n45\n],\n[\n\"Tues\",\n31,\n38,\n55,\n66\n],\n[\n\"Wed\",\n50,\n55,\n77,\n80\n],\n[\n\"Thurs\",\n50,\n77,\n66,\n77\n],\n[\n\"Fri\",\n15,\n66,\n22,\n68\n] \n];\ndata.addColumn(\u0027string\u0027,\u0027Weekday\u0027);\ndata.addColumn(\u0027number\u0027,\u0027Low\u0027);\ndata.addColumn(\u0027number\u0027,\u0027Open\u0027);\ndata.addColumn(\u0027number\u0027,\u0027Close\u0027);\ndata.addColumn(\u0027number\u0027,\u0027High\u0027);\ndata.addRows(datajson);\nreturn(data);\n}\n \n// jsDrawChart\nfunction drawChartCandlestickChartID171f5886549() {\nvar data \u003d gvisDataCandlestickChartID171f5886549();\nvar options \u003d {};\noptions[\"allowHtml\"] \u003d true;\noptions[\"legend\"] \u003d \"none\";\n\n\n    var chart \u003d new google.visualization.CandlestickChart(\n    document.getElementById(\u0027CandlestickChartID171f5886549\u0027)\n    );\n    chart.draw(data,options);\n    \n\n}\n  \n \n// jsDisplayChart\n(function() {\nvar pkgs \u003d window.__gvisPackages \u003d window.__gvisPackages || [];\nvar callbacks \u003d window.__gvisCallbacks \u003d window.__gvisCallbacks || [];\nvar chartid \u003d \"corechart\";\n  \n// Manually see if chartid is in pkgs (not all browsers support Array.indexOf)\nvar i, newPackage \u003d true;\nfor (i \u003d 0; newPackage \u0026\u0026 i \u003c pkgs.length; i++) {\nif (pkgs[i] \u003d\u003d\u003d chartid)\nnewPackage \u003d false;\n}\nif (newPackage)\n  pkgs.push(chartid);\n  \n// Add the drawChart function to the global list of callbacks\ncallbacks.push(drawChartCandlestickChartID171f5886549);\n})();\nfunction displayChartCandlestickChartID171f5886549() {\n  var pkgs \u003d window.__gvisPackages \u003d window.__gvisPackages || [];\n  var callbacks \u003d window.__gvisCallbacks \u003d window.__gvisCallbacks || [];\n  window.clearTimeout(window.__gvisLoad);\n  // The timeout is set to 100 because otherwise the container div we are\n  // targeting might not be part of the document yet\n  window.__gvisLoad \u003d setTimeout(function() {\n  var pkgCount \u003d pkgs.length;\n  google.load(\"visualization\", \"1\", { packages:pkgs, callback: function() {\n  if (pkgCount !\u003d pkgs.length) {\n  // Race condition where another setTimeout call snuck in after us; if\n  // that call added a package, we must not shift its callback\n  return;\n}\nwhile (callbacks.length \u003e 0)\ncallbacks.shift()();\n} });\n}, 100);\n}\n \n// jsFooter\n\u003c/script\u003e\n \n\u003c!-- jsChart --\u003e  \n\u003cscript type\u003d\"text/javascript\" src\u003d\"https://www.google.com/jsapi?callback\u003ddisplayChartCandlestickChartID171f5886549\"\u003e\u003c/script\u003e\n \n\u003c!-- divChart --\u003e\n  \n\u003cdiv id\u003d\"CandlestickChartID171f5886549\" \n  style\u003d\"width: 500; height: automatic;\"\u003e\n\u003c/div\u003e"
-          },
-          {
-            "type": "HTML",
-            "data": "\u003chr/\u003eSpark Application Id: application_1630430690829_0005\u003cbr/\u003eSpark WebUI: \u003ca href\u003d\"https://node1.cluster.com:8090/proxy/application_1630430690829_0005/\"\u003ehttps://node1.cluster.com:8090/proxy/application_1630430690829_0005/\u003c/a\u003e"
           }
         ]
       },
@@ -443,16 +382,12 @@
       "progressUpdateIntervalMs": 500,
       "jobName": "paragraph_1630427165538_941288689",
       "id": "paragraph_1630427165538_941288689",
-      "dateCreated": "2021-08-31 16:26:05.538",
-      "dateStarted": "2021-08-31 18:22:00.003",
-      "dateFinished": "2021-08-31 18:22:01.069",
       "status": "FINISHED"
     },
     {
       "title": "GoogleVis: Line chart",
       "text": "%livy.sparkr\n\n# Workaround for Spark issue with googleVis: SPARK-23780\ndetach(\"package:SparkR\")\nlibrary(googleVis)\nsuppressPackageStartupMessages(library(SparkR))\n\ndf\u003ddata.frame(country\u003dc(\"US\", \"GB\", \"BR\"), \n              val1\u003dc(10,13,14), \n              val2\u003dc(23,12,32))\n\nLine \u003c- gvisLineChart(df)\n\ncat(\"%html \", Line$html$chart)",
-      "user": "mapr",
-      "dateUpdated": "2021-08-31 18:22:01.104",
+      "user": "anonymous",
       "progress": 0,
       "config": {
         "editorSetting": {
@@ -478,10 +413,6 @@
           {
             "type": "HTML",
             "data": " \u003c!-- LineChart generated in R 3.6.0 by googleVis 0.6.10 package --\u003e\n\u003c!-- Tue Aug 31 18:22:01 2021 --\u003e\n\n\n\u003c!-- jsHeader --\u003e\n\u003cscript type\u003d\"text/javascript\"\u003e\n \n// jsData \nfunction gvisDataLineChartID171f64195606 () {\nvar data \u003d new google.visualization.DataTable();\nvar datajson \u003d\n[\n [\n\"US\",\n10,\n23\n],\n[\n\"GB\",\n13,\n12\n],\n[\n\"BR\",\n14,\n32\n] \n];\ndata.addColumn(\u0027string\u0027,\u0027country\u0027);\ndata.addColumn(\u0027number\u0027,\u0027val1\u0027);\ndata.addColumn(\u0027number\u0027,\u0027val2\u0027);\ndata.addRows(datajson);\nreturn(data);\n}\n \n// jsDrawChart\nfunction drawChartLineChartID171f64195606() {\nvar data \u003d gvisDataLineChartID171f64195606();\nvar options \u003d {};\noptions[\"allowHtml\"] \u003d true;\n\n\n    var chart \u003d new google.visualization.LineChart(\n    document.getElementById(\u0027LineChartID171f64195606\u0027)\n    );\n    chart.draw(data,options);\n    \n\n}\n  \n \n// jsDisplayChart\n(function() {\nvar pkgs \u003d window.__gvisPackages \u003d window.__gvisPackages || [];\nvar callbacks \u003d window.__gvisCallbacks \u003d window.__gvisCallbacks || [];\nvar chartid \u003d \"corechart\";\n  \n// Manually see if chartid is in pkgs (not all browsers support Array.indexOf)\nvar i, newPackage \u003d true;\nfor (i \u003d 0; newPackage \u0026\u0026 i \u003c pkgs.length; i++) {\nif (pkgs[i] \u003d\u003d\u003d chartid)\nnewPackage \u003d false;\n}\nif (newPackage)\n  pkgs.push(chartid);\n  \n// Add the drawChart function to the global list of callbacks\ncallbacks.push(drawChartLineChartID171f64195606);\n})();\nfunction displayChartLineChartID171f64195606() {\n  var pkgs \u003d window.__gvisPackages \u003d window.__gvisPackages || [];\n  var callbacks \u003d window.__gvisCallbacks \u003d window.__gvisCallbacks || [];\n  window.clearTimeout(window.__gvisLoad);\n  // The timeout is set to 100 because otherwise the container div we are\n  // targeting might not be part of the document yet\n  window.__gvisLoad \u003d setTimeout(function() {\n  var pkgCount \u003d pkgs.length;\n  google.load(\"visualization\", \"1\", { packages:pkgs, callback: function() {\n  if (pkgCount !\u003d pkgs.length) {\n  // Race condition where another setTimeout call snuck in after us; if\n  // that call added a package, we must not shift its callback\n  return;\n}\nwhile (callbacks.length \u003e 0)\ncallbacks.shift()();\n} });\n}, 100);\n}\n \n// jsFooter\n\u003c/script\u003e\n \n\u003c!-- jsChart --\u003e  \n\u003cscript type\u003d\"text/javascript\" src\u003d\"https://www.google.com/jsapi?callback\u003ddisplayChartLineChartID171f64195606\"\u003e\u003c/script\u003e\n \n\u003c!-- divChart --\u003e\n  \n\u003cdiv id\u003d\"LineChartID171f64195606\" \n  style\u003d\"width: 500; height: automatic;\"\u003e\n\u003c/div\u003e"
-          },
-          {
-            "type": "HTML",
-            "data": "\u003chr/\u003eSpark Application Id: application_1630430690829_0005\u003cbr/\u003eSpark WebUI: \u003ca href\u003d\"https://node1.cluster.com:8090/proxy/application_1630430690829_0005/\"\u003ehttps://node1.cluster.com:8090/proxy/application_1630430690829_0005/\u003c/a\u003e"
           }
         ]
       },
@@ -490,15 +421,11 @@
       "progressUpdateIntervalMs": 500,
       "jobName": "paragraph_1630427179681_406325496",
       "id": "paragraph_1630427179681_406325496",
-      "dateCreated": "2021-08-31 16:26:19.681",
-      "dateStarted": "2021-08-31 18:22:01.114",
-      "dateFinished": "2021-08-31 18:22:02.166",
       "status": "FINISHED"
     },
     {
       "text": "%md\n---",
-      "user": "mapr",
-      "dateUpdated": "2021-08-31 18:22:31.104",
+      "user": "anonymous",
       "progress": 0,
       "config": {
         "editorSetting": {
@@ -533,15 +460,11 @@
       "progressUpdateIntervalMs": 500,
       "jobName": "paragraph_1630427192502_418200656",
       "id": "paragraph_1630427192502_418200656",
-      "dateCreated": "2021-08-31 16:26:32.502",
-      "dateStarted": "2021-08-31 18:22:31.112",
-      "dateFinished": "2021-08-31 18:22:31.122",
       "status": "FINISHED"
     },
     {
       "text": "%livy.sparkr\npairs(iris)\nplot(iris)",
-      "user": "mapr",
-      "dateUpdated": "2021-08-31 18:22:02.314",
+      "user": "anonymous",
       "progress": 0,
       "config": {
         "editorSetting": {
@@ -574,15 +497,11 @@
       "progressUpdateIntervalMs": 500,
       "jobName": "paragraph_1630427197555_58406170",
       "id": "paragraph_1630427197555_58406170",
-      "dateCreated": "2021-08-31 16:26:37.555",
-      "dateStarted": "2021-08-31 18:22:02.317",
-      "dateFinished": "2021-08-31 18:22:12.527",
       "status": "FINISHED"
     },
     {
       "text": "%livy.sparkr \nplot(iris, col \u003d heat.colors(3))",
-      "user": "mapr",
-      "dateUpdated": "2021-08-31 18:22:12.531",
+      "user": "anonymous",
       "progress": 0,
       "config": {
         "editorSetting": {
@@ -615,15 +534,11 @@
       "progressUpdateIntervalMs": 500,
       "jobName": "paragraph_1630427211203_556345190",
       "id": "paragraph_1630427211203_556345190",
-      "dateCreated": "2021-08-31 16:26:51.203",
-      "dateStarted": "2021-08-31 18:22:12.547",
-      "dateFinished": "2021-08-31 18:22:13.702",
       "status": "FINISHED"
     },
     {
       "text": "%livy.sparkr\nlibrary(ggplot2)\npres_rating \u003c- data.frame(\n  rating \u003d as.numeric(presidents),\n  year \u003d as.numeric(floor(time(presidents))),\n  quarter \u003d as.numeric(cycle(presidents))\n)\np \u003c- ggplot(pres_rating, aes(x\u003dyear, y\u003dquarter, fill\u003drating))\nplot(p + geom_raster())",
-      "user": "mapr",
-      "dateUpdated": "2021-08-31 18:22:13.748",
+      "user": "anonymous",
       "progress": 0,
       "config": {
         "editorSetting": {
@@ -656,15 +571,11 @@
       "progressUpdateIntervalMs": 500,
       "jobName": "paragraph_1630427212640_2030853571",
       "id": "paragraph_1630427212640_2030853571",
-      "dateCreated": "2021-08-31 16:26:52.640",
-      "dateStarted": "2021-08-31 18:22:13.760",
-      "dateFinished": "2021-08-31 18:22:14.835",
       "status": "FINISHED"
     },
     {
       "text": "%md\n---",
-      "user": "mapr",
-      "dateUpdated": "2021-08-31 18:22:32.895",
+      "user": "anonymous",
       "progress": 0,
       "config": {
         "editorSetting": {
@@ -699,16 +610,12 @@
       "progressUpdateIntervalMs": 500,
       "jobName": "paragraph_1630427214110_1790332737",
       "id": "paragraph_1630427214110_1790332737",
-      "dateCreated": "2021-08-31 16:26:54.110",
-      "dateStarted": "2021-08-31 18:22:32.893",
-      "dateFinished": "2021-08-31 18:22:32.912",
       "status": "FINISHED"
     },
     {
       "title": "GoogleViz: Bubble Chart",
       "text": "%livy.sparkr\n\n# Workaround for Spark issue with googleVis: SPARK-23780\ndetach(\"package:SparkR\")\nlibrary(googleVis)\nsuppressPackageStartupMessages(library(SparkR))\n\nbubble \u003c- gvisBubbleChart(Fruits, idvar\u003d\"Fruit\", \n                          xvar\u003d\"Sales\", yvar\u003d\"Expenses\",\n                          colorvar\u003d\"Year\", sizevar\u003d\"Profit\",\n                          options\u003dlist(\n                            hAxis\u003d\u0027{minValue:75, maxValue:125}\u0027))\ncat(\"%html \", bubble$html$chart)",
-      "user": "mapr",
-      "dateUpdated": "2021-08-31 18:22:14.965",
+      "user": "anonymous",
       "progress": 0,
       "config": {
         "editorSetting": {
@@ -734,10 +641,6 @@
           {
             "type": "HTML",
             "data": " \u003c!-- BubbleChart generated in R 3.6.0 by googleVis 0.6.10 package --\u003e\n\u003c!-- Tue Aug 31 18:22:14 2021 --\u003e\n\n\n\u003c!-- jsHeader --\u003e\n\u003cscript type\u003d\"text/javascript\"\u003e\n \n// jsData \nfunction gvisDataBubbleChartID171f74f6e279 () {\nvar data \u003d new google.visualization.DataTable();\nvar datajson \u003d\n[\n [\n\"Apples\",\n98,\n78,\n2008,\n20\n],\n[\n\"Apples\",\n111,\n79,\n2009,\n32\n],\n[\n\"Apples\",\n89,\n76,\n2010,\n13\n],\n[\n\"Oranges\",\n96,\n81,\n2008,\n15\n],\n[\n\"Bananas\",\n85,\n76,\n2008,\n9\n],\n[\n\"Oranges\",\n93,\n80,\n2009,\n13\n],\n[\n\"Bananas\",\n94,\n78,\n2009,\n16\n],\n[\n\"Oranges\",\n98,\n91,\n2010,\n7\n],\n[\n\"Bananas\",\n81,\n71,\n2010,\n10\n] \n];\ndata.addColumn(\u0027string\u0027,\u0027Fruit\u0027);\ndata.addColumn(\u0027number\u0027,\u0027Sales\u0027);\ndata.addColumn(\u0027number\u0027,\u0027Expenses\u0027);\ndata.addColumn(\u0027number\u0027,\u0027Year\u0027);\ndata.addColumn(\u0027number\u0027,\u0027Profit\u0027);\ndata.addRows(datajson);\nreturn(data);\n}\n \n// jsDrawChart\nfunction drawChartBubbleChartID171f74f6e279() {\nvar data \u003d gvisDataBubbleChartID171f74f6e279();\nvar options \u003d {};\noptions[\"hAxis\"] \u003d {minValue:75, maxValue:125};\n\n\n    var chart \u003d new google.visualization.BubbleChart(\n    document.getElementById(\u0027BubbleChartID171f74f6e279\u0027)\n    );\n    chart.draw(data,options);\n    \n\n}\n  \n \n// jsDisplayChart\n(function() {\nvar pkgs \u003d window.__gvisPackages \u003d window.__gvisPackages || [];\nvar callbacks \u003d window.__gvisCallbacks \u003d window.__gvisCallbacks || [];\nvar chartid \u003d \"corechart\";\n  \n// Manually see if chartid is in pkgs (not all browsers support Array.indexOf)\nvar i, newPackage \u003d true;\nfor (i \u003d 0; newPackage \u0026\u0026 i \u003c pkgs.length; i++) {\nif (pkgs[i] \u003d\u003d\u003d chartid)\nnewPackage \u003d false;\n}\nif (newPackage)\n  pkgs.push(chartid);\n  \n// Add the drawChart function to the global list of callbacks\ncallbacks.push(drawChartBubbleChartID171f74f6e279);\n})();\nfunction displayChartBubbleChartID171f74f6e279() {\n  var pkgs \u003d window.__gvisPackages \u003d window.__gvisPackages || [];\n  var callbacks \u003d window.__gvisCallbacks \u003d window.__gvisCallbacks || [];\n  window.clearTimeout(window.__gvisLoad);\n  // The timeout is set to 100 because otherwise the container div we are\n  // targeting might not be part of the document yet\n  window.__gvisLoad \u003d setTimeout(function() {\n  var pkgCount \u003d pkgs.length;\n  google.load(\"visualization\", \"1\", { packages:pkgs, callback: function() {\n  if (pkgCount !\u003d pkgs.length) {\n  // Race condition where another setTimeout call snuck in after us; if\n  // that call added a package, we must not shift its callback\n  return;\n}\nwhile (callbacks.length \u003e 0)\ncallbacks.shift()();\n} });\n}, 100);\n}\n \n// jsFooter\n\u003c/script\u003e\n \n\u003c!-- jsChart --\u003e  \n\u003cscript type\u003d\"text/javascript\" src\u003d\"https://www.google.com/jsapi?callback\u003ddisplayChartBubbleChartID171f74f6e279\"\u003e\u003c/script\u003e\n \n\u003c!-- divChart --\u003e\n  \n\u003cdiv id\u003d\"BubbleChartID171f74f6e279\" \n  style\u003d\"width: 500; height: automatic;\"\u003e\n\u003c/div\u003e"
-          },
-          {
-            "type": "HTML",
-            "data": "\u003chr/\u003eSpark Application Id: application_1630430690829_0005\u003cbr/\u003eSpark WebUI: \u003ca href\u003d\"https://node1.cluster.com:8090/proxy/application_1630430690829_0005/\"\u003ehttps://node1.cluster.com:8090/proxy/application_1630430690829_0005/\u003c/a\u003e"
           }
         ]
       },
@@ -746,16 +649,12 @@
       "progressUpdateIntervalMs": 500,
       "jobName": "paragraph_1630427230283_652055920",
       "id": "paragraph_1630427230283_652055920",
-      "dateCreated": "2021-08-31 16:27:10.283",
-      "dateStarted": "2021-08-31 18:22:14.970",
-      "dateFinished": "2021-08-31 18:22:16.011",
       "status": "FINISHED"
     },
     {
       "title": "GoogleViz: Geo Chart",
       "text": "%livy.sparkr\n\n# Workaround for Spark issue with googleVis: SPARK-23780\ndetach(\"package:SparkR\")\nlibrary(googleVis)\nsuppressPackageStartupMessages(library(SparkR))\n\ngeo \u003d gvisGeoChart(Exports, locationvar \u003d \"Country\", colorvar\u003d\"Profit\", options\u003dlist(Projection \u003d \"kavrayskiy-vii\"))\ncat(\"%html \", geo$html$chart)",
-      "user": "mapr",
-      "dateUpdated": "2021-08-31 18:22:16.071",
+      "user": "anonymous",
       "progress": 0,
       "config": {
         "editorSetting": {
@@ -781,10 +680,6 @@
           {
             "type": "HTML",
             "data": " \u003c!-- GeoChart generated in R 3.6.0 by googleVis 0.6.10 package --\u003e\n\u003c!-- Tue Aug 31 18:22:16 2021 --\u003e\n\n\n\u003c!-- jsHeader --\u003e\n\u003cscript type\u003d\"text/javascript\"\u003e\n \n// jsData \nfunction gvisDataGeoChartID171f437e546e () {\nvar data \u003d new google.visualization.DataTable();\nvar datajson \u003d\n[\n [\n\"Germany\",\n3\n],\n[\n\"Brazil\",\n4\n],\n[\n\"United States\",\n5\n],\n[\n\"France\",\n4\n],\n[\n\"Hungary\",\n3\n],\n[\n\"India\",\n2\n],\n[\n\"Iceland\",\n1\n],\n[\n\"Norway\",\n4\n],\n[\n\"Spain\",\n5\n],\n[\n\"Turkey\",\n1\n] \n];\ndata.addColumn(\u0027string\u0027,\u0027Country\u0027);\ndata.addColumn(\u0027number\u0027,\u0027Profit\u0027);\ndata.addRows(datajson);\nreturn(data);\n}\n \n// jsDrawChart\nfunction drawChartGeoChartID171f437e546e() {\nvar data \u003d gvisDataGeoChartID171f437e546e();\nvar options \u003d {};\noptions[\"width\"] \u003d 556;\noptions[\"height\"] \u003d 347;\noptions[\"Projection\"] \u003d \"kavrayskiy-vii\";\n\n\n    var chart \u003d new google.visualization.GeoChart(\n    document.getElementById(\u0027GeoChartID171f437e546e\u0027)\n    );\n    chart.draw(data,options);\n    \n\n}\n  \n \n// jsDisplayChart\n(function() {\nvar pkgs \u003d window.__gvisPackages \u003d window.__gvisPackages || [];\nvar callbacks \u003d window.__gvisCallbacks \u003d window.__gvisCallbacks || [];\nvar chartid \u003d \"geochart\";\n  \n// Manually see if chartid is in pkgs (not all browsers support Array.indexOf)\nvar i, newPackage \u003d true;\nfor (i \u003d 0; newPackage \u0026\u0026 i \u003c pkgs.length; i++) {\nif (pkgs[i] \u003d\u003d\u003d chartid)\nnewPackage \u003d false;\n}\nif (newPackage)\n  pkgs.push(chartid);\n  \n// Add the drawChart function to the global list of callbacks\ncallbacks.push(drawChartGeoChartID171f437e546e);\n})();\nfunction displayChartGeoChartID171f437e546e() {\n  var pkgs \u003d window.__gvisPackages \u003d window.__gvisPackages || [];\n  var callbacks \u003d window.__gvisCallbacks \u003d window.__gvisCallbacks || [];\n  window.clearTimeout(window.__gvisLoad);\n  // The timeout is set to 100 because otherwise the container div we are\n  // targeting might not be part of the document yet\n  window.__gvisLoad \u003d setTimeout(function() {\n  var pkgCount \u003d pkgs.length;\n  google.load(\"visualization\", \"1\", { packages:pkgs, callback: function() {\n  if (pkgCount !\u003d pkgs.length) {\n  // Race condition where another setTimeout call snuck in after us; if\n  // that call added a package, we must not shift its callback\n  return;\n}\nwhile (callbacks.length \u003e 0)\ncallbacks.shift()();\n} });\n}, 100);\n}\n \n// jsFooter\n\u003c/script\u003e\n \n\u003c!-- jsChart --\u003e  \n\u003cscript type\u003d\"text/javascript\" src\u003d\"https://www.google.com/jsapi?callback\u003ddisplayChartGeoChartID171f437e546e\"\u003e\u003c/script\u003e\n \n\u003c!-- divChart --\u003e\n  \n\u003cdiv id\u003d\"GeoChartID171f437e546e\" \n  style\u003d\"width: 556; height: 347;\"\u003e\n\u003c/div\u003e"
-          },
-          {
-            "type": "HTML",
-            "data": "\u003chr/\u003eSpark Application Id: application_1630430690829_0005\u003cbr/\u003eSpark WebUI: \u003ca href\u003d\"https://node1.cluster.com:8090/proxy/application_1630430690829_0005/\"\u003ehttps://node1.cluster.com:8090/proxy/application_1630430690829_0005/\u003c/a\u003e"
           }
         ]
       },
@@ -793,15 +688,11 @@
       "progressUpdateIntervalMs": 500,
       "jobName": "paragraph_1630427235343_80669154",
       "id": "paragraph_1630427235343_80669154",
-      "dateCreated": "2021-08-31 16:27:15.343",
-      "dateStarted": "2021-08-31 18:22:16.082",
-      "dateFinished": "2021-08-31 18:22:17.177",
       "status": "FINISHED"
     },
     {
       "text": "%md\n\n## Congratulations, it\u0027s done.\n### You can create your own notebook in \u0027Notebook\u0027 menu. Good luck!",
-      "user": "mapr",
-      "dateUpdated": "2021-08-31 18:22:34.851",
+      "user": "anonymous",
       "progress": 0,
       "config": {
         "editorSetting": {
@@ -836,16 +727,13 @@
       "progressUpdateIntervalMs": 500,
       "jobName": "paragraph_1630427239698_2073028143",
       "id": "paragraph_1630427239698_2073028143",
-      "dateCreated": "2021-08-31 16:27:19.698",
-      "dateStarted": "2021-08-31 18:22:34.845",
-      "dateFinished": "2021-08-31 18:22:34.865",
       "status": "FINISHED"
     }
   ],
   "name": "Livy - R (SparkR)",
   "id": "2GFURKJ2A",
   "defaultInterpreterGroup": "livy",
-  "version": "0.9.0-mapr-SNAPSHOT",
+  "version": "0.9.0",
   "noteParams": {},
   "noteForms": {},
   "angularObjects": {},
