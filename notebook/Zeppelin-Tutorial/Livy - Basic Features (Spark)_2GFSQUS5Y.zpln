@@ -2,8 +2,7 @@
   "paragraphs": [
     {
       "text": "%md\n## Welcome to Zeppelin.\n##### This is a live tutorial, you can run the code yourself. (Shift-Enter to Run)",
-      "user": "mapr",
-      "dateUpdated": "2021-08-31 17:47:17.861",
+      "user": "anonymous",
       "progress": 0,
       "config": {
         "tableHide": false,
@@ -38,16 +37,12 @@
       "progressUpdateIntervalMs": 500,
       "jobName": "paragraph_1630426585113_59173945",
       "id": "paragraph_1630426585113_59173945",
-      "dateCreated": "2021-08-31 16:16:25.113",
-      "dateStarted": "2021-08-31 17:47:17.868",
-      "dateFinished": "2021-08-31 17:47:17.901",
       "status": "FINISHED"
     },
     {
       "title": "Load data into table",
       "text": "%livy \nimport org.apache.commons.io.IOUtils\nimport java.net.URL\nimport java.nio.charset.Charset\n\n// Livy creates and injects sc (SparkContext)\n// So you don\u0027t need create it manually\n\n// load bank data\nval bankText \u003d sc.parallelize(\n    IOUtils.toString(\n        new URL(\"http://s3.amazonaws.com/apache-zeppelin/tutorial/bank/bank.csv\"),\n        Charset.forName(\"utf8\")).split(\"\\n\"))\n\ncase class Bank(age: Integer, job: String, marital: String, education: String, balance: Integer)\n\nval bank \u003d bankText.map(s \u003d\u003e s.split(\";\")).filter(s \u003d\u003e s(0) !\u003d \"\\\"age\\\"\").map(\n    s \u003d\u003e Bank(s(0).toInt, \n            s(1).replaceAll(\"\\\"\", \"\"),\n            s(2).replaceAll(\"\\\"\", \"\"),\n            s(3).replaceAll(\"\\\"\", \"\"),\n            s(5).replaceAll(\"\\\"\", \"\").toInt\n        )\n).toDF()\nbank.createOrReplaceTempView(\"bank\")",
-      "user": "mapr",
-      "dateUpdated": "2021-08-31 17:47:17.967",
+      "user": "anonymous",
       "progress": 0,
       "config": {
         "editorSetting": {
@@ -72,11 +67,7 @@
         "msg": [
           {
             "type": "TEXT",
-            "data": "import org.apache.commons.io.IOUtils\nimport java.net.URL\nimport java.nio.charset.Charset\nbankText: org.apache.spark.rdd.RDD[String] \u003d ParallelCollectionRDD[237] at parallelize at \u003cconsole\u003e:69\ndefined class Bank\nbank: org.apache.spark.sql.DataFrame \u003d [age: int, job: string ... 3 more fields]"
-          },
-          {
-            "type": "HTML",
-            "data": "\u003chr/\u003eSpark Application Id: application_1630430690829_0003\u003cbr/\u003eSpark WebUI: \u003ca href\u003d\"https://node1.cluster.com:8090/proxy/application_1630430690829_0003/\"\u003ehttps://node1.cluster.com:8090/proxy/application_1630430690829_0003/\u003c/a\u003e"
+            "data": "import org.apache.commons.io.IOUtils\nimport java.net.URL\nimport java.nio.charset.Charset\nbankText: org.apache.spark.rdd.RDD[String] \u003d ParallelCollectionRDD[0] at parallelize at \u003cconsole\u003e:33\ndefined class Bank\nbank: org.apache.spark.sql.DataFrame \u003d [age: int, job: string ... 3 more fields]"
           }
         ]
       },
@@ -85,16 +76,12 @@
       "progressUpdateIntervalMs": 500,
       "jobName": "paragraph_1630426592917_1570810918",
       "id": "paragraph_1630426592917_1570810918",
-      "dateCreated": "2021-08-31 16:16:32.917",
-      "dateStarted": "2021-08-31 17:47:17.969",
-      "dateFinished": "2021-08-31 17:47:23.071",
       "status": "FINISHED"
     },
     {
       "text": "%livy.sql \nselect age, count(1) value\nfrom bank \nwhere age \u003c 30 \ngroup by age \norder by age",
-      "user": "mapr",
-      "dateUpdated": "2021-08-31 17:49:58.831",
-      "progress": 40,
+      "user": "anonymous",
+      "progress": 62,
       "config": {
         "editorSetting": {
           "language": "sql",
@@ -169,10 +156,6 @@
           {
             "type": "TABLE",
             "data": "age\tvalue\n19\t4\n20\t3\n21\t7\n22\t9\n23\t20\n24\t24\n25\t44\n26\t77\n27\t94\n28\t103\n29\t97"
-          },
-          {
-            "type": "HTML",
-            "data": "\u003chr/\u003eSpark Application Id: application_1630430690829_0003\u003cbr/\u003eSpark WebUI: \u003ca href\u003d\"https://node1.cluster.com:8090/proxy/application_1630430690829_0003/\"\u003ehttps://node1.cluster.com:8090/proxy/application_1630430690829_0003/\u003c/a\u003e"
           }
         ]
       },
@@ -181,16 +164,12 @@
       "progressUpdateIntervalMs": 500,
       "jobName": "paragraph_1630426606446_971690287",
       "id": "paragraph_1630426606446_971690287",
-      "dateCreated": "2021-08-31 16:16:46.446",
-      "dateStarted": "2021-08-31 17:47:23.088",
-      "dateFinished": "2021-08-31 17:47:27.195",
       "status": "FINISHED"
     },
     {
       "text": "%livy.sql \nselect age, count(1) value \nfrom bank \nwhere age \u003c ${maxAge\u003d30} \ngroup by age \norder by age",
-      "user": "mapr",
-      "dateUpdated": "2021-08-31 17:49:59.823",
-      "progress": 71,
+      "user": "anonymous",
+      "progress": 81,
       "config": {
         "editorSetting": {
           "language": "sql",
@@ -257,7 +236,7 @@
       },
       "settings": {
         "params": {
-          "maxAge": "30"
+          "maxAge": "36"
         },
         "forms": {
           "maxAge": {
@@ -274,11 +253,7 @@
         "msg": [
           {
             "type": "TABLE",
-            "data": "age\tvalue\n19\t4\n20\t3\n21\t7\n22\t9\n23\t20\n24\t24\n25\t44\n26\t77\n27\t94\n28\t103\n29\t97"
-          },
-          {
-            "type": "HTML",
-            "data": "\u003chr/\u003eSpark Application Id: application_1630430690829_0003\u003cbr/\u003eSpark WebUI: \u003ca href\u003d\"https://node1.cluster.com:8090/proxy/application_1630430690829_0003/\"\u003ehttps://node1.cluster.com:8090/proxy/application_1630430690829_0003/\u003c/a\u003e"
+            "data": "age\tvalue\n19\t4\n20\t3\n21\t7\n22\t9\n23\t20\n24\t24\n25\t44\n26\t77\n27\t94\n28\t103\n29\t97\n30\t150\n31\t199\n32\t224\n33\t186\n34\t231\n35\t180"
           }
         ]
       },
@@ -287,16 +262,12 @@
       "progressUpdateIntervalMs": 500,
       "jobName": "paragraph_1630426612879_2105648141",
       "id": "paragraph_1630426612879_2105648141",
-      "dateCreated": "2021-08-31 16:16:52.879",
-      "dateStarted": "2021-08-31 17:47:27.295",
-      "dateFinished": "2021-08-31 17:47:30.398",
       "status": "FINISHED"
     },
     {
       "text": "%livy.sql \nselect age, count(1) value \nfrom bank \nwhere marital\u003d\"${marital\u003dsingle,single|divorced|married}\" \ngroup by age \norder by age",
-      "user": "mapr",
-      "dateUpdated": "2021-08-31 17:50:01.340",
-      "progress": 18,
+      "user": "anonymous",
+      "progress": 75,
       "config": {
         "editorSetting": {
           "language": "sql",
@@ -364,7 +335,7 @@
       },
       "settings": {
         "params": {
-          "marital": "single"
+          "marital": "married"
         },
         "forms": {
           "marital": {
@@ -392,11 +363,7 @@
         "msg": [
           {
             "type": "TABLE",
-            "data": "age\tvalue\n19\t4\n20\t3\n21\t7\n22\t9\n23\t17\n24\t13\n25\t33\n26\t56\n27\t64\n28\t78\n29\t56\n30\t92\n31\t86\n32\t105\n33\t61\n34\t75\n35\t46\n36\t50\n37\t43\n38\t44\n39\t30\n40\t25\n41\t19\n42\t23\n43\t21\n44\t20\n45\t15\n46\t14\n47\t12\n48\t12\n49\t11\n50\t8\n51\t6\n52\t9\n53\t4\n55\t3\n56\t3\n57\t2\n58\t7\n59\t2\n60\t5\n66\t2\n69\t1"
-          },
-          {
-            "type": "HTML",
-            "data": "\u003chr/\u003eSpark Application Id: application_1630430690829_0003\u003cbr/\u003eSpark WebUI: \u003ca href\u003d\"https://node1.cluster.com:8090/proxy/application_1630430690829_0003/\"\u003ehttps://node1.cluster.com:8090/proxy/application_1630430690829_0003/\u003c/a\u003e"
+            "data": "age\tvalue\n23\t3\n24\t11\n25\t11\n26\t18\n27\t26\n28\t23\n29\t37\n30\t56\n31\t104\n32\t105\n33\t103\n34\t142\n35\t109\n36\t117\n37\t100\n38\t99\n39\t88\n40\t105\n41\t97\n42\t91\n43\t79\n44\t68\n45\t76\n46\t82\n47\t78\n48\t91\n49\t87\n50\t74\n51\t63\n52\t66\n53\t75\n54\t56\n55\t68\n56\t50\n57\t78\n58\t67\n59\t56\n60\t36\n61\t15\n62\t5\n63\t7\n64\t6\n65\t4\n66\t7\n67\t5\n68\t1\n69\t5\n70\t5\n71\t5\n72\t4\n73\t6\n74\t2\n75\t3\n76\t1\n77\t5\n78\t2\n79\t3\n80\t6\n81\t1\n83\t2\n86\t1\n87\t1"
           }
         ]
       },
@@ -405,15 +372,11 @@
       "progressUpdateIntervalMs": 500,
       "jobName": "paragraph_1630426622156_1965258330",
       "id": "paragraph_1630426622156_1965258330",
-      "dateCreated": "2021-08-31 16:17:02.156",
-      "dateStarted": "2021-08-31 17:47:30.506",
-      "dateFinished": "2021-08-31 17:47:33.583",
       "status": "FINISHED"
     },
     {
       "text": "%md\n## Congratulations, it\u0027s done.\n##### You can create your own notebook in \u0027Notebook\u0027 menu. Good luck!",
-      "user": "mapr",
-      "dateUpdated": "2021-08-31 17:47:33.606",
+      "user": "anonymous",
       "progress": 0,
       "config": {
         "tableHide": false,
@@ -448,23 +411,18 @@
       "progressUpdateIntervalMs": 500,
       "jobName": "paragraph_1630426637161_437335304",
       "id": "paragraph_1630426637161_437335304",
-      "dateCreated": "2021-08-31 16:17:17.161",
-      "dateStarted": "2021-08-31 17:47:33.614",
-      "dateFinished": "2021-08-31 17:47:33.648",
       "status": "FINISHED"
     }
   ],
   "name": "Livy - Basic Features (Spark)",
   "id": "2GFSQUS5Y",
   "defaultInterpreterGroup": "livy",
-  "version": "0.9.0-mapr-SNAPSHOT",
+  "version": "0.9.0",
   "noteParams": {},
   "noteForms": {},
   "angularObjects": {},
   "config": {
     "isZeppelinNotebookCronEnable": true
   },
-  "info": {
-    "isRunning": false
-  }
+  "info": {}
 }
