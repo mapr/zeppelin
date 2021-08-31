@@ -8,7 +8,7 @@
       "zeppelin.python": {
         "envName": null,
         "propertyName": "zeppelin.python",
-        "defaultValue": "python",
+        "defaultValue": "python3",
         "description": "Python binary executable path. It is set to python by default.(assume python is in your $PATH)",
         "type": "string"
       },
