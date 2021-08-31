@@ -73,7 +73,7 @@ docker_build() {
     return "$res"
 }
 
-echo "Building centos7"
+echo "Building centos7 image: ${DOCKER_REPO}:${IMAGE_VERSION}_centos7"
 docker_build "centos7/Dockerfile" "${DOCKER_REPO}:${IMAGE_VERSION}_centos7"
 [ "$?" -ne 0 ] && BUILD_SUCC=false
 
