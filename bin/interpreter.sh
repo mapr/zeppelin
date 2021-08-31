@@ -249,6 +249,8 @@ elif [[ "${INTERPRETER_ID}" == "pig" ]]; then
   else
     echo "TEZ_CONF_DIR is not set, configuration might not be loaded"
   fi
+
+  ZEPPELIN_INTP_CLASSPATH+=":$(mapr classpath)"
 elif [[ "${INTERPRETER_ID}" == "flink" ]]; then
   addEachJarInDirRecursiveForIntp "${FLINK_HOME}/lib"
 
