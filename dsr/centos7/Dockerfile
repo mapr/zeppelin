@@ -41,13 +41,13 @@ RUN mkdir -p /opt/mapr/installer/docker/ && \
 
 RUN /opt/mapr/installer/docker/mapr-setup.sh -r "$MAPR_REPO_ROOT" container client "$MAPR_VERSION_CORE" "$MAPR_VERSION_MEP" mapr-client mapr-posix-client-container mapr-hbase mapr-pig mapr-spark mapr-kafka mapr-livy
 
+RUN yum install -y git jq less nano patch vim && \
+    yum install -y gcc gcc-c++ python3-devel python3-pip && \
+    python3 -m pip install --upgrade pip && \
+    python3 -m pip install matplotlib numpy pandas
+
 RUN mkdir -p /opt/mapr/zeppelin && \
     echo "$ZEPPELIN_VERSION" > /opt/mapr/zeppelin/zeppelinversion
-
-RUN yum install -y git less nano patch vim && \
-    yum install -y gcc gcc-c++ python3-devel python3-pip && \
-    pip3 install --upgrade pip && \
-    pip3 install matplotlib numpy pandas
 
 COPY --from=zeppelin_builder /zeppelin_build "/opt/mapr/zeppelin/zeppelin-$ZEPPELIN_VERSION"
 
@@ -55,16 +55,16 @@ RUN ZEPPELIN_HOME="/opt/mapr/zeppelin/zeppelin-${ZEPPELIN_VERSION}" ;\
     ln -s "${ZEPPELIN_HOME}/bin/entrypoint.sh" "/entrypoint.sh" ;\
     cat "${ZEPPELIN_HOME}/dsr/misc/profile.d/mapr.sh" >> /etc/profile.d/mapr.sh
 
-RUN rm /etc/yum.repos.d/mapr_*.repo && \
-    yum -q clean all && \
-    rm -rf /var/lib/yum/history/* && \
-    find /var/lib/yum/yumdb/ -name origin_url -exec rm {} \;
-
 RUN mkdir -p /opt/mapr/zeppelin/thirdparty/jdbc-mapr-drill && \
     curl -sS -o /tmp/drill_jdbc.zip "$DRILL_DRIVER_URL" && \
     unzip -q -d /tmp/drill_jdbc /tmp/drill_jdbc.zip && \
     unzip -q -d /opt/mapr/zeppelin/thirdparty/jdbc-mapr-drill /tmp/drill_jdbc/*.zip && \
     rm -rf /tmp/drill_jdbc /tmp/drill_jdbc.zip
+
+RUN rm /etc/yum.repos.d/mapr_*.repo && \
+    yum -q clean all && \
+    rm -rf /var/lib/yum/history/* && \
+    find /var/lib/yum/yumdb/ -name origin_url -exec rm {} \;
 
 EXPOSE 9995
 EXPOSE 10000-10010
