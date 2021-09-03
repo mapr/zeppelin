@@ -1,8 +1,8 @@
 # syntax=docker/dockerfile:1.0.2-experimental
 FROM centos:centos7 as zeppelin_builder
 
-ARG ZEPPELIN_GIT_REPO="git@github.com:mapr/zeppelin.git"
-ARG ZEPPELIN_GIT_TAG="0.9.0-mapr-2108"
+ARG ZEPPELIN_GIT_REPO="https://github.com/mapr/zeppelin.git"
+ARG ZEPPELIN_GIT_TAG="0.9.0-dsr-1.5.0.0"
 ARG MAPR_MAVEN_REPO="http://repository.mapr.com/maven/"
 
 RUN yum install -y git wget java-1.8.0-openjdk-devel which bzip2 && \
