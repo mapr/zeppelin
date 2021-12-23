@@ -1,0 +1,11 @@
+services=zeppelin:all:cldb
+service.displayname=Zeppelin
+service.command.start=/opt/mapr/zeppelin/zeppelin-0.10.1/bin/zeppelin-daemon.sh start
+service.command.stop=/opt/mapr/zeppelin/zeppelin-0.10.1/bin/zeppelin-daemon.sh stop
+service.command.type=BACKGROUND
+service.command.monitorcommand=/opt/mapr/zeppelin/zeppelin-0.10.1/bin/zeppelin-daemon.sh status
+service.port=9995
+service.ui.port=9995
+service.uri=/
+service.logs.location=/opt/mapr/zeppelin/zeppelin-0.10.1/logs/
+service.process.type=JAVA
