@@ -19,6 +19,9 @@ package org.apache.zeppelin.server;
 import com.codahale.metrics.servlets.HealthCheckServlet;
 import com.codahale.metrics.servlets.PingServlet;
 import com.google.gson.Gson;
+import com.mapr.web.security.SslConfig;
+import com.mapr.web.security.SslConfig.SslConfigScope;
+import com.mapr.web.security.WebSecurityManager;
 
 import static org.apache.zeppelin.server.HtmlAddonResource.HTML_ADDON_IDENTIFIER;
 
@@ -358,6 +361,28 @@ public class ZeppelinServer extends ResourceConfig {
       httpsConfig.addCustomizer(new SecureRequestCustomizer());
 
       SslConnectionFactory sslConnectionFactory = new SslConnectionFactory(getSslContextFactory(conf), HttpVersion.HTTP_1_1.asString());
+      HttpConnectionFactory httpsConnectionFactory = new HttpConnectionFactory(httpsConfig);
+      connector =
+              new ServerConnector(
+                      server,
+                      sslConnectionFactory,
+                      httpsConnectionFactory);
+      connector.setPort(sslPort);
+      connector.addBean(new JettySslHandshakeMetrics(Metrics.globalRegistry, Tags.empty()));
+    } else if (conf.isMaprSecured()) {
+      LOG.debug("Enabling SSL for Zeppelin Server on port {}", sslPort);
+      httpConfig.setSecureScheme(HttpScheme.HTTPS.asString());
+      httpConfig.setSecurePort(sslPort);
+      SslContextFactory sslContextFactory = getSslContextFactory(conf);
+      SslConfig sslConfig = WebSecurityManager.getSslConfig(SslConfigScope.SCOPE_ALL);
+      sslContextFactory.setKeyStorePath(sslConfig.getServerKeystoreLocation());
+      sslContextFactory.setKeyStorePassword(String.valueOf(sslConfig.getServerKeystorePassword()));
+      sslContextFactory.setKeyManagerPassword(String.valueOf(sslConfig.getServerKeyPassword()));
+      sslContextFactory.setKeyStoreType(sslConfig.getServerKeystoreType());
+      HttpConfiguration httpsConfig = new HttpConfiguration(httpConfig);
+      httpsConfig.addCustomizer(new SecureRequestCustomizer());
+
+      SslConnectionFactory sslConnectionFactory = new SslConnectionFactory(sslContextFactory, HttpVersion.HTTP_1_1.asString());
       HttpConnectionFactory httpsConnectionFactory = new HttpConnectionFactory(httpsConfig);
       connector =
               new ServerConnector(

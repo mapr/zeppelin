@@ -23,11 +23,16 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -1169,5 +1174,33 @@ public class ZeppelinConfiguration {
     public boolean getBooleanValue() {
       return booleanValue;
     }
+  }
+
+  private String getConfigDir() {
+    Path path;
+
+    String env = System.getenv("ZEPPELIN_CONF_DIR");
+
+    if(StringUtils.isNotBlank(env)) {
+      path = Paths.get(env);
+    } else {
+      env = System.getenv("ZEPPELIN_HOME");
+      path = Paths.get(env, "conf");
+    }
+
+    return path.toString();
+  }
+
+  public Boolean isMaprSecured() {
+    boolean result = false;
+    Path path = Paths.get(getConfigDir(), ".isSecure");
+    if (Files.exists(path)) {
+      try {
+        result = Files.readAllLines(path).get(0).contains("true");
+      } catch (IOException e) {
+        LOGGER.error("Error while reading .isSecure");
+      }
+    }
+    return result;
   }
 }
