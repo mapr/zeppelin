@@ -146,7 +146,7 @@ if [[ -z "$ZEPPELIN_IMPERSONATE_CMD" ]]; then
         ZEPPELIN_IMPERSONATE_RUN_CMD=("ssh" "${ZEPPELIN_IMPERSONATE_USER}@localhost")
     fi
 else
-    ZEPPELIN_IMPERSONATE_RUN_CMD=$(eval "echo ${ZEPPELIN_IMPERSONATE_CMD} ")
+    ZEPPELIN_IMPERSONATE_RUN_CMD=($(eval "echo ${ZEPPELIN_IMPERSONATE_CMD} "))
 fi
 
 
@@ -323,6 +323,21 @@ else
   IFS=' ' read -r -a JAVA_INTP_OPTS_ARRAY <<< "${JAVA_INTP_OPTS}"
   IFS=' ' read -r -a ZEPPELIN_INTP_MEM_ARRAY <<< "${ZEPPELIN_INTP_MEM}"
   INTERPRETER_RUN_COMMAND+=("${ZEPPELIN_RUNNER}" "${JAVA_INTP_OPTS_ARRAY[@]}" "${ZEPPELIN_INTP_MEM_ARRAY[@]}" "-cp" "${ZEPPELIN_INTP_CLASSPATH_OVERRIDES}:${ZEPPELIN_INTP_CLASSPATH}" "${ZEPPELIN_SERVER}" "${CALLBACK_HOST}" "${PORT}" "${INTP_GROUP_ID}" "${INTP_PORT}")
+fi
+
+if [[ -n "$ZEPPELIN_IMPERSONATE_USER" ]]; then
+  if [[ "${INTERPRETER_ID}" != "spark" || "$ZEPPELIN_IMPERSONATE_SPARK_PROXY_USER" == "false" ]]; then
+    suid="$(id -u "${ZEPPELIN_IMPERSONATE_USER}")"
+    if [[ -n  "${suid}" || -z "${SPARK_SUBMIT}" ]]; then
+       # INTERPRETER_RUN_COMMAND+=("${ZEPPELIN_IMPERSONATE_RUN_CMD[@]}")
+       if [[ -f "${ZEPPELIN_CONF_DIR}/zeppelin-env.sh" ]]; then
+           INTERPRETER_RUN_COMMAND=("source" "${ZEPPELIN_CONF_DIR}/zeppelin-env.sh;" "${INTERPRETER_RUN_COMMAND[@]}")
+       fi
+       INTERPRETER_RUN_COMMAND_STR=$(echo "${INTERPRETER_RUN_COMMAND[@]}")
+       echo "[INFO] Interpreter launch command:" "${ZEPPELIN_IMPERSONATE_RUN_CMD[@]}" "$INTERPRETER_RUN_COMMAND_STR"
+       exec "${ZEPPELIN_IMPERSONATE_RUN_CMD[@]}" "$INTERPRETER_RUN_COMMAND_STR"
+    fi
+  fi
 fi
 
 # Don't remove this echo, it is for diagnose, this line of output will be redirected to java log4j output.
