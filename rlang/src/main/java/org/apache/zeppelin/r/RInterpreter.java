@@ -104,7 +104,7 @@ public class RInterpreter extends AbstractInterpreter {
     this.renderOptions = getProperty("zeppelin.R.render.options",
             "out.format = 'html', comment = NA, echo = FALSE, results = 'asis', message = F, " +
                     "warning = F, fig.retina = 2");
-    this.useKnitr = Boolean.parseBoolean(getProperty("zeppelin.R.knitr", "true"));
+    this.useKnitr = Boolean.parseBoolean(getProperty("zeppelin.R.knitr", "false"));
     zeppelinR = new ZeppelinR(this);
     try {
       zeppelinR.open();

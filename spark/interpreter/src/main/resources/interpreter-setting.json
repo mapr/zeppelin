@@ -272,7 +272,7 @@
       "zeppelin.R.knitr": {
         "envName": null,
         "propertyName": "zeppelin.R.knitr",
-        "defaultValue": true,
+        "defaultValue": false,
         "description": "Whether use knitr or not",
         "type": "checkbox"
       },

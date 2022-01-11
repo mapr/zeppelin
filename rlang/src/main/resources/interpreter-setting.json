@@ -7,7 +7,7 @@
       "zeppelin.R.knitr": {
         "envName": "ZEPPELIN_R_KNITR",
         "propertyName": "zeppelin.R.knitr",
-        "defaultValue": true,
+        "defaultValue": false,
         "description": "Whether use knitr or not",
         "type": "checkbox"
       },
