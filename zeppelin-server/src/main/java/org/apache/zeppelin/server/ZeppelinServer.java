@@ -44,6 +44,7 @@ import io.micrometer.prometheus.PrometheusConfig;
 import io.micrometer.prometheus.PrometheusMeterRegistry;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.nio.file.Files;
@@ -621,6 +622,12 @@ public class ZeppelinServer extends ResourceConfig {
 
     webApp.addFilter(new FilterHolder(CorsFilter.class), "/*", EnumSet.allOf(DispatcherType.class));
 
+    String headerFileLocation = conf.getString(ConfVars.ZEPPELIN_SERVER_CUSTOM_HEADERS_FILE);
+    if (!headerFileLocation.isEmpty()) {
+      LOG.info("Loading custom headers from {}", headerFileLocation);
+      FilterHolder filterHolder = new FilterHolder(new CustomHeadersFilter(headerFileLocation, conf.isMaprSecured()));
+      webApp.addFilter(filterHolder,"/*",EnumSet.allOf(DispatcherType.class));
+    }
     webApp.setInitParameter(
         "org.eclipse.jetty.servlet.Default.dirAllowed",
         Boolean.toString(conf.getBoolean(ConfVars.ZEPPELIN_SERVER_DEFAULT_DIR_ALLOWED)));

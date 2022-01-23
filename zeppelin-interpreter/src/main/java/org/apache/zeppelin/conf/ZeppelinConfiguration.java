@@ -1086,7 +1086,8 @@ public class ZeppelinConfiguration {
     ZEPPELIN_JOBMANAGER_ENABLE("zeppelin.jobmanager.enable", false),
     ZEPPELIN_SPARK_ONLY_YARN_CLUSTER("zeppelin.spark.only_yarn_cluster", false),
     ZEPPELIN_SESSION_CHECK_INTERVAL("zeppelin.session.check_interval", 60 * 10 * 1000),
-    ZEPPELIN_NOTE_FILE_EXCLUDE_FIELDS("zeppelin.note.file.exclude.fields", "");
+    ZEPPELIN_NOTE_FILE_EXCLUDE_FIELDS("zeppelin.note.file.exclude.fields", ""),
+    ZEPPELIN_SERVER_CUSTOM_HEADERS_FILE("zeppelin.server.headers-file", "");
 
     private String varName;
     private Class<?> varClass;

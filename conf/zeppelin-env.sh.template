@@ -142,11 +142,23 @@ if [ -z "$HADOOP_CONF_DIR" ] && [ -n "$HADOOP_HOME" ]; then
     export HADOOP_CONF_DIR="${HADOOP_HOME}/etc/hadoop"
 fi
 
+ZEPPELIN_FILE_SECURE="${ZEPPELIN_HOME}/conf/.isSecure"
+if [ -e "$ZEPPELIN_FILE_SECURE" ]; then
+    isSecure=$(cat "$ZEPPELIN_FILE_SECURE")
+fi
+
 
 # HTTPS by default
 # export ZEPPELIN_SSL=${ZEPPELIN_SSL:-"true"}
 export ZEPPELIN_PORT=${ZEPPELIN_PORT:-"9995"}
 export ZEPPELIN_SSL_PORT=${ZEPPELIN_SSL_PORT:-"$ZEPPELIN_PORT"}
+
+# Configure the Custom Headers
+if [ "$isSecure" = "true" ]; then
+    export ZEPPELIN_SERVER_CUSTOM_HEADERS_FILE="${ZEPPELIN_HOME}/conf/jetty-headers-secure.xml"
+elif [ "$isSecure" != "custom" ]; then
+    export ZEPPELIN_SERVER_CUSTOM_HEADERS_FILE="${ZEPPELIN_HOME}/conf/jetty-headers-unsecure.xml"
+fi
 
 
 # Explicitly set Java Trust Store, as it can be overwritten on initialization of MapR libs
@@ -227,8 +239,3 @@ if [ -e "${MAPR_TICKETFILE_LOCATION}" ]; then
     ZEPPELIN_JDBC_URL_DRILL+=";auth=MAPRSASL"
 fi
 export ZEPPELIN_JDBC_URL_DRILL
-
-
-if [ -e "${ZEPPELIN_HOME}/conf/zeppelin-env-dsr.sh" ]; then
-    . "${ZEPPELIN_HOME}/conf/zeppelin-env-dsr.sh"
-fi
