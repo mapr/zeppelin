@@ -78,6 +78,7 @@ import org.apache.zeppelin.interpreter.InterpreterResult;
 import org.apache.zeppelin.interpreter.InterpreterResultMessage;
 import org.apache.zeppelin.interpreter.InterpreterUtils;
 import org.apache.zeppelin.interpreter.thrift.InterpreterCompletion;
+import org.apache.zeppelin.livy.maprsecurity.MaprSecurityRestTemplate;
 
 /**
  * Base class for livy interpreters.
@@ -621,6 +622,9 @@ public abstract class BaseLivyInterpreter extends Interpreter {
     boolean isSpnegoEnabled = StringUtils.isNotEmpty(keytabLocation) &&
         StringUtils.isNotEmpty(principal);
 
+    boolean isMaprSecured =
+        Boolean.parseBoolean(getProperty("zeppelin.livy.isMaprSecured", "false"));
+
     HttpClient httpClient = null;
     if (livyURL.startsWith("https:")) {
       try {
@@ -654,6 +658,8 @@ public abstract class BaseLivyInterpreter extends Interpreter {
                   .register(AuthSchemes.SPNEGO, new SPNegoSchemeFactory())
                   .build();
           httpClientBuilder.setDefaultAuthSchemeRegistry(authSchemeProviderRegistry);
+        } else if (isMaprSecured) {
+          MaprSecurityRestTemplate.configureHttpClientBuilder(httpClientBuilder);
         }
 
         httpClient = httpClientBuilder.build();
@@ -668,6 +674,12 @@ public abstract class BaseLivyInterpreter extends Interpreter {
         restTemplate = new KerberosRestTemplate(keytabLocation, principal);
       } else {
         restTemplate = new KerberosRestTemplate(keytabLocation, principal, httpClient);
+      }
+    } else if (isMaprSecured) {
+      if (httpClient == null) {
+        restTemplate = new MaprSecurityRestTemplate();
+      } else {
+        restTemplate = new MaprSecurityRestTemplate(httpClient);
       }
     } else {
       if (httpClient == null) {

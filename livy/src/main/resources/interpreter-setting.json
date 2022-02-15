@@ -12,6 +12,13 @@
         "description": "The URL for Livy Server.",
         "type": "url"
       },
+      "zeppelin.livy.isMaprSecured": {
+        "envName": "ZEPPELIN_LIVY_ISMAPRSECURED",
+        "propertyName": "zeppelin.livy.isMaprSecured",
+        "defaultValue": false,
+        "description": "Enabled MAPR Negotiation auth for livy",
+        "type": "checkbox"
+      },
       "zeppelin.livy.session.create_timeout": {
         "envName": "ZEPPELIN_LIVY_SESSION_CREATE_TIMEOUT",
         "propertyName": "zeppelin.livy.session.create_timeout",
