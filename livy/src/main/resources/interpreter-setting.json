@@ -141,6 +141,31 @@
         "defaultValue": false,
         "description": "Whether restart a dead session",
         "type": "checkbox"
+      },
+      "zeppelin.livy.ssl.trustStore": {
+        "propertyName": "zeppelin.livy.ssl.trustStore",
+        "defaultValue": "",
+        "description": "Path to Trust Store",
+        "type": "string"
+      },
+      "zeppelin.livy.ssl.trustStorePassword": {
+        "propertyName": "zeppelin.livy.ssl.trustStorePassword",
+        "defaultValue": "",
+        "description": "Password to Trust Store",
+        "type": "password"
+      },
+      "zeppelin.livy.ssl.trustStoreType": {
+        "propertyName": "zeppelin.livy.ssl.trustStoreType",
+        "defaultValue": "JKS",
+        "description": "Trust Store type",
+        "type": "string"
+      },
+      "zeppelin.livy.ssl.autoConfig": {
+        "propertyName": "zeppelin.livy.ssl.trustStore",
+        "envName": "ZEPPELIN_LIVY_SSL_AUTOCONFIG",
+        "defaultValue": false,
+        "description": "Enable automatic configuration of SSL TrustStore to access secured Livy Server.",
+        "type": "checkbox"
       }
     },
     "option": {

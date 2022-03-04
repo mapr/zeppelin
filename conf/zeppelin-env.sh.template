@@ -160,6 +160,12 @@ elif [ "$isSecure" != "custom" ]; then
     export ZEPPELIN_SERVER_CUSTOM_HEADERS_FILE="${ZEPPELIN_HOME}/conf/jetty-headers-unsecure.xml"
 fi
 
+# Configure the Livy interpreter
+if [ "$isSecure" = "true" ]; then
+    export ZEPPELIN_LIVY_ISMAPRSECURED=true
+    export ZEPPELIN_LIVY_SSL_AUTOCONFIG=true
+fi
+
 
 # Explicitly set Java Trust Store, as it can be overwritten on initialization of MapR libs
 # to /opt/mapr/conf/ssl_truststore, which is not exists on client setup, and may cause problems

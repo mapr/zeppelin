@@ -21,6 +21,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 
+import com.mapr.web.security.SslConfig;
+import com.mapr.web.security.WebSecurityManager;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.http.auth.AuthSchemeProvider;
@@ -575,10 +577,18 @@ public abstract class BaseLivyInterpreter extends Interpreter {
   private SSLContext getSslContext() {
     try {
       // Build truststore
+      Boolean autoConfig = Boolean.parseBoolean(getProperty("zeppelin.livy.ssl.autoConfig"));
       String trustStoreFile = getProperty("zeppelin.livy.ssl.trustStore");
       String trustStorePassword = getProperty("zeppelin.livy.ssl.trustStorePassword");
       String trustStoreType = getProperty("zeppelin.livy.ssl.trustStoreType",
               KeyStore.getDefaultType());
+      if (autoConfig) {
+        SslConfig sslConfig = WebSecurityManager.getSslConfig(SslConfig.
+            SslConfigScope.SCOPE_CLIENT_ONLY);
+        trustStoreFile = sslConfig.getClientTruststoreLocation();
+        trustStorePassword = String.valueOf(sslConfig.getClientTruststorePassword());
+        trustStoreType = sslConfig.getClientTruststoreType();
+      }
       if (StringUtils.isBlank(trustStoreFile)) {
         throw new RuntimeException("No zeppelin.livy.ssl.trustStore specified for livy ssl");
       }

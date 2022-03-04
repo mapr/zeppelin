@@ -176,6 +176,22 @@
         </dependency>
 
         <dependency>
+            <groupId>com.mapr.security</groupId>
+            <artifactId>mapr-security-web</artifactId>
+        </dependency>
+
+        <!--
+          ~ org.eclipse.jetty.util.ssl.SslContextFactory class is needed for mapr-security-web to work
+          ~ and we decided to put this dependency here explicitly
+          ~ since by default we excluded all dependencies of mapr-seciurity-web.
+        -->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-util</artifactId>
+            <version>${jetty.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-auth</artifactId>
             <version>${hadoop.version}</version>
