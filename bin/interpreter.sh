@@ -327,8 +327,26 @@ else
 fi
 
 if [[ -n "$ZEPPELIN_IMPERSONATE_USER" ]]; then
-  if [[ "${INTERPRETER_ID}" != "spark" || "$ZEPPELIN_IMPERSONATE_SPARK_PROXY_USER" == "false" ]]; then
-    suid="$(id -u "${ZEPPELIN_IMPERSONATE_USER}")"
+  suid="$(id -u "${ZEPPELIN_IMPERSONATE_USER}")"
+
+  if [[ "$MAPRTICKET_IMPERSONATION" == "true" && -n "$suid" ]]; then
+    mkdir -p "${ZEPPELIN_HOME}/tickets"
+    ticketfile="${ZEPPELIN_HOME}/tickets/maprticket_${suid}"
+    generateticket=true
+    if [ -e "$ticketfile" ]; then
+      MAPR_TICKETFILE_LOCATION="$ticketfile" maprlogin authtest >/dev/null
+      rc=$?
+      if [ "$rc" -eq 0 ]; then
+        generateticket=false
+      fi
+    fi
+
+    if [ "$generateticket" == "true" ]; then
+      maprlogin generateticket -user "$ZEPPELIN_IMPERSONATE_USER" -type service -out "$ticketfile"
+    fi
+    export MAPR_TICKETFILE_LOCATION="$ticketfile"
+
+  elif [[ "${INTERPRETER_ID}" != "spark" || "$ZEPPELIN_IMPERSONATE_SPARK_PROXY_USER" == "false" ]]; then
     if [[ -n  "${suid}" || -z "${SPARK_SUBMIT}" ]]; then
        # INTERPRETER_RUN_COMMAND+=("${ZEPPELIN_IMPERSONATE_RUN_CMD[@]}")
        if [[ -f "${ZEPPELIN_CONF_DIR}/zeppelin-env.sh" ]]; then
