@@ -572,7 +572,6 @@ public class ZeppelinServer extends ResourceConfig {
 
     servletHolder.setInitParameter("javax.ws.rs.Application", ZeppelinServer.class.getName());
     servletHolder.setName("rest");
-    servletHolder.setForcedPath("rest");
     webapp.setSessionHandler(new SessionHandler());
     webapp.addServlet(servletHolder, "/api/*");
 
