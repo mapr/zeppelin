@@ -77,13 +77,13 @@
     <module>drill</module>
     <module>hive</module>
     <module>file</module>
-    <module>flink</module>
+    <!-- <module>flink</module> -->
     <module>ignite</module>
     <module>influxdb</module>
     <!-- <module>kylin</module> -->
     <module>python</module>
-    <module>lens</module>
-    <module>cassandra</module>
+    <!-- <module>lens</module> -->
+    <!-- <module>cassandra</module> -->
     <module>elasticsearch</module>
     <module>bigquery</module>
     <!-- <module>alluxio</module> -->
@@ -979,6 +979,12 @@
         <artifactId>junit</artifactId>
         <version>${junit.version}</version>
         <scope>test</scope>
+        <exclusions>
+          <exclusion>
+            <artifactId>hamcrest-core</artifactId>
+            <groupId>org.hamcrest</groupId>
+          </exclusion>
+        </exclusions>
       </dependency>
 
       <dependency>
