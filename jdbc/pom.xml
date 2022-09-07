@@ -35,7 +35,7 @@
     <!--library versions-->
     <interpreter.name>jdbc</interpreter.name>
     <postgresql.version>9.4-1201-jdbc41</postgresql.version>
-    <hadoop.version>${hadoop2.7.version}</hadoop.version>
+    <hadoop.version>${hadoop3.version}</hadoop.version>
     <h2.version>1.4.190</h2.version>
     <commons.dbcp2.version>2.0.1</commons.dbcp2.version>
     <hive2.version>2.3.6-mapr-1912-r11</hive2.version>
@@ -297,7 +297,7 @@
     <profile>
       <id>jdbc-hadoop3</id>
       <properties>
-        <hadoop-common.version>${hadoop3.0.version}</hadoop-common.version>
+        <hadoop-common.version>${hadoop3.version}</hadoop-common.version>
       </properties>
       <dependencies>
         <dependency>
