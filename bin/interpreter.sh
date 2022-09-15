@@ -230,7 +230,7 @@ elif [[ "${INTERPRETER_ID}" == "drill" ]]; then
 elif [[ "${INTERPRETER_ID}" == "hive" ]]; then
   ZEPPELIN_INTP_CLASSPATH+=":${ZEPPELIN_HOME}/interpreter/jdbc/*:$(mapr classpath 2>/dev/null)"
 elif [[ "${INTERPRETER_ID}" == "livy" ]]; then
-    ZEPPELIN_INTP_CLASSPATH+=":$(mapr classpath)"
+    ZEPPELIN_INTP_CLASSPATH+=":$(mapr classpath 2>/dev/null)"
 elif [[ "${INTERPRETER_ID}" == "hbase" ]]; then
   if [[ -n "${HBASE_CONF_DIR}" ]]; then
     ZEPPELIN_INTP_CLASSPATH+=":${HBASE_CONF_DIR}"
@@ -239,6 +239,7 @@ elif [[ "${INTERPRETER_ID}" == "hbase" ]]; then
   else
     echo "HBASE_HOME and HBASE_CONF_DIR are not set, configuration might not be loaded"
   fi
+  ZEPPELIN_INTP_CLASSPATH+=":${HBASE_HOME}/lib:$(mapr classpath 2>/dev/null)"
 elif [[ "${INTERPRETER_ID}" == "pig" ]]; then
    # autodetect HADOOP_CONF_HOME by heuristic
   if [[ -n "${HADOOP_HOME}" ]] && [[ -z "${HADOOP_CONF_DIR}" ]]; then
