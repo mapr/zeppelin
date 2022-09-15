@@ -551,7 +551,7 @@ fi
 
 
 if [ "$ZEPPELIN_DEPLOY_MODE" = "kubernetes" ]; then
-    exec "${ZEPPELIN_HOME}/bin/zeppelin.sh" start
+    exec "${ZEPPELIN_HOME}/bin/zeppelin.sh"
 else
     "${ZEPPELIN_HOME}/bin/zeppelin-daemon.sh" start
     if [ $# -eq 0 ]; then
