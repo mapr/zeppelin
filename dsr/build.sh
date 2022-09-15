@@ -2,7 +2,7 @@
 
 BASEDIR=$(dirname "$0")
 
-MAPR_VERSION_DSR=${MAPR_VERSION_DSR:-"v1.5.0.0"}
+MAPR_VERSION_DSR=${MAPR_VERSION_DSR:-"v1.5.0.1"}
 MAPR_VERSION_CORE=${MAPR_VERSION_CORE:-"6.1.1"}
 MAPR_VERSION_MEP=${MAPR_VERSION_MEP:-"6.3.4"}
 
@@ -39,14 +39,14 @@ if [ "$RELEASE" = true ]; then
     DOCKER_REPO=${DOCKER_REPO:-"maprtech/data-science-refinery"}
     IMAGE_VERSION=${IMAGE_VERSION:-"${MAPR_VERSION_DSR}_${MAPR_VERSION_CORE}_${MAPR_VERSION_MEP}"}
     ZEPPELIN_GIT_REPO=${ZEPPELIN_GIT_REPO:-"https://github.com/mapr/zeppelin.git"}
-    ZEPPELIN_GIT_TAG=${ZEPPELIN_GIT_TAG:-"0.9.0-dsr-1.5.0.0"}
+    ZEPPELIN_GIT_TAG=${ZEPPELIN_GIT_TAG:-"0.9.0-dsr-1.5.0.1"}
     MAPR_REPO_ROOT=${MAPR_REPO_ROOT:-"https://package.mapr.com/releases"}
     MAPR_MAVEN_REPO=${MAPR_MAVEN_REPO:-"http://repository.mapr.com/maven/"}
 else
     DOCKER_REPO=${DOCKER_REPO:-"maprtech/testzepplinpacc"}
     IMAGE_VERSION=${IMAGE_VERSION:-$(date -u "+%Y%m%d%H%M")}
     ZEPPELIN_GIT_REPO=${ZEPPELIN_GIT_REPO:-"git@github.com:mapr/private-zeppelin.git"}
-    ZEPPELIN_GIT_TAG=${ZEPPELIN_GIT_TAG:-"branch-0.9.0-mapr"}
+    ZEPPELIN_GIT_TAG=${ZEPPELIN_GIT_TAG:-"branch-0.9.0-dsr-1.5.0"}
     # MAPR_REPO_ROOT=${MAPR_REPO_ROOT:-"http://dfaf.mip.storage.hpecorp.net/artifactory/prestage/releases-dev"}
     MAPR_REPO_ROOT=${MAPR_REPO_ROOT:-"https://package.mapr.com/releases"}
     # MAPR_MAVEN_REPO=${MAPR_MAVEN_REPO:-"http://df-mvn-dev.mip.storage.hpecorp.net/nexus/content/groups/public/"}
