@@ -4,6 +4,8 @@ ARG ZEPPELIN_GIT_REPO="https://github.com/mapr/zeppelin.git"
 ARG ZEPPELIN_GIT_TAG="0.9.0-dsr-1.5.0.1"
 ARG MAPR_MAVEN_REPO="http://repository.mapr.com/maven/"
 
+RUN yum upgrade -y ca-certificates
+
 RUN yum install -y git wget java-1.8.0-openjdk-devel which bzip2 && \
     mkdir /opt/maven && \
     wget https://www.apache.org/dist/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz -O maven.tar.gz && \
@@ -30,6 +32,8 @@ ARG DRILL_DRIVER_URL="http://package.mapr.com/tools/MapR-JDBC/MapR_Drill/MapRDri
 LABEL mapr.os=centos7 mapr.version=$MAPR_VERSION_CORE mapr.mep_version=$MAPR_VERSION_MEP
 
 ENV container docker
+
+RUN yum upgrade -y ca-certificates
 
 RUN yum install -y curl initscripts net-tools sudo wget which syslinux openssl file java-1.8.0-openjdk-devel unzip
 
