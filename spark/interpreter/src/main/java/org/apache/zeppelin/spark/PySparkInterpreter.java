@@ -240,4 +240,9 @@ public class PySparkInterpreter extends PythonInterpreter {
   public boolean isSpark3() {
     return sparkInterpreter.getSparkVersion().getMajorVersion() == 3;
   }
+
+  // Used by PySpark
+  public boolean isAfterSpark33() {
+    return sparkInterpreter.getSparkVersion().newerThanEquals(SparkVersion.SPARK_3_3_0);
+  }
 }

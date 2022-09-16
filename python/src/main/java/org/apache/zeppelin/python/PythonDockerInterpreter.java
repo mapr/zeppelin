@@ -91,7 +91,7 @@ public class PythonDockerInterpreter extends Interpreter {
           ":/_zeppelin ";
 
       // set PYTHONPATH
-      String pythonPath = ".:/_python_workdir/py4j-src-0.10.7.zip:/_python_workdir";
+      String pythonPath = ".:/_python_workdir/py4j-0.10.9.5-src.zip:/_python_workdir";
 
       setPythonCommand("docker run -i --rm " +
           mountPythonScript +

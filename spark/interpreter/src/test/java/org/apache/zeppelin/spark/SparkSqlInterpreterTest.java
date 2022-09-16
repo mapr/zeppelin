@@ -226,7 +226,8 @@ public class SparkSqlInterpreterTest {
     assertEquals(context.out.toString(), 2, context.out.toInterpreterResultMessage().size());
     assertEquals(context.out.toString(), Type.TABLE, context.out.toInterpreterResultMessage().get(0).getType());
     if (!sparkInterpreter.getSparkVersion().isSpark1()) {
-      assertTrue(context.out.toString(), context.out.toInterpreterResultMessage().get(1).getData().contains("mismatched input"));
+      assertTrue(context.out.toString(), context.out.toString().contains("mismatched input") ||
+            context.out.toString().contains("Syntax error"));
     }
 
     // One correct sql + One invalid sql + One valid sql (skipped)
@@ -235,9 +236,9 @@ public class SparkSqlInterpreterTest {
     assertEquals(context.out.toString(), 2, context.out.toInterpreterResultMessage().size());
     assertEquals(context.out.toString(), Type.TABLE, context.out.toInterpreterResultMessage().get(0).getType());
     if (!sparkInterpreter.getSparkVersion().isSpark1()) {
-      assertTrue(context.out.toString(), context.out.toInterpreterResultMessage().get(1).getData().contains("mismatched input"));
+      assertTrue(context.out.toString(), context.out.toString().contains("mismatched input") ||
+            context.out.toString().contains("Syntax error"));
     }
-
     // Two 2 comments
     ret = sqlInterpreter.interpret(
             "--comment_1\n--comment_2", context);
