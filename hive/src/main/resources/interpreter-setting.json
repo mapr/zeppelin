@@ -114,6 +114,13 @@
         "defaultValue": false,
         "description": "Enable ZeppelinContext variable interpolation into paragraph text",
         "type": "checkbox"
+      },
+      "zeppelin.jdbc.hive.engines.tag.enable": {
+        "envName": null,
+        "propertyName": "zeppelin.jdbc.hive.engines.tag.enable",
+        "defaultValue": false,
+        "description": "Set application tag for applications started by hive engines",
+        "type": "checkbox"
       }
     },
     "editor": {
