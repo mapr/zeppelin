@@ -229,6 +229,10 @@ elif [[ "${INTERPRETER_ID}" == "drill" ]]; then
 
 elif [[ "${INTERPRETER_ID}" == "hive" ]]; then
   ZEPPELIN_INTP_CLASSPATH+=":${ZEPPELIN_HOME}/interpreter/jdbc/*:$(mapr classpath 2>/dev/null)"
+
+  java_opts=$(. "${MAPR_HOME}/conf/env.sh" >/dev/null 2>&1; echo "$MAPR_ECOSYSTEM_LOGIN_OPTS")
+  JAVA_INTP_OPTS+=" $java_opts "
+
 elif [[ "${INTERPRETER_ID}" == "livy" ]]; then
     ZEPPELIN_INTP_CLASSPATH+=":$(mapr classpath 2>/dev/null)"
 elif [[ "${INTERPRETER_ID}" == "hbase" ]]; then
