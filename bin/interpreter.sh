@@ -243,7 +243,11 @@ elif [[ "${INTERPRETER_ID}" == "hbase" ]]; then
   else
     echo "HBASE_HOME and HBASE_CONF_DIR are not set, configuration might not be loaded"
   fi
-  ZEPPELIN_INTP_CLASSPATH+=":${HBASE_HOME}/lib:$(mapr classpath 2>/dev/null)"
+  if [ -n "$HBASE_HOME" ]; then
+    ZEPPELIN_INTP_CLASSPATH+=":${HBASE_HOME}/lib/*:$(mapr classpath 2>/dev/null)"
+  fi
+  java_opts=$(. "${MAPR_HOME}/conf/env.sh" >/dev/null 2>&1; echo "$MAPR_ECOSYSTEM_LOGIN_OPTS")
+  JAVA_INTP_OPTS+=" $java_opts "
 elif [[ "${INTERPRETER_ID}" == "pig" ]]; then
    # autodetect HADOOP_CONF_HOME by heuristic
   if [[ -n "${HADOOP_HOME}" ]] && [[ -z "${HADOOP_CONF_DIR}" ]]; then
