@@ -103,5 +103,5 @@ export ZEPPELIN_JDBC_URL_DRILL
 
 if [ -e "${MAPR_HOME}/hbase/hbaseversion" ]; then
     HBASE_VERSION=$(cat "${MAPR_HOME}/hbase/hbaseversion")
-    export HBASE_HOME=${HBASE_HOME:"${MAPR_HOME}/hbase/hbase-${HBASE_VERSION}"}
+    export HBASE_HOME=${HBASE_HOME:-"${MAPR_HOME}/hbase/hbase-${HBASE_VERSION}"}
 fi
