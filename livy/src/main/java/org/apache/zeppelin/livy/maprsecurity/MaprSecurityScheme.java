@@ -55,7 +55,7 @@ class MaprSecurityScheme extends AuthSchemeBase {
     String challenge;
     try {
       challenge = cs.generateChallenge();
-      logger.info("Chalange {}", challenge);
+      // logger.info("Chalange {}", challenge);
     } catch (MapRClientSecurityException e) {
       throw new AuthenticationException(getSchemeName() + " authentication has failed", e);
     }
