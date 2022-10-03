@@ -167,6 +167,8 @@
     <protoc.version>3.5.0</protoc.version>
     <grpc.version>1.26.0</grpc.version>
 
+    <jackson-databind.version>2.9.10.8</jackson-databind.version>
+
     <!-- test library versions -->
     <junit.version>4.12</junit.version>
     <mockito.version>1.10.19</mockito.version>
@@ -1069,6 +1071,12 @@
             <artifactId>*</artifactId>
           </exclusion>
         </exclusions>
+      </dependency>
+
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>${jackson-databind.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
