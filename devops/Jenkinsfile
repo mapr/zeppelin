@@ -95,7 +95,7 @@ pipeline {
                     sh """
                       unlink /opt/maven ; \
                       mkdir /opt/maven ; \
-                      curl -s http://dfaf.mip.storage.hpecorp.net/artifactory/buildmachine-files/cross-linux/apache-maven-3.5.4-bin.tar.gz | tar -xz --strip-components=1 -C /opt/maven ; \
+                      curl -s http://dfaf.mip.storage.hpecorp.net/artifactory/buildmachine-files-copy/cross-linux/apache-maven-3.5.4-bin.tar.gz | tar -xz --strip-components=1 -C /opt/maven ; \
                       rm -rf ${env.PROJECT}; git clone git@github.com:mapr/private-pkg.git ${env.PROJECT}; \
                       cd ${env.PROJECT}; \
                       git checkout MEP-9.0.0 ; \
@@ -160,7 +160,7 @@ pipeline {
                     sh """
                       unlink /opt/maven ; \
                       mkdir /opt/maven ; \
-                      curl -s http://dfaf.mip.storage.hpecorp.net/artifactory/buildmachine-files/cross-linux/apache-maven-3.5.4-bin.tar.gz | tar -xz --strip-components=1 -C /opt/maven ; \
+                      curl -s http://dfaf.mip.storage.hpecorp.net/artifactory/buildmachine-files-copy/cross-linux/apache-maven-3.5.4-bin.tar.gz | tar -xz --strip-components=1 -C /opt/maven ; \
                       rm -rf ${env.PROJECT}; git clone git@github.com:mapr/private-pkg.git ${env.PROJECT}; \
                       cd ${env.PROJECT}; \
                       git checkout MEP-9.0.0 ; \
