@@ -20,6 +20,7 @@ package org.apache.zeppelin.notebook;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.zeppelin.conf.ZeppelinConfiguration;
+import org.apache.zeppelin.notebook.exception.FolderPathAlreadyExistsException;
 import org.apache.zeppelin.notebook.exception.NotePathAlreadyExistsException;
 import org.apache.zeppelin.notebook.repo.NotebookRepo;
 import org.apache.zeppelin.user.AuthenticationInfo;
@@ -259,6 +260,11 @@ public class NoteManager {
                          String newFolderPath,
                          AuthenticationInfo subject) throws IOException {
 
+    if (containsFolder(newFolderPath)) {
+      String errorMsg = String.format("Folder '%s' existed!", newFolderPath);
+      throw new FolderPathAlreadyExistsException(errorMsg);
+    }
+
     // update notebookrepo
     this.notebookRepo.move(folderPath, newFolderPath, subject);
 
@@ -365,7 +371,7 @@ public class NoteManager {
     return noteNode;
   }
 
-  private Folder getFolder(String folderPath) throws IOException {
+  public Folder getFolder(String folderPath) throws IOException {
     String[] tokens = folderPath.split("/");
     Folder curFolder = root;
     for (int i = 0; i < tokens.length; ++i) {
