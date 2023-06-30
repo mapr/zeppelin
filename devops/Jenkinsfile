@@ -98,7 +98,7 @@ pipeline {
                       curl -s http://dfaf.mip.storage.hpecorp.net/artifactory/buildmachine-files-copy/cross-linux/apache-maven-3.5.4-bin.tar.gz | tar -xz --strip-components=1 -C /opt/maven ; \
                       rm -rf ${env.PROJECT}; git clone git@github.com:mapr/private-pkg.git ${env.PROJECT}; \
                       cd ${env.PROJECT}; \
-                      git checkout MEP-9.0.0 ; \
+                      git checkout MEP-9.1.2 ; \
                       make ${env.PROJECT} TIMESTAMP=${ID} ${MAKEFILE_ARGS} ; \
                     """
                   }
@@ -163,7 +163,7 @@ pipeline {
                       curl -s http://dfaf.mip.storage.hpecorp.net/artifactory/buildmachine-files-copy/cross-linux/apache-maven-3.5.4-bin.tar.gz | tar -xz --strip-components=1 -C /opt/maven ; \
                       rm -rf ${env.PROJECT}; git clone git@github.com:mapr/private-pkg.git ${env.PROJECT}; \
                       cd ${env.PROJECT}; \
-                      git checkout MEP-9.0.0 ; \
+                      git checkout MEP-9.1.2 ; \
                       make ${env.PROJECT} TIMESTAMP=${ID} ${MAKEFILE_ARGS} ; \
                     """
                   }
