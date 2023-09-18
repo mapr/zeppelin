@@ -151,7 +151,6 @@ limitations under the License.
   * [Java](./interpreter/java.html)
   * [JDBC](./interpreter/jdbc.html)
   * [Jupyter](./interpreter/jupyter.html)
-  * [Kotlin](./interpreter/kotlin.html)
   * [KSQL](./interpreter/ksql.html)
   * [Kylin](./interpreter/kylin.html)
   * [Lens](./interpreter/lens.html)

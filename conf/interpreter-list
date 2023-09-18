@@ -31,7 +31,6 @@ groovy          org.apache.zeppelin:zeppelin-groovy:0.11.0-SANPSHOT             
 hbase           org.apache.zeppelin:zeppelin-hbase:0.11.0-SANPSHOT                Hbase interpreter
 java            org.apache.zeppelin:zeppelin-java:0.11.0-SANPSHOT                 Java interpreter
 jdbc            org.apache.zeppelin:zeppelin-jdbc:0.11.0-SANPSHOT                 Jdbc interpreter
-kotlin          org.apache.zeppelin:zeppelin-kotlin:0.11.0-SANPSHOT               Kotlin interpreter
 # kylin           org.apache.zeppelin:zeppelin-kylin:0.11.0-SANPSHOT                Kylin interpreter
 # lens            org.apache.zeppelin:zeppelin-lens:0.11.0-SANPSHOT                 Lens interpreter
 livy            org.apache.zeppelin:zeppelin-livy:0.11.0-SANPSHOT                 Livy interpreter
