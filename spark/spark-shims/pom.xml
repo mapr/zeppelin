@@ -22,7 +22,7 @@
   <parent>
     <artifactId>spark-parent</artifactId>
     <groupId>org.apache.zeppelin</groupId>
-    <version>0.10.1.100-eep-912</version>
+    <version>0.10.1.101-eep-912</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
