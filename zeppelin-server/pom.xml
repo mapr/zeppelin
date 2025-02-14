@@ -281,8 +281,8 @@
 
     <dependency>
       <groupId>com.nimbusds</groupId>
-      <artifactId>nimbus-jose-jwt</artifactId>
-      <version>4.41.2</version>
+      <artifactId>oauth2-oidc-sdk</artifactId>
+      <version>11.22.2</version>
     </dependency>
 
     <dependency>

@@ -35,6 +35,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import com.google.gson.Gson;
+import com.nimbusds.jwt.SignedJWT;
+import com.nimbusds.oauth2.sdk.http.HTTPResponse;
+import com.nimbusds.openid.connect.sdk.LogoutRequest;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -49,6 +52,8 @@ import org.apache.zeppelin.realm.jwt.JWTAuthenticationToken;
 import org.apache.zeppelin.realm.jwt.KnoxJwtRealm;
 import org.apache.zeppelin.realm.kerberos.KerberosRealm;
 import org.apache.zeppelin.realm.kerberos.KerberosToken;
+import org.apache.zeppelin.realm.sso.JWTRealm;
+import org.apache.zeppelin.realm.sso.SSOConfiguration;
 import org.apache.zeppelin.server.JsonResponse;
 import org.apache.zeppelin.service.AuthenticationService;
 import org.apache.zeppelin.ticket.TicketContainer;
@@ -78,10 +83,47 @@ public class LoginRestApi {
     this.authorizationService = authorizationService;
   }
 
+  private JsonResponse<Map<String, String>> maybeJwtBearer(HttpHeaders headers) {
+    String authorizationHeader = headers.getHeaderString("Authorization");
+    if (!SSOConfiguration.IS_ENABLED || authorizationHeader == null || !authorizationHeader.startsWith("Bearer")) {
+      return null;
+    }
+    try {
+      return proceedToLogin(SecurityUtils.getSubject(), new JWTRealm.Token(
+              SignedJWT.parse(authorizationHeader.substring("Bearer".length()))));
+    } catch (Exception e) {
+      String message = "Failed to verify Bearer JWT";
+      LOG.error(message, e);
+      return new JsonResponse<>(Status.UNAUTHORIZED, message);
+    }
+  }
+
+  public static void maybeLogoutOidc(Subject subject) {
+    if (!SSOConfiguration.IS_ENABLED) {
+      return;
+    }
+    LogoutRequest logoutRequest = (LogoutRequest) subject.getSession().getAttribute(OIDCRestApi.LOGOUT_REQUEST_ATTRIBUTE);
+    if (logoutRequest == null) {
+      return;
+    }
+    try {
+      HTTPResponse response = logoutRequest.toHTTPRequest().send();
+      if (!response.indicatesSuccess()) {
+        throw new IllegalStateException("OIDC logout request failed: " + response);
+      }
+    } catch (Exception e) {
+      LOG.error("Could not logout user from OIDC", e);
+      throw new IllegalStateException(e);
+    }
+  }
+
   @GET
   @ZeppelinApi
   public Response getLogin(@Context HttpHeaders headers) {
     JsonResponse<Map<String, String>> response = null;
+    if ((response = maybeJwtBearer(headers)) != null) {
+      return response.build();
+    }
     if (isKnoxSSOEnabled()) {
       KnoxJwtRealm knoxJwtRealm = getJTWRealm();
       Cookie cookie = headers.getCookies().get(knoxJwtRealm.getCookieName());
@@ -294,6 +336,7 @@ public class LoginRestApi {
 
   private void logoutCurrentUser() {
     Subject currentUser = SecurityUtils.getSubject();
+    maybeLogoutOidc(currentUser);
     TicketContainer.instance.removeTicket(authenticationService.getPrincipal());
     currentUser.getSession().stop();
     currentUser.logout();

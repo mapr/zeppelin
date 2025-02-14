@@ -82,4 +82,13 @@ function LoginCtrl($scope, $rootScope, $http, $httpParamSerializer, baseUrlSrv, 
   $scope.$on('initLoginValues', function() {
     initValues();
   });
+
+  $scope.isSsoEnabled = false;
+  $http.get('/api/oidc/is-enabled')
+    .then(function(response) {
+      $scope.isSsoEnabled = JSON.parse(response.data);
+    })
+    .catch(function(error) {
+      console.error('API request failed:', error);
+    });
 }

@@ -50,7 +50,10 @@
 pamRealm=org.apache.zeppelin.realm.PamRealm
 pamRealm.service=login
 
-securityManager.realms = $pamRealm
+jwtRealm = org.apache.zeppelin.realm.sso.JWTRealm
+oidcRealm = org.apache.zeppelin.realm.sso.OIDCRealm
+
+securityManager.realms = $pamRealm, $jwtRealm, $oidcRealm
 
 ### A sample for configuring ZeppelinHub Realm
 #zeppelinHubRealm = org.apache.zeppelin.realm.ZeppelinHubRealm
@@ -124,6 +127,7 @@ admin = *
 # To allow anonymous access to all but the stated urls,
 # uncomment the line second last line (/** = anon) and comment the last line (/** = authc)
 #
+/api/oidc/** = anon
 /api/version = anon
 /api/cluster/address = anon
 # Allow all authenticated users to restart interpreters on a notebook page.

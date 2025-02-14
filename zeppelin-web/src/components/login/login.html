@@ -48,6 +48,14 @@ limitations under the License.
           </div>
           <div ng-switch-default>
             <button type="button" class="btn btn-default btn-primary" ng-click="login()">Login</button>
+            <p style="margin: 5px">or</p>
+            <form action="/api/oidc/login" method="get" accept-charset="utf-8">
+              <fieldset>
+                <button id="signInSSO" class="btn btn-default btn-primary" ng-disabled="!isSsoEnabled">
+                  Sign In with SSO
+                </button>
+              </fieldset>
+            </form>
           </div>
         </div>
       </div>
