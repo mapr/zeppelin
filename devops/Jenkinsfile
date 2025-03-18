@@ -118,32 +118,33 @@ def buildStage(yamlCurrentBuildItem) {
   configFileProvider([configFile(fileId: 'maven_settings', variable: 'mvn_settings')]) {
     sh "cat ${env.mvn_settings} > settings.xml"
   }
-
-  docker.image(IMAGE_NAMES_MAP[yamlCurrentBuildItem.name]).inside (
-  "-e MAPR_MIRROR=${MAPR_MIRROR} \
-  -e MAPR_CENTRAL=${MAPR_CENTRAL} \
-  -e MAVEN_CENTRAL=${MAVEN_CENTRAL} \
-  -e MAPR_MAVEN_REPO=${MAPR_MAVEN_REPO} \
-  -e BUILD_NUMBER=${ID}.${BUILD_NUMBER} \
-  -e MAPR_RELEASES_REPO=${MAPR_RELEASES_REPO} \
-  -e MAPR_SNAPSHOTS_REPO=${MAPR_SNAPSHOTS_REPO} \
-  -e PACKAGE_EZMERAL_USER=${package_user} \
-  -e PACKAGE_EZMERAL_PASS=${package_pass} \
-  -v /root/.m2:/root/.m2:rw \
-  -v /root/yum-proxy.conf:/etc/yum.conf:ro \
-  -v /etc/hosts:/etc/hosts:ro \
-  -v /root/apt-proxy.conf:/etc/apt/apt.conf.d/proxy.conf:ro \
-  -v /root/.gradle/gradle.properties:/root/.gradle/gradle.properties:ro \
-  -v /etc/profile.d/proxy.sh:/etc/profile.d/proxy.sh:ro \
-  -e ANT_OPTS=\"-Dhttp.proxyHost=${HPE_PROXY_HOST} -Dhttp.proxyPort=${HPE_PROXY_PORT} -Dhttps.proxyHost=${HPE_PROXY_HOST} -Dhttps.proxyPort=${HPE_PROXY_PORT} -Dhttp.nonProxyHosts='${HPE_PROXY_EXCEPTIONS}'\" \
-  -e MAVEN_OPTS=\"-Dhttp.proxyHost=${HPE_PROXY_HOST} -Dhttp.proxyPort=${HPE_PROXY_PORT} -Dhttps.proxyHost=${HPE_PROXY_HOST} -Dhttps.proxyPort=${HPE_PROXY_PORT} -Dhttp.nonProxyHosts='${HPE_PROXY_EXCEPTIONS}'\" \
-  -v /etc/localtime:/etc/localtime:ro \
-  -v /root/.ssh:/root/.ssh:rw \
-  -v ${WORKSPACE}/settings.xml:/root/.m2/settings.xml:ro") {
-    sh """
-      cat /etc/*-release > os_release_version.txt; \
-      ${buildCommand}
-    """
+  withCredentials([usernamePassword(credentialsId: 'package_ezmeral_creds', passwordVariable: 'package_pass', usernameVariable: 'package_user')]) {
+    docker.image(IMAGE_NAMES_MAP[yamlCurrentBuildItem.name]).inside (
+    "-e MAPR_MIRROR=${MAPR_MIRROR} \
+    -e MAPR_CENTRAL=${MAPR_CENTRAL} \
+    -e MAVEN_CENTRAL=${MAVEN_CENTRAL} \
+    -e MAPR_MAVEN_REPO=${MAPR_MAVEN_REPO} \
+    -e BUILD_NUMBER=${ID}.${BUILD_NUMBER} \
+    -e MAPR_RELEASES_REPO=${MAPR_RELEASES_REPO} \
+    -e MAPR_SNAPSHOTS_REPO=${MAPR_SNAPSHOTS_REPO} \
+    -e PACKAGE_EZMERAL_USER=${package_user} \
+    -e PACKAGE_EZMERAL_PASS=${package_pass} \
+    -v /root/.m2:/root/.m2:rw \
+    -v /root/yum-proxy.conf:/etc/yum.conf:ro \
+    -v /etc/hosts:/etc/hosts:ro \
+    -v /root/apt-proxy.conf:/etc/apt/apt.conf.d/proxy.conf:ro \
+    -v /root/.gradle/gradle.properties:/root/.gradle/gradle.properties:ro \
+    -v /etc/profile.d/proxy.sh:/etc/profile.d/proxy.sh:ro \
+    -e ANT_OPTS=\"-Dhttp.proxyHost=${HPE_PROXY_HOST} -Dhttp.proxyPort=${HPE_PROXY_PORT} -Dhttps.proxyHost=${HPE_PROXY_HOST} -Dhttps.proxyPort=${HPE_PROXY_PORT} -Dhttp.nonProxyHosts='${HPE_PROXY_EXCEPTIONS}'\" \
+    -e MAVEN_OPTS=\"-Dhttp.proxyHost=${HPE_PROXY_HOST} -Dhttp.proxyPort=${HPE_PROXY_PORT} -Dhttps.proxyHost=${HPE_PROXY_HOST} -Dhttps.proxyPort=${HPE_PROXY_PORT} -Dhttp.nonProxyHosts='${HPE_PROXY_EXCEPTIONS}'\" \
+    -v /etc/localtime:/etc/localtime:ro \
+    -v /root/.ssh:/root/.ssh:rw \
+    -v ${WORKSPACE}/settings.xml:/root/.m2/settings.xml:ro") {
+      sh """
+        cat /etc/*-release > os_release_version.txt; \
+        ${buildCommand}
+      """
+    }
   }
 }
 
