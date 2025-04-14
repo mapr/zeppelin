@@ -23,14 +23,14 @@
   <parent>
     <artifactId>zeppelin-interpreter-parent</artifactId>
     <groupId>org.apache.zeppelin</groupId>
-    <version>0.10.1.200-eep-940-SNAPSHOT</version>
+    <version>0.10.1.200-eep-940</version>
     <relativePath>../zeppelin-interpreter-parent/pom.xml</relativePath>
   </parent>
 
   <groupId>org.apache.zeppelin</groupId>
   <artifactId>zeppelin-drill</artifactId>
   <packaging>jar</packaging>
-  <version>0.10.1.200-eep-940-SNAPSHOT</version>
+  <version>0.10.1.200-eep-940</version>
   <name>Zeppelin: JDBC Drill interpreter</name>
 
   <properties>
