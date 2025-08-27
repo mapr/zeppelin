@@ -20,7 +20,7 @@
   <parent>
     <groupId>org.apache.zeppelin</groupId>
     <artifactId>spark-scala-parent</artifactId>
-    <version>0.10.1.200-eep-940-SNAPSHOT</version>
+    <version>0.10.1.300-dep-1000-SNAPSHOT</version>
     <relativePath>../spark-scala-parent/pom.xml</relativePath>
   </parent>
 
