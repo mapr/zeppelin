@@ -107,20 +107,6 @@ EOF
     chown $MAPR_USER:$MAPR_GROUP "${MAPR_CONF_DIR}/restart/zeppelin-${ZEPPELIN_VERSION}.restart"
 }
 
-conf_uncomment() {
-    local file="$1"
-    local name="$2"
-    local delim="="
-    sed -i "1,/#*\s*${name}\s*${delim}/ s|#*\s*${name}\s*${delim}|${name} ${delim}|" "${file}"
-}
-
-conf_comment() {
-    local file="$1"
-    local name="$2"
-    local delim="="
-    sed -i "s|#*\s*${name}\s*${delim}|# ${name} ${delim}|" "${file}"
-}
-
 conf_get_property() {
     local file="$1"
     local name="$2"
