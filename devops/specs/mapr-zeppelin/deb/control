@@ -5,7 +5,7 @@ Priority: optional
 Architecture: all
 Replaces:  mapr-zeppelin
 Depends: mapr-client, mapr-hadoop-core
-Maintainer: Hewlett Packard Enterprise <ezmeral_software_support@hpe.com>
-Description: Ezmeral Ecosystem Pack: Zeppelin package
+Maintainer: Hewlett Packard Enterprise
+Description: HPE DataFabric Ecosystem Pack: Apache Zeppelin
   Tag: __RELEASE_BRANCH__
   Commit: __GIT_COMMIT__

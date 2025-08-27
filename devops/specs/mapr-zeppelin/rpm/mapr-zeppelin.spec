@@ -1,20 +1,20 @@
 %undefine __check_files
 
-summary:     Ezmeral Ecosystem Pack: Zeppelin package
-license:     Copyright: Hewlett Packard Enterprise, All rights reserved
-vendor:      Hewlett Packard Enterprise <ezmeral_software_support@hpe.com>
+summary:     HPE DataFabric Ecosystem Pack: Apache Zeppelin
+license:     Hewlett Packard Enterprise, CopyRight
+vendor:      Hewlett Packard Enterprise
 name:        mapr-zeppelin
 version:     __RELEASE_VERSION__
 release:     1
 prefix:      /
-group:       MapR
+group:       HPE
 buildarch:   x86_64
 obsoletes:   mapr-zeppelin
 requires:    mapr-client, mapr-hadoop-core
 AutoReqProv: no
 
 %description
-Ezmeral Ecosystem Pack: Zeppelin package
+Apache Zeppelin distribution included in HPE DataFabric Software Ecosystem Pack
 Tag: __RELEASE_BRANCH__
 Commit: __GIT_COMMIT__
 
