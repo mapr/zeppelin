@@ -1,15 +1,15 @@
 package org.apache.zeppelin.livy.maprsecurity;
 
-import org.apache.http.auth.AuthSchemeProvider;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.Credentials;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.config.Lookup;
-import org.apache.http.config.RegistryBuilder;
-import org.apache.http.impl.client.BasicCredentialsProvider;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.hc.client5.http.auth.AuthSchemeFactory;
+import org.apache.hc.client5.http.auth.AuthScope;
+import org.apache.hc.client5.http.auth.Credentials;
+import org.apache.hc.client5.http.classic.HttpClient;
+import org.apache.hc.client5.http.config.RequestConfig;
+import org.apache.hc.client5.http.impl.auth.BasicCredentialsProvider;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
+import org.apache.hc.core5.http.config.Lookup;
+import org.apache.hc.core5.http.config.RegistryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -44,7 +44,7 @@ public class MaprSecurityRestTemplate extends RestTemplate {
 
   public static HttpClientBuilder configureHttpClientBuilder(HttpClientBuilder builder) {
     logger.info("Creating custom MapR Rest template");
-    Lookup<AuthSchemeProvider> authSchemeRegistry = RegistryBuilder.<AuthSchemeProvider> create()
+    Lookup<AuthSchemeFactory> authSchemeRegistry = RegistryBuilder.<AuthSchemeFactory> create()
             .register(MaprSecurityScheme.NAME, new MaprSecuritySchemeFactory()).build();
     builder.setDefaultAuthSchemeRegistry(authSchemeRegistry);
 
@@ -54,7 +54,7 @@ public class MaprSecurityRestTemplate extends RestTemplate {
     builder.setDefaultRequestConfig(rc.build());
 
     BasicCredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-    credentialsProvider.setCredentials(new AuthScope(null, -1, null), credentials);
+    credentialsProvider.setCredentials(new AuthScope(null, -1), credentials);
     builder.setDefaultCredentialsProvider(credentialsProvider);
 
     return builder;
@@ -68,7 +68,7 @@ public class MaprSecurityRestTemplate extends RestTemplate {
     }
 
     @Override
-    public String getPassword() {
+    public char[] getPassword() {
       return null;
     }
 

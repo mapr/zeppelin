@@ -26,22 +26,25 @@ import com.mapr.web.security.WebSecurityManager;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.http.auth.AuthSchemeProvider;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.Credentials;
-import org.apache.http.client.CredentialsProvider;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.config.AuthSchemes;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.config.Registry;
-import org.apache.http.config.RegistryBuilder;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.conn.ssl.SSLContexts;
-import org.apache.http.conn.ssl.SSLContextBuilder;
-import org.apache.http.impl.auth.SPNegoSchemeFactory;
-import org.apache.http.impl.client.BasicCredentialsProvider;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.impl.client.HttpClients;
+import org.apache.hc.client5.http.auth.AuthSchemeFactory;
+import org.apache.hc.client5.http.auth.AuthScope;
+import org.apache.hc.client5.http.auth.Credentials;
+import org.apache.hc.client5.http.auth.CredentialsStore;
+import org.apache.hc.client5.http.config.RequestConfig;
+import org.apache.hc.client5.http.impl.auth.BasicCredentialsProvider;
+import org.apache.hc.client5.http.impl.auth.SPNegoScheme;
+import org.apache.hc.client5.http.impl.auth.SPNegoSchemeFactory;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder;
+import org.apache.hc.client5.http.ssl.ClientTlsStrategyBuilder;
+import org.apache.hc.client5.http.ssl.TlsSocketStrategy;
+import org.apache.hc.core5.http.config.Lookup;
+import org.apache.hc.core5.http.config.RegistryBuilder;
+import org.apache.hc.core5.ssl.SSLContextBuilder;
+import org.apache.hc.core5.ssl.SSLContexts;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
@@ -599,7 +602,7 @@ public abstract class BaseLivyInterpreter extends Interpreter {
       }
       KeyStore trustStore = getStore(trustStoreFile, trustStoreType, trustStorePassword);
       SSLContextBuilder builder = SSLContexts.custom();
-      builder.loadTrustMaterial(trustStore);
+      builder.loadTrustMaterial(trustStore, null);
 
       // Build keystore
       String keyStoreFile = getProperty("zeppelin.livy.ssl.keyStore");
@@ -609,7 +612,7 @@ public abstract class BaseLivyInterpreter extends Interpreter {
               KeyStore.getDefaultType());
       if (StringUtils.isNotBlank(keyStoreFile)) {
         KeyStore keyStore = getStore(keyStoreFile, keyStoreType, keyStorePassword);
-        builder.loadKeyMaterial(keyStore, keyPassword.toCharArray()).useTLS();
+        builder.loadKeyMaterial(keyStore, keyPassword.toCharArray());
       }
       return builder.build();
     } catch (Exception e) {
@@ -636,12 +639,19 @@ public abstract class BaseLivyInterpreter extends Interpreter {
     boolean isMaprSecured =
         Boolean.parseBoolean(getProperty("zeppelin.livy.isMaprSecured", "false"));
 
-    HttpClient httpClient = null;
+    CloseableHttpClient httpClient = null;
     if (livyURL.startsWith("https:")) {
       try {
         SSLContext sslContext = getSslContext();
-        SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext);
-        HttpClientBuilder httpClientBuilder = HttpClients.custom().setSSLSocketFactory(csf);
+        TlsSocketStrategy tlsStrategy = ClientTlsStrategyBuilder.create()
+            .setSslContext(sslContext)
+            .buildClassic();
+        PoolingHttpClientConnectionManager connectionManager =
+            PoolingHttpClientConnectionManagerBuilder.create()
+                .setTlsSocketStrategy(tlsStrategy)
+                .build();
+        HttpClientBuilder httpClientBuilder = HttpClients.custom();
+        httpClientBuilder.setConnectionManager(connectionManager);
         if (isSpnegoEnabled) {
           RequestConfig reqConfig = new RequestConfig() {
             @Override
@@ -652,7 +662,7 @@ public abstract class BaseLivyInterpreter extends Interpreter {
           httpClientBuilder.setDefaultRequestConfig(reqConfig);
           Credentials credentials = new Credentials() {
             @Override
-            public String getPassword() {
+            public char[] getPassword() {
               return null;
             }
 
@@ -661,12 +671,13 @@ public abstract class BaseLivyInterpreter extends Interpreter {
               return null;
             }
           };
-          CredentialsProvider credsProvider = new BasicCredentialsProvider();
-          credsProvider.setCredentials(AuthScope.ANY, credentials);
+          AuthScope authScopeAny = new AuthScope(null, -1);
+          CredentialsStore credsProvider = new BasicCredentialsProvider();
+          credsProvider.setCredentials(authScopeAny, credentials);
           httpClientBuilder.setDefaultCredentialsProvider(credsProvider);
-          Registry<AuthSchemeProvider> authSchemeProviderRegistry =
-              RegistryBuilder.<AuthSchemeProvider>create()
-                  .register(AuthSchemes.SPNEGO, new SPNegoSchemeFactory())
+          Lookup<AuthSchemeFactory> authSchemeProviderRegistry =
+              RegistryBuilder.<AuthSchemeFactory>create()
+                  .register(new SPNegoScheme().getName(), SPNegoSchemeFactory.DEFAULT)
                   .build();
           httpClientBuilder.setDefaultAuthSchemeRegistry(authSchemeProviderRegistry);
         } else if (isMaprSecured) {
