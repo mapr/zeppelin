@@ -1,7 +1,7 @@
 #!/bin/sh
 
-BASE_IMAGE=${DOCKER_REGISTRY}/centos8-java11-gcc8
-BASE_TAG=latest
+BASE_IMAGE=${DOCKER_REGISTRY}/rhel-ubi9-java17-gcc11
+BASE_TAG=core-latest
 
 BASEDIR=$(dirname $0)
 DOCKERFILE_CHECKSUM=$(find "$BASEDIR" | cpio -o 2>/dev/null | md5sum | head -c 7)
