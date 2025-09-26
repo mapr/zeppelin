@@ -26,13 +26,15 @@ import com.mapr.web.security.WebSecurityManager;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.hc.client5.http.SystemDefaultDnsResolver;
 import org.apache.hc.client5.http.auth.AuthSchemeFactory;
 import org.apache.hc.client5.http.auth.AuthScope;
 import org.apache.hc.client5.http.auth.Credentials;
 import org.apache.hc.client5.http.auth.CredentialsStore;
+import org.apache.hc.client5.http.auth.KerberosConfig;
+import org.apache.hc.client5.http.auth.StandardAuthScheme;
 import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.impl.auth.BasicCredentialsProvider;
-import org.apache.hc.client5.http.impl.auth.SPNegoScheme;
 import org.apache.hc.client5.http.impl.auth.SPNegoSchemeFactory;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
@@ -65,6 +67,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.KeyStore;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -675,11 +678,24 @@ public abstract class BaseLivyInterpreter extends Interpreter {
           CredentialsStore credsProvider = new BasicCredentialsProvider();
           credsProvider.setCredentials(authScopeAny, credentials);
           httpClientBuilder.setDefaultCredentialsProvider(credsProvider);
+
+          // This part inspired by
+          // org.springframework.security.kerberos.client.KerberosRestTemplate.buildHttpClient
           Lookup<AuthSchemeFactory> authSchemeProviderRegistry =
               RegistryBuilder.<AuthSchemeFactory>create()
-                  .register(new SPNegoScheme().getName(), SPNegoSchemeFactory.DEFAULT)
+                  .register(StandardAuthScheme.SPNEGO, new SPNegoSchemeFactory(
+                      KerberosConfig.custom()
+                          .setStripPort(KerberosConfig.Option.ENABLE)
+                          .setUseCanonicalHostname(KerberosConfig.Option.DISABLE)
+                          .build(),
+                      SystemDefaultDnsResolver.INSTANCE))
                   .build();
           httpClientBuilder.setDefaultAuthSchemeRegistry(authSchemeProviderRegistry);
+
+          RequestConfig negotiate = RequestConfig.copy(RequestConfig.DEFAULT)
+              .setTargetPreferredAuthSchemes(Arrays.asList(StandardAuthScheme.SPNEGO))
+              .build();
+          httpClientBuilder.setDefaultRequestConfig(negotiate);
         } else if (isMaprSecured) {
           MaprSecurityRestTemplate.configureHttpClientBuilder(httpClientBuilder);
         }
