@@ -22,14 +22,14 @@
   <parent>
     <artifactId>zeppelin-interpreter-parent</artifactId>
     <groupId>org.apache.zeppelin</groupId>
-    <version>0.10.1.300-dep-1000-SNAPSHOT</version>
+    <version>0.10.1.400-dep-1010-SNAPSHOT</version>
     <relativePath>../zeppelin-interpreter-parent/pom.xml</relativePath>
   </parent>
 
   <groupId>org.apache.zeppelin</groupId>
   <artifactId>zeppelin-maprdb</artifactId>
   <packaging>jar</packaging>
-  <version>0.10.1.300-dep-1000-SNAPSHOT</version>
+  <version>0.10.1.400-dep-1010-SNAPSHOT</version>
   <name>Zeppelin: MapR-DB Shell interpreter</name>
 
   <properties>
