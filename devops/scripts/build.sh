@@ -12,12 +12,6 @@ build_code() {
 
   project_version=$(mvn -B help:evaluate -Dexpression=project.version -q -DforceStdout)
   tar -xf "zeppelin-distribution/target/zeppelin-${project_version}.tar.gz" -C "${BUILD_ROOT}/build" --strip-components=1
-
-  mkdir -p "${BUILD_ROOT}/build/interpreter/drill/jdbc-mapr-drill"
-  curl -sS "$DRILL_DRIVER_URL" -o /tmp/drill_jdbc.zip
-  unzip -q /tmp/drill_jdbc.zip -d /tmp/drill_jdbc
-  unzip -q /tmp/drill_jdbc/*.zip -d "${BUILD_ROOT}/build/interpreter/drill/jdbc-mapr-drill"
-  rm -rf /tmp/drill_jdbc /tmp/drill_jdbc.zip
 }
 
 main() {

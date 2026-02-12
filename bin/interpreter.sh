@@ -225,7 +225,7 @@ if [[ "${INTERPRETER_ID}" == "spark" ]]; then
   cd "$spark_interpreter_cwd"
 
 elif [[ "${INTERPRETER_ID}" == "drill" ]]; then
-  ZEPPELIN_INTP_CLASSPATH+=":${ZEPPELIN_HOME}/interpreter/jdbc/*:${ZEPPELIN_HOME}/interpreter/drill/jdbc-mapr-drill/*:${MAPR_HOME}/zeppelin/thirdparty/jdbc-mapr-drill/*"
+  ZEPPELIN_INTP_CLASSPATH+=":${ZEPPELIN_HOME}/interpreter/jdbc/*:$(mapr classpath 2>/dev/null)"
 
 elif [[ "${INTERPRETER_ID}" == "hive" ]]; then
   ZEPPELIN_INTP_CLASSPATH+=":${ZEPPELIN_HOME}/interpreter/jdbc/*:$(mapr classpath 2>/dev/null)"

@@ -13,5 +13,3 @@ DIST_DIR=${DIST_DIR:-"devops/dist"}
 BUILD_ROOT=${BUILD_ROOT:-"$(pwd)/devops/buildroot"}
 
 MAVEN_BUILD_PROFILES="scala-2.11,spark-mapr,build-distr,vendor-repo-mapr,hadoop3"
-PACKAGE_EZMERAL_USER_ENCODED=$(echo -n "$PACKAGE_EZMERAL_USER" | jq --raw-input --join-output '@uri')
-DRILL_DRIVER_URL="https://${PACKAGE_EZMERAL_USER_ENCODED}:${PACKAGE_EZMERAL_PASS}@package.ezmeral.hpe.com/tools/MapR-JDBC/MapR_Drill/MapRDrill_jdbc_v1.6.11.1008/MapRDrillJDBC-1.6.11.1008.zip"
