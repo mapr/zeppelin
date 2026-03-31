@@ -35,7 +35,7 @@
 
   <properties>
     <interpreter.name>drill</interpreter.name>
-    <drill.version>1.21.2.350-dep-1010-SNAPSHOT</drill.version>
+    <drill.version>1.21.2.350-dep-1010</drill.version>
   </properties>
 
   <dependencies>

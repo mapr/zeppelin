@@ -263,7 +263,7 @@
                  <activeByDefault>true</activeByDefault>
              </activation>
              <properties>
-                 <spark.version>3.5.5.500-dep-1010-SNAPSHOT</spark.version>
+                 <spark.version>3.5.5.500-dep-1010</spark.version>
                  <protobuf.version>3.23.4</protobuf.version>
                  <py4j.version>0.10.9.7</py4j.version>
              </properties>
