@@ -33,7 +33,7 @@
   <properties>
     <!--library versions-->
     <interpreter.name>hbase</interpreter.name>
-    <hbase.hbase.version>1.4.14.800-eep-941-SNAPSHOT</hbase.hbase.version>
+    <hbase.hbase.version>1.4.14.850-dep-1000-SNAPSHOT</hbase.hbase.version>
     <hbase.hadoop.version>${hadoop.version}</hbase.hadoop.version>
     <jruby.version>9.3.15.0</jruby.version>
     <protobuf.version>3.21.12</protobuf.version>
