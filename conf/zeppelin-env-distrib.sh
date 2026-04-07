@@ -109,3 +109,6 @@ fi
 # Initial fix to run Zeppelin on Java 17
 export ZEPPELIN_JAVA_OPTS="${ZEPPELIN_JAVA_OPTS} --add-opens=java.base/java.lang=ALL-UNNAMED"
 export ZEPPELIN_INTP_JAVA_OPTS="${ZEPPELIN_INTP_JAVA_OPTS} --add-opens=java.base/java.lang=ALL-UNNAMED"
+
+# For org.apache.zeppelin.helium.HeliumFileRegistry class
+export ZEPPELIN_JAVA_OPTS="${ZEPPELIN_JAVA_OPTS} --add-exports=java.naming/com.sun.jndi.toolkit.url=ALL-UNNAMED"
