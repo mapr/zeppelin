@@ -6,12 +6,15 @@ SCRIPT_DIR=$(dirname "${BASH_SOURCE[0]}")
 . "${SCRIPT_DIR}/_utils.sh"
 
 build_code() {
-  mvn -B clean package -DskipTests -P "$MAVEN_BUILD_PROFILES"
+  mvn -B clean install -DskipTests -Drat.skip=true -P "$MAVEN_BUILD_PROFILES"
 
   mkdir -p "${BUILD_ROOT}/build"
 
   project_version=$(mvn -B help:evaluate -Dexpression=project.version -q -DforceStdout)
   tar -xf "zeppelin-distribution/target/zeppelin-${project_version}.tar.gz" -C "${BUILD_ROOT}/build" --strip-components=1
+
+  mkdir -p devops/buildmeta
+  mvn -B dependency:tree -o -DskipTests -P "$MAVEN_BUILD_PROFILES" > devops/buildmeta/dependency-tree.txt
 }
 
 main() {
