@@ -263,7 +263,7 @@
                  <activeByDefault>true</activeByDefault>
              </activation>
              <properties>
-                 <spark.version>3.3.0.0-eep-900</spark.version>
+                 <spark.version>3.3.0.0-eep-SNAPSHOT</spark.version>
                  <protobuf.version>3.11.1</protobuf.version>
                  <py4j.version>0.10.9.5</py4j.version>
              </properties>
