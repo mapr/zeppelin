@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
+set -x
 
 SCRIPT_DIR=$(dirname "${BASH_SOURCE[0]}")
 . "${SCRIPT_DIR}/_initialize_package_variables.sh"
@@ -14,6 +15,9 @@ build_code() {
   tar -xf "zeppelin-distribution/target/zeppelin-${project_version}.tar.gz" -C "${BUILD_ROOT}/build" --strip-components=1
 
   mkdir -p devops/buildmeta
+
+  # Pre-seed the dependency plugin into the local repo while online, so the offline `dependency:tree -o` will work without issues
+  mvn -B dependency:resolve-plugins -DskipTests -P "$MAVEN_BUILD_PROFILES" > /dev/null
   mvn -B dependency:tree -o -DskipTests -P "$MAVEN_BUILD_PROFILES" > devops/buildmeta/dependency-tree.txt
 }
 
