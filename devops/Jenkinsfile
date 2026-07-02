@@ -73,7 +73,7 @@ pipeline {
                     sh "cat ${env.mvn_settings} > settings.xml"
                   }
                   withCredentials([usernamePassword(credentialsId: 'package_ezmeral_creds', passwordVariable: 'package_pass', usernameVariable: 'package_user')]) {
-                    docker.image("dfdkr.mip.storage.hpecorp.net/ubuntu16-java11-gcc7").inside (
+                    docker.image("dfdkr.ftc.hcocto.hpecorp.net/ubuntu16-java11-gcc7").inside (
                     "-e MAPR_MIRROR=${MAPR_MIRROR} \
                     -e MAPR_CENTRAL=${MAPR_CENTRAL} \
                     -e MAVEN_CENTRAL=${MAVEN_CENTRAL} \
@@ -98,7 +98,7 @@ pipeline {
                       sh """
                         unlink /opt/maven ; \
                         mkdir /opt/maven ; \
-                        curl -s http://dfaf.mip.storage.hpecorp.net/artifactory/buildmachine-files-copy/cross-linux/apache-maven-3.5.4-bin.tar.gz | tar -xz --strip-components=1 -C /opt/maven ; \
+                        curl -s http://dfaf.ftc.hcocto.hpecorp.net/artifactory/buildmachine-files-copy/cross-linux/apache-maven-3.5.4-bin.tar.gz | tar -xz --strip-components=1 -C /opt/maven ; \
                         rm -rf ${env.PROJECT}; git clone git@github.com:mapr/private-pkg.git ${env.PROJECT}; \
                         cd ${env.PROJECT}; \
                         git checkout MEP-9.2.5 ; \
@@ -141,7 +141,7 @@ pipeline {
                     sh "cat ${env.mvn_settings} > settings.xml"
                   }
                   withCredentials([usernamePassword(credentialsId: 'package_ezmeral_creds', passwordVariable: 'package_pass', usernameVariable: 'package_user')]) {
-                    docker.image("dfdkr.mip.storage.hpecorp.net/centos8-java11-gcc8").inside (
+                    docker.image("dfdkr.ftc.hcocto.hpecorp.net/centos8-java11-gcc8").inside (
                     "-e MAPR_MIRROR=${MAPR_MIRROR} \
                     -e MAPR_CENTRAL=${MAPR_CENTRAL} \
                     -e MAVEN_CENTRAL=${MAVEN_CENTRAL} \
@@ -168,7 +168,7 @@ pipeline {
                         printenv;\
                         unlink /opt/maven ; \
                         mkdir /opt/maven ; \
-                        curl -s http://dfaf.mip.storage.hpecorp.net/artifactory/buildmachine-files-copy/cross-linux/apache-maven-3.5.4-bin.tar.gz | tar -xz --strip-components=1 -C /opt/maven ; \
+                        curl -s http://dfaf.ftc.hcocto.hpecorp.net/artifactory/buildmachine-files-copy/cross-linux/apache-maven-3.5.4-bin.tar.gz | tar -xz --strip-components=1 -C /opt/maven ; \
                         rm -rf ${env.PROJECT}; git clone git@github.com:mapr/private-pkg.git ${env.PROJECT}; \
                         cd ${env.PROJECT}; \
                         git checkout MEP-9.2.5 ; \
