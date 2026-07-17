@@ -52,6 +52,7 @@ import org.apache.zeppelin.conf.ZeppelinConfiguration;
 import org.apache.zeppelin.realm.ActiveDirectoryGroupRealm;
 import org.apache.zeppelin.realm.LdapRealm;
 import org.apache.zeppelin.realm.jwt.KnoxJwtRealm;
+import org.apache.zeppelin.realm.sso.AbstractSSORealm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -250,6 +251,8 @@ public class ShiroAuthenticationService implements AuthenticationService {
         } else if (realm instanceof KnoxJwtRealm) {
           roles = ((KnoxJwtRealm) realm).mapGroupPrincipals(getPrincipal());
           break;
+        } else if (realm instanceof AbstractSSORealm) {
+          roles = ((AbstractSSORealm.SSOPrincipal) subject.getPrincipal()).getRoles();
         }
       }
       if (allRoles != null) {
