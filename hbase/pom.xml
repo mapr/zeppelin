@@ -35,9 +35,9 @@
     <interpreter.name>hbase</interpreter.name>
     <hbase.hbase.version>1.4.14.700-eep-922-SNAPSHOT</hbase.hbase.version>
     <hbase.hadoop.version>${hadoop.version}</hbase.hadoop.version>
-    <jruby.version>9.1.17.0</jruby.version>
-    <protobuf.version>3.11.1</protobuf.version>
-    <jline.version>2.12.1</jline.version>
+    <jruby.version>9.2.13.0</jruby.version>
+    <protobuf.version>3.21.12</protobuf.version>
+    <jline.version>3.9.0</jline.version>
 
     <!--test library versions-->
     <hamcrest.all.version>1.3</hamcrest.all.version>
@@ -92,7 +92,7 @@
       <version>${hbase.hbase.version}</version>
     </dependency>
     <dependency>
-      <groupId>jline</groupId>
+      <groupId>org.jline</groupId>
       <artifactId>jline</artifactId>
       <version>${jline.version}</version>
     </dependency>
