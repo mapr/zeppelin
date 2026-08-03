@@ -251,8 +251,9 @@ public class ShiroAuthenticationService implements AuthenticationService {
         } else if (realm instanceof KnoxJwtRealm) {
           roles = ((KnoxJwtRealm) realm).mapGroupPrincipals(getPrincipal());
           break;
-        } else if (realm instanceof AbstractSSORealm) {
+        } else if (subject.getPrincipal() instanceof AbstractSSORealm.SSOPrincipal) {
           roles = ((AbstractSSORealm.SSOPrincipal) subject.getPrincipal()).getRoles();
+          break;
         }
       }
       if (allRoles != null) {
