@@ -23,14 +23,14 @@
   <parent>
     <artifactId>zeppelin-interpreter-parent</artifactId>
     <groupId>org.apache.zeppelin</groupId>
-    <version>0.10.1.400-dep-1010-SNAPSHOT</version>
+    <version>0.10.1.500-dep-1020-SNAPSHOT</version>
     <relativePath>../zeppelin-interpreter-parent/pom.xml</relativePath>
   </parent>
 
   <groupId>org.apache.zeppelin</groupId>
   <artifactId>zeppelin-hive</artifactId>
   <packaging>jar</packaging>
-  <version>0.10.1.400-dep-1010-SNAPSHOT</version>
+  <version>0.10.1.500-dep-1020-SNAPSHOT</version>
   <name>Zeppelin: JDBC Hive interpreter</name>
 
   <properties>
