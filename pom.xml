@@ -148,7 +148,7 @@
     <micrometer.version>1.6.0</micrometer.version>
 
     <zookeeper.version>3.8.3.0-mapr-SNAPSHOT</zookeeper.version>
-    <mapr.version>6.2.0-mapr-SNAPSHOT</mapr.version>
+    <mapr.version>8.2.0.0-mapr-SNAPSHOT</mapr.version>
 
     <hadoop2.7.version>2.7.7</hadoop2.7.version>
     <hadoop2.6.version>2.6.5</hadoop2.6.version>
@@ -1059,6 +1059,18 @@
         <artifactId>zookeeper</artifactId>
         <version>${zookeeper.version}</version>
         <scope>provided</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>com.mapr.hadoop</groupId>
+        <artifactId>maprfs</artifactId>
+        <version>${mapr.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>*</groupId>
+            <artifactId>*</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
 
       <dependency>
