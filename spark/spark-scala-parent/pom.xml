@@ -32,9 +32,9 @@
     <name>Zeppelin: Spark Scala Parent</name>
 
     <properties>
-        <spark.version>3.4.1</spark.version>
-        <spark.scala.binary.version>2.12</spark.scala.binary.version>
-        <spark.scala.version>2.12.20</spark.scala.version>
+        <spark.version>4.1.1.0-dep-SNAPSHOT</spark.version>
+        <spark.scala.version>2.13.17</spark.scala.version>
+        <spark.scala.binary.version>2.13</spark.scala.binary.version>
         <spark.scala.compile.version>${spark.scala.binary.version}</spark.scala.compile.version>
     </properties>
 
