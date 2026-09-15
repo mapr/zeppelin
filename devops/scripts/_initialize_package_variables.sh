@@ -12,4 +12,4 @@ DIST_DIR=${DIST_DIR:-"devops/dist"}
 # rpmbuild does not work properly when relatve path specified here
 BUILD_ROOT=${BUILD_ROOT:-"$(pwd)/devops/buildroot"}
 
-MAVEN_BUILD_PROFILES="scala-2.11,spark-mapr,build-distr,vendor-repo-mapr,hadoop3"
+MAVEN_BUILD_PROFILES="scala-2.11,build-distr,vendor-repo-mapr,hadoop3"
