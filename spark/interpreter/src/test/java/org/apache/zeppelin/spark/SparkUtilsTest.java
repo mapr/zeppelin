@@ -24,7 +24,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import org.apache.hadoop.util.VersionInfo;
@@ -88,7 +87,8 @@ class SparkUtilsTest {
       properties.setProperty("spark.jobGroup.id", "zeppelin|user1|noteId|paragraphId");
       sparkUtils.buildSparkJobUrl("local", "http://sparkurl", 0, properties, mockContext);
       @SuppressWarnings("unchecked")
-      ArgumentCaptor<Map<String, String>> argument = ArgumentCaptor.forClass(HashMap.class);
+      ArgumentCaptor<Map<String, String>> argument =
+          (ArgumentCaptor<Map<String, String>>) (ArgumentCaptor<?>) ArgumentCaptor.forClass(Map.class);
       verify(mockIntpEventClient).onParaInfosReceived(argument.capture());
       Map<String, String> mapValue = argument.getValue();
       assertTrue(mapValue.keySet().contains("jobUrl"));
@@ -101,7 +101,8 @@ class SparkUtilsTest {
       properties.setProperty("spark.jobGroup.id", "zeppelin|user1|noteId|paragraphId");
       sparkUtils.buildSparkJobUrl("yarn", "http://sparkurl", 0, properties, mockContext);
       @SuppressWarnings("unchecked")
-      ArgumentCaptor<Map<String, String>> argument = ArgumentCaptor.forClass(HashMap.class);
+      ArgumentCaptor<Map<String, String>> argument =
+          (ArgumentCaptor<Map<String, String>>) (ArgumentCaptor<?>) ArgumentCaptor.forClass(Map.class);
       verify(mockIntpEventClient).onParaInfosReceived(argument.capture());
       Map<String, String> mapValue = argument.getValue();
       assertTrue(mapValue.keySet().contains("jobUrl"));

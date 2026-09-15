@@ -41,6 +41,8 @@
         <spark.scala.version>2.12.20</spark.scala.version>
         <spark.scala.binary.version>2.12</spark.scala.binary.version>
 
+        <scala.binary.version>${spark.scala.binary.version}</scala.binary.version>
+
         <scala.compile.version>${spark.scala.version}</scala.compile.version>
 
         <spark.archive>spark-${spark.version}</spark.archive>
@@ -52,7 +54,7 @@
     <modules>
         <module>interpreter</module>
         <module>spark-scala-parent</module>
-        <module>scala-2.12</module>
+        <!-- module>scala-2.12</module -->
         <module>scala-2.13</module>
         <module>spark-common</module>
     </modules>

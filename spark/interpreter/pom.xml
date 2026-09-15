@@ -55,6 +55,11 @@
     <!-- settings -->
     <pyspark.test.exclude>**/PySparkInterpreterMatplotlibTest.java</pyspark.test.exclude>
     <pyspark.test.include>**/*Test.*</pyspark.test.include>
+
+    <!-- test library versions -->
+    <junit.jupiter.version>5.7.1</junit.jupiter.version>
+    <scalacheck.version>1.18.0</scalacheck.version>
+    <scalatest.version>3.2.19</scalatest.version>
   </properties>
 
   <dependencies>
@@ -211,6 +216,7 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
+      <version>${junit.jupiter.version}</version>
       <scope>test</scope>
     </dependency>
 
@@ -463,9 +469,11 @@
 
     <profile>
       <id>spark-scala-2.12</id>
+      <!--
       <activation>
         <activeByDefault>true</activeByDefault>
       </activation>
+      -->
       <properties>
         <spark.scala.version>2.12.20</spark.scala.version>
         <spark.scala.binary.version>2.12</spark.scala.binary.version>

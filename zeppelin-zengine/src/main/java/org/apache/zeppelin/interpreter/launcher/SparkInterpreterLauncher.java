@@ -273,6 +273,8 @@ public class SparkInterpreterLauncher extends StandardInterpreterLauncher {
         return "2.11";
       } else if (scalaVersion.startsWith("2.12")) {
         return "2.12";
+      } else if (scalaVersion.startsWith("2.13")) {
+        return "2.13";
       } else {
         throw new Exception("Unsupported scala version: " + scalaVersion);
       }
