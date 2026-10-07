@@ -126,7 +126,7 @@
     <libthrift.version>0.13.0</libthrift.version>
     <gson.version>2.8.7</gson.version>
     <gson-extras.version>0.2.2</gson-extras.version>
-    <jetty.version>9.4.63.v20260812-df</jetty.version>
+    <jetty.version>9.4.64.v20261006-df</jetty.version>
     <httpcomponents.core.version>4.4.1</httpcomponents.core.version>
     <httpcomponents.client.version>4.5.1</httpcomponents.client.version>
     <httpcomponents.asyncclient.version>4.0.2</httpcomponents.asyncclient.version>
