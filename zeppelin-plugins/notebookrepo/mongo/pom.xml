@@ -25,7 +25,7 @@
     <parent>
         <groupId>org.apache.zeppelin</groupId>
         <artifactId>zengine-plugins-parent</artifactId>
-        <version>0.10.1.500-dep-1020-SNAPSHOT</version>
+        <version>0.10.1.500-dep-1020</version>
         <relativePath>../../../zeppelin-plugins</relativePath>
     </parent>
 
