@@ -1064,6 +1064,7 @@
         <groupId>com.mapr.hadoop</groupId>
         <artifactId>maprfs</artifactId>
         <version>${mapr.version}</version>
+        <scope>provided</scope>
         <exclusions>
           <exclusion>
             <groupId>*</groupId>
@@ -1076,6 +1077,7 @@
         <groupId>com.mapr.security</groupId>
         <artifactId>mapr-security-web</artifactId>
         <version>${mapr.version}</version>
+        <scope>provided</scope>
         <exclusions>
           <exclusion>
             <groupId>*</groupId>
